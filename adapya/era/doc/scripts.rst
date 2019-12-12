@@ -355,65 +355,18 @@ Trace of Client Processing a Record
 
 Reading the Replicated File on the Target Database
 --------------------------------------------------
+
+The replicated records can be read in the target database with the adapya-adabas script search.py
+
 ::
 
- >python EmpltelReadIsn.py
+  > search -d 12 -f 7 --read ISN --format AA,2X,AC,12,AE,12,AH,8,U,AL,AN,AM,AO,AP.
 
- Read by ISN on Employees-Telephonelist file 7 on database 12
- starting from ISN 0 for 1100 records
-
- 820 20002100 Forrest, Mona D. USA 0101 (312)824-9206 SALE40 0028-09-23 Secretary [#]_
- 821 20002200 Dekker, Sylvia Jennifer USA 0101 (213)183-1707 TECH10 0026-03-05 Dba
- 822 20002300 Smith, Elsa R. USA 0101 (213)793-6785 TECH10 0027-09-02 Programmer
- 823 20002400 Ferrari, Shirly Phyllis USA 0101 (415)822-9155 SALE20 0034-12-31 Sales Person
- 824 20002500 Alexander, Holly P. USA 0101 (608)793-6137 SALE20 0046-01-02 Sales Person
- 825 20002600 Mcdonald, Rosa Jennifer USA 0101 (316)409-2438 SALE20 0056-07-16 Sales Person
- 826 20002700 Romerio, Virginia S. USA 0101 (301)738-5508 MGMT30 0045-04-06 Manager
- 827 20002800 Davenport, Ann Phyllis USA 0101 (415)538-7860 TECH10 0048-12-25 Analyst
- 828 20002900 Dilworth, Tom USA 0101 (219)464-2421 MGMT10 0040-02-24 Secretary
- Sequential Read by ISN returned 9 record(s).
-
-.. footnote [#] The full name and position are stored upper-case in the database
-   and capitalized for display.
-
-
-Web Application "Employee Telephone List"
------------------------------------------
-
-The "Employee Telephone List" web application is implemented by the
-function select() in module emplist.py
-It is executed as publishing handler under the open source Apache web
-server using the mod\_python extension. Components:
-
-The Apache configuration file "hppt.conf" needs the following additional
-lines::
-
- LoadModule python\_module modules/mod\_python.so
- Alias /apps "C:/ADA/WEB/apps"
- # emplist.py must be copied here as well as images/ subdirectory
- <Directory "C:/ADA/WEB/apps">
- Options Indexes MultiViews
- AllowOverride All
- Order allow,deny
- Allow from all
- AddHandler mod\_python .py
- PythonHandler mod\_python.publisher
- PythonDebug On
- PythonPath "sys.path+['c:/ADA/python/dev']"
- SetEnv HTMLDIR "C:/ADA/WEB/apps"
- </Directory>
-
-
-.. figure:: _static/image006.jpg
-   :align: center
-   :alt:
-
-To browse the telephone list enter the URL e.g.
-
-`http://localhost/apps/emplist.py/select <http://localhost/apps/emplist.py/select>`_
-
-
-To select with search criteria on name or department enter the URL e.g.
-
-`http://localhost/apps/emplist.py/select?name=S\*;dept=M\* <http://localhost/apps/emplist.py/select?name=S*;dept=M*>`_
-
+  1     1 50005500 ALEXANDRE   BRAUN       00550626F  1033  42452720 VENT56 CHEF DE SERVICE
+  2    10 50007600 JEAN-MARIE  MARX        00490426F  1033  40738871 MARK06 DIRECTEUR COMMERCIAL
+  3    11 50003500 MARC        LEROUGE     00510823F  1033  47894194 COMP70 CONTROLEUR DE GESTION
+  4    12 50003300 ANDRE       GRUMBACH    00480320F  1033  45487063 COMP73 CONTROLEUR DE GESTION
+  5    13 50003100 MICHEL      HEURTEBISE  00421118F  1033  45482056 COMP01 CONTROLEUR DE GESTION
+  6    14 50003000 JEAN-CLAUDE REISKEIM    00550816F  1033  48477160 VENT30 CONTROLEUR DE GESTION
+  7    15 50002900 JACQUELINE  REIGNARD    00520615F  1033  48472153 VENT29 CONTROLEUR DE GESTION
+  8    16 50002700 PAUL        GUELIN      00490112F  1033  46065022 VENT27 CONTROLEUR DE GESTION
