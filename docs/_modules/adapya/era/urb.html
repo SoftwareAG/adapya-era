@@ -1,0 +1,1199 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>adapya.era.urb &mdash; adapya-era 1.0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/SAG2015.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> adapya-era
+          
+
+          
+            
+            <img src="../../../_static/SAG2015.ico" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installing.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripts.html">Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indices.html">Indices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">adapya-era</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>adapya.era.urb</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for adapya.era.urb</h1><div class="highlight"><pre>
+<span></span><span class="ch">#! /usr/bin/env python</span>
+<span class="c1"># -*- coding: latin1 -*-</span>
+<span class="sd">&quot;&quot;&quot; urb.py - User Replication Buffer Definitions</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="k">import</span> <span class="n">adaerror</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">Datamap</span><span class="p">,</span><span class="n">String</span><span class="p">,</span><span class="n">Uint1</span><span class="p">,</span><span class="n">Uint2</span><span class="p">,</span><span class="n">Uint4</span><span class="p">,</span><span class="n">Uint8</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">Bytes</span><span class="p">,</span><span class="n">Int2</span><span class="p">,</span><span class="n">Int4</span><span class="p">,</span><span class="n">T_NONE</span><span class="p">,</span><span class="n">T_HEX</span><span class="p">,</span><span class="n">T_STCK</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">list_str</span><span class="p">,</span><span class="n">str_str</span><span class="p">,</span><span class="n">bit_str</span>
+
+
+<span class="n">REPTOR_RSP</span> <span class="o">=</span> <span class="mi">131</span> <span class="c1"># Replication response code</span>
+<span class="n">texts_reptor_subcodes</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;URBD and Data exceeds output buffer&#39;</span><span class="p">,</span> <span class="c1">#01</span>
+  <span class="s1">&#39;Subscription user exit response in URBRERRC&#39;</span><span class="p">,</span> <span class="c1">#02</span>
+  <span class="s1">&#39;Space shortage in nucleus (LREPL)&#39;</span><span class="p">,</span> <span class="c1">#03</span>
+  <span class="s1">&#39;Space shortage in Reptor (LREPL)&#39;</span><span class="p">,</span> <span class="c1">#04</span>
+  <span class="s1">&#39;Subscription user exit set invalid data length (URBDLEND)&#39;</span><span class="p">,</span> <span class="c1">#5</span>
+  <span class="s1">&#39;Response destination not found for status request&#39;</span><span class="p">,</span> <span class="c1">#6</span>
+  <span class="s1">&#39;Unspecified destination and subscription in status request&#39;</span><span class="p">,</span> <span class="c1">#7</span>
+  <span class="s1">&#39;Subscription or Destination not found for status request&#39;</span><span class="p">,</span> <span class="c1">#8</span>
+  <span class="s1">&#39;Initial state name not found&#39;</span><span class="p">,</span> <span class="c1">#9</span>
+  <span class="s1">&#39;Response destinations must be same for all requests in one message&#39;</span><span class="p">,</span> <span class="c1">#10</span>
+
+  <span class="s1">&#39;Initial-state names must be same for all requests in one message&#39;</span><span class="p">,</span> <span class="c1">#11</span>
+  <span class="s1">&#39;INITIALSTATE DBID/FNR definition not found as requested in URBI&#39;</span><span class="p">,</span> <span class="c1">#12</span>
+  <span class="s1">&#39;SELCRIT (presently not supported) or invalid type specified&#39;</span><span class="p">,</span> <span class="c1">#13</span>
+  <span class="s1">&#39;DBID/FNR must be specified in Initial-state request and definition&#39;</span><span class="p">,</span> <span class="c1">#14</span>
+  <span class="s1">&#39;URBILEND&gt;0 for Initial-state all records&#39;</span><span class="p">,</span> <span class="c1">#15</span>
+  <span class="s1">&#39;Invalid ISNLIST or ISN range specification&#39;</span><span class="p">,</span> <span class="c1">#16</span>
+  <span class="s1">&#39;Initial-state process stopped by operator&#39;</span><span class="p">,</span> <span class="c1">#17</span>
+  <span class="s1">&#39;Request token must be same in all URBIs of a message&#39;</span><span class="p">,</span> <span class="c1">#18</span>
+  <span class="s1">&#39;URBILEND=0 for Initial-state with selection&#39;</span><span class="p">,</span> <span class="c1">#19</span>
+  <span class="s1">&#39;Invalid key value when decompressing in subscription&#39;</span><span class="p">,</span> <span class="c1">#20</span>
+
+  <span class="s1">&#39;Invalid UES parameters - URBIARC/ACOD/WCOD are non-zero&#39;</span>\
+  <span class="s1">&#39; and Reptor is not UES enabled&#39;</span><span class="p">,</span> <span class="c1">#21</span>
+  <span class="s1">&#39;Initial-state request for deactivated DBID/FNR&#39;</span><span class="p">,</span> <span class="c1">#22</span>
+  <span class="s1">&#39;Invalid UES parameters - URBIARC/ACOD/WCOD must not all be blanks&#39;</span><span class="p">,</span> <span class="c1">#23</span>
+  <span class="s1">&#39;Invalid UES parameters - URBIARC/ACOD/WCOD should be zero&#39;</span><span class="p">,</span> <span class="c1">#24</span>
+  <span class="s1">&#39;Reserved URBIRES1 and URBIRES2 fields did not contain zeros&#39;</span><span class="p">,</span> <span class="c1">#25</span>
+  <span class="s1">&#39;Destination name not found&#39;</span><span class="p">,</span> <span class="c1">#26</span>
+  <span class="s1">&#39;No active destinations for status request&#39;</span><span class="p">,</span> <span class="c1">#27</span>
+  <span class="s1">&#39;Initial State request received after Reptor shutdown started&#39;</span><span class="p">,</span> <span class="c1">#28</span>
+  <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="c1">#29 unused</span>
+  <span class="s1">&#39;Unknown response destination name in URBI&#39;</span><span class="p">,</span> <span class="c1">#30</span>
+
+  <span class="s1">&#39;Unknown destination name in URBI&#39;</span><span class="p">,</span> <span class="c1">#31</span>
+  <span class="s1">&#39;Unknown subscription name in URBI&#39;</span><span class="p">,</span> <span class="c1">#32</span>
+  <span class="s1">&#39;URBIDNAM destination not related to subscription &#39;</span><span class="p">,</span> <span class="c1">#33</span>
+  <span class="s1">&#39;Specified subscription has no resend buffer defined&#39;</span><span class="p">,</span> <span class="c1">#34</span>
+  <span class="s1">&#39;Requested transaction not found in resend buffer&#39;</span><span class="p">,</span> <span class="c1">#35</span>
+  <span class="s1">&#39;Specified subscription is not active&#39;</span><span class="p">,</span> <span class="c1">#36</span>
+  <span class="s1">&#39;Invalid transaction in resend buffer&#39;</span><span class="p">,</span> <span class="c1">#37</span>
+  <span class="s1">&#39;No active destinations&#39;</span><span class="p">,</span> <span class="c1">#38</span>
+  <span class="s1">&#39;Selection data not permitted for TRAN request&#39;</span><span class="p">,</span> <span class="c1">#39</span>
+  <span class="s1">&#39;DBID and file number not permitted for TRAN request&#39;</span><span class="p">,</span> <span class="c1">#40</span>
+
+  <span class="s1">&#39;Initial-state name not permitted for TRAN request&#39;</span><span class="p">,</span> <span class="c1">#41</span>
+  <span class="s1">&#39;UES parameters must be zero in URBI for TRAN request&#39;</span><span class="p">,</span> <span class="c1">#42</span>
+  <span class="s1">&#39;Unused URBIRES1 and URBIRES2 must be zero for TRAN request&#39;</span><span class="p">,</span> <span class="c1">#43</span>
+  <span class="s1">&#39;Number of active concurent initial-state requests exceeded IMAXREQ&#39;</span><span class="p">,</span> <span class="c1">#44</span>
+  <span class="s1">&#39;Input request URBH eyecatcher is invalid&#39;</span><span class="p">,</span> <span class="c1">#45</span>
+  <span class="s1">&#39;Input request URBHLEN is invalid&#39;</span><span class="p">,</span>  <span class="c1">#46</span>
+  <span class="s1">&#39;Input request URBHBORD is invalid&#39;</span><span class="p">,</span> <span class="c1">#47</span>
+  <span class="s1">&#39;Input request URBHVERS is invalid&#39;</span><span class="p">,</span> <span class="c1">#48</span>
+  <span class="s1">&#39;Input request message truncated&#39;</span><span class="p">,</span>   <span class="c1">#49</span>
+  <span class="s1">&#39;Input request URBHLENT is invalid&#39;</span><span class="p">,</span> <span class="c1">#50</span>
+
+  <span class="s1">&#39;Input request URBILENH is invalid&#39;</span><span class="p">,</span> <span class="c1">#51</span>
+  <span class="s1">&#39;Input request URBILEND is invalid&#39;</span><span class="p">,</span> <span class="c1">#52</span>
+  <span class="s1">&#39;Input request URBILEN is invalid&#39;</span><span class="p">,</span>  <span class="c1">#53</span>
+  <span class="s1">&#39;Input request reserved area is not zero&#39;</span><span class="p">,</span> <span class="c1">#54</span>
+  <span class="s1">&#39;Input request more than one status received&#39;</span><span class="p">,</span> <span class="c1">#55</span>
+  <span class="s1">&#39;Input request invalid URBI request received&#39;</span><span class="p">,</span> <span class="c1">#56</span>
+  <span class="s1">&#39;Input request different interleaved requests received&#39;</span><span class="p">,</span> <span class="c1">#57</span>
+  <span class="s1">&#39;Invalid destination for response&#39;</span><span class="p">,</span> <span class="c1">#58</span>
+  <span class="s1">&#39;Replay request for inactive database&#39;</span><span class="p">,</span> <span class="c1">#59</span>
+  <span class="s1">&#39;Invalid (undefined/outdated) replay token&#39;</span><span class="p">,</span> <span class="c1">#60</span>
+
+  <span class="sd">&#39;&#39;&#39;Invalid request sent to Reptor. RBL is insufficient,</span>
+<span class="sd">     no FB provided on Init handshake or other such errors&#39;&#39;&#39;</span><span class="p">,</span> <span class="c1">#61</span>
+  <span class="sd">&#39;&#39;&#39;Record data suppressed because FDT as of time of update</span>
+<span class="sd">     no longer available&#39;&#39;&#39;</span><span class="p">,</span>                                   <span class="c1">#62</span>
+  <span class="s1">&#39;File given in C5/R cmd is not replicated&#39;</span><span class="p">,</span>                  <span class="c1">#63</span>
+  <span class="s1">&#39;Extended subscription compare between field types unsupported&#39;</span><span class="p">,</span> <span class="c1">#64</span>
+  <span class="s1">&#39;Extended subscription field in condition not found in format buffer&#39;</span><span class="p">,</span> <span class="c1">#65</span>
+  <span class="s1">&#39;Extended subscription field in condition not selectable&#39;</span><span class="p">,</span> <span class="c1">#66</span>
+  <span class="s1">&#39;Extended subscription FLIST data provided by user invalid or out of range&#39;</span><span class="p">,</span> <span class="c1">#67</span>
+  <span class="s1">&#39;Extended subscription unexpected error&#39;</span><span class="p">,</span>  <span class="c1">#68</span>
+  <span class="s1">&#39;Replay for same DBID/FNR already running&#39;</span><span class="p">,</span> <span class="c1">#69</span>
+  <span class="s1">&#39;File specified not found in Reptor subscription&#39;</span><span class="p">,</span> <span class="c1">#70</span>
+
+  <span class="s1">&#39;DATE/TIME format or value incorrect&#39;</span><span class="p">,</span> <span class="c1">#71</span>
+  <span class="s1">&#39;Incorrect replay parameters&#39;</span><span class="p">,</span> <span class="c1">#72</span>
+  <span class="s1">&#39;Replay subscription deactivated&#39;</span><span class="p">,</span> <span class="c1">#73</span>
+  <span class="s1">&#39;Replay destination deactivated&#39;</span><span class="p">,</span> <span class="c1">#74</span>
+  <span class="s1">&#39;Replay destination without SLOG closed&#39;</span><span class="p">,</span> <span class="c1">#75</span>
+  <span class="s1">&#39;ADARPL terminated abnormally&#39;</span><span class="p">,</span> <span class="c1">#76</span>
+  <span class="s1">&#39;Invalid replay status transition&#39;</span><span class="p">,</span> <span class="c1">#77</span>
+  <span class="s1">&#39;New transactions not held during replay&#39;</span><span class="p">,</span> <span class="c1">#78</span>
+  <span class="s1">&#39;Replay process canceled by user&#39;</span><span class="p">,</span> <span class="c1">#79</span>
+  <span class="s1">&#39;Timeout while waiting for file reactivation in Adabas&#39;</span><span class="p">,</span> <span class="c1">#80</span>
+
+  <span class="s1">&#39;A TOKEN for an existing RRU was found but was not generated by Replay&#39;</span><span class="p">,</span> <span class="c1">#81</span>
+  <span class="s1">&#39;RRDSORT is not Y or N, so the ADABAS is not currently connected w/Reptor&#39;</span><span class="p">,</span> <span class="c1">#82</span>
+  <span class="s1">&#39;Neither Subscriptions nor Destinations specified by Replay request&#39;</span><span class="p">,</span> <span class="c1">#83</span>
+  <span class="sd">&quot;&quot;&quot;Replication data from ADABAS can flow</span>
+<span class="sd">   to active Subsription/Destination pair</span>
+<span class="sd">   involved in Replay-only mode Replay.&quot;&quot;&quot;</span><span class="p">,</span> <span class="c1">#84</span>
+  <span class="s1">&#39;Replay file deactivated&#39;</span><span class="p">,</span> <span class="c1">#85</span>
+  <span class="s1">&#39;Invalid format buffer for destination type ADABAS update commands&#39;</span><span class="p">,</span> <span class="c1">#86</span>
+  <span class="s1">&#39;Unexpected message sequence number&#39;</span><span class="p">,</span> <span class="c1">#87</span>
+  <span class="s1">&#39;Unrecognized eye-catcher in control block following the URBH&#39;</span><span class="p">,</span> <span class="c1">#88</span>
+  <span class="s1">&#39;Same subscription name specified more than once in Replay process initialization&#39;</span><span class="p">,</span> <span class="c1">#89</span>
+  <span class="s1">&#39;Same destination name specified more than once in Replay process initialization&#39;</span><span class="p">,</span> <span class="c1">#90</span>
+
+  <span class="s1">&#39;Replay Start Date/Time not supplied for Automatic Replay&#39;</span><span class="p">,</span> <span class="c1">#91</span>
+  <span class="s1">&#39;Timeout parameter to high&#39;</span><span class="p">,</span> <span class="c1">#92</span>
+  <span class="s1">&#39;PLOG info not recorded in Reptor system file &#39;</span><span class="p">,</span> <span class="c1">#93</span>
+  <span class="s1">&#39;AI/BI format buffer used also for key&#39;</span><span class="p">,</span> <span class="c1">#94</span>
+  <span class="s1">&#39;Attempt to set user/reptor encoding failed&#39;</span><span class="p">,</span> <span class="c1">#95</span>
+  <span class="s1">&#39;Initial State target nuc down (RSP148)&#39;</span><span class="p">,</span> <span class="c1">#96</span>
+  <span class="s1">&#39;Format buffer contains LOB field - not supported&#39;</span><span class="p">,</span> <span class="c1">#97</span>
+  <span class="s1">&#39;ADABAS nucleus is higher version than the Reptor version&#39;</span><span class="p">,</span> <span class="c1">#98</span>
+  <span class="s1">&#39;Subscription name (URBISNAM) may not be specified for this type of input request&#39;</span><span class="p">,</span> <span class="c1"># 99</span>
+  <span class="s1">&#39;Transaction sequence number (URBITNSR) may not be specified for this type of input request&#39;</span><span class="p">,</span> <span class="c1"># 100</span>
+  <span class="s1">&#39;Open or close destination input request failed on some tasks&#39;</span><span class="p">,</span> <span class="c1">#101</span>
+  <span class="s1">&#39;Open or close destination input request failed&#39;</span><span class="p">,</span> <span class="c1">#102</span>
+  <span class="s1">&#39;Open or close destination request invalid or was issued while already being requested&#39;</span><span class="p">,</span> <span class="c1"># 103</span>
+  <span class="s1">&#39;Begin byte in field filter longer than field length&#39;</span><span class="p">,</span> <span class="c1">#104</span>
+  <span class="s1">&#39;Begin byte plus portion length in field filter longer than field length&#39;</span><span class="p">,</span> <span class="c1">#105</span>
+  <span class="s1">&#39;Begin byte or length not supported for field with format U,P,F,G or W&#39;</span><span class="p">,</span> <span class="c1">#106</span>
+  <span class="s1">&#39;Length value invalid for field&#39;</span><span class="p">,</span> <span class="c1">#107</span>
+  <span class="s1">&#39;Input request URBI eye-catcher invalid&#39;</span><span class="p">,</span> <span class="c1">#108</span>
+  <span class="s1">&#39;Adabas security (ADASCR) function invalidly replicated to subscription file defined with SFSECURITYFILE=NO&#39;</span><span class="p">,</span> <span class="c1">#109</span>
+  <span class="s1">&#39;Invalid Adabas security (ADASCR) pseudo transaction has been replicated to the Reptor&#39;</span><span class="p">,</span> <span class="c1">#110</span>
+  <span class="s1">&#39;Replicated record (delete, insert, refresh, or update) invalidly replicated to subscription file defined with SFSECURITYFILE=YES&#39;</span><span class="p">,</span> <span class="c1">#111</span>
+  <span class="s1">&#39;Request to convert an update to a delete failed because no before image was provided&#39;</span><span class="p">,</span> <span class="c1">#112</span>
+  <span class="p">)</span>
+
+
+<span class="c1">#</span>
+<span class="c1">#  Plug-in special replication response code 131 subcode texts</span>
+<span class="c1">#</span>
+
+<div class="viewcode-block" id="plugrsp131"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.plugrsp131">[docs]</a><span class="k">def</span> <span class="nf">plugrsp131</span><span class="p">(</span><span class="n">rsp</span><span class="p">,</span><span class="n">subcode</span><span class="p">,</span><span class="n">errc</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set Response 131 Reptor subcodes to text plugin&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="s1">&#39;Reptor Response 131&#39;</span>\
+            <span class="o">+</span> <span class="s1">&#39; with subcode=</span><span class="si">%d</span><span class="s1">, info=</span><span class="si">%r</span><span class="s1">: &#39;</span><span class="o">%</span><span class="p">(</span><span class="n">subcode</span><span class="p">,</span> <span class="n">errc</span><span class="p">)</span>\
+            <span class="o">+</span> <span class="n">datamap</span><span class="o">.</span><span class="n">list_str</span><span class="p">(</span><span class="n">subcode</span><span class="p">,</span><span class="n">urb</span><span class="o">.</span><span class="n">texts_reptor_subcodes</span><span class="p">)</span></div>
+
+<span class="n">adaerror</span><span class="o">.</span><span class="n">plugrsp</span><span class="p">(</span><span class="n">REPTOR_RSP</span><span class="p">,</span> <span class="n">plugrsp131</span><span class="p">)</span>  <span class="c1"># set the rsp plugin for resp. 131</span>
+
+<span class="k">def</span> <span class="nf">urbcont_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="c1"># used in URBC and URBT</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Transaction will be continued in next message&#39;</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="nf">urbrsnd_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span> <span class="c1"># used in URBR and URBT</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Possible double delivery&#39;</span><span class="p">})</span>
+
+<span class="n">URBCEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBC&#39;</span>
+<span class="n">URBCL</span>    <span class="o">=</span> <span class="mi">48</span>
+<span class="n">URBCCONY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># set in urbccont if more data to follow in next msg</span>
+
+<div class="viewcode-block" id="Urbc"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbc">[docs]</a><span class="k">class</span> <span class="nc">Urbc</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBC -- Continuation element</span>
+
+<span class="sd">    Contains information related to a transaction</span>
+<span class="sd">    that is continued in the current message.</span>
+
+<span class="sd">    Optional init parms: buffer and offset</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBC&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbceye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBC eye-catcher &#39;URBC&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbclen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBC</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbcsnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="c1"># Subscription name</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbctsnr&#39;</span><span class="p">),</span>    <span class="c1"># Current transaction sequence number</span>
+                                    <span class="c1">#   within subscription/destination</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbcrsnr&#39;</span><span class="p">),</span>    <span class="c1"># Current record sequence number</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbcdsnr&#39;</span><span class="p">),</span>    <span class="c1"># Current data sequence number for record</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbccont&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbcont_str</span><span class="p">),</span> <span class="c1"># Indicator transaction continuation</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">urbd_type</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="s1">&#39;after image&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">:</span><span class="s1">&#39;before image&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">:</span><span class="s1">&#39;key before image&#39;</span><span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">urbdtyp_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">urbd_type</span><span class="p">)</span>
+
+
+<span class="n">URBDEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBD&#39;</span>
+<span class="n">URBDL</span>    <span class="o">=</span> <span class="mi">32</span>
+
+<span class="c1"># urbdtyp contents:</span>
+<span class="n">URBDTYPA</span> <span class="o">=</span> <span class="s1">&#39;A&#39;</span>    <span class="c1"># After  image of data storage</span>
+<span class="n">URBDTYPB</span> <span class="o">=</span> <span class="s1">&#39;B&#39;</span>    <span class="c1"># Before image of data storage</span>
+<span class="n">URBDTYPK</span> <span class="o">=</span> <span class="s1">&#39;K&#39;</span>    <span class="c1"># Before image of primary key</span>
+
+<div class="viewcode-block" id="Urbd"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbd">[docs]</a><span class="k">class</span> <span class="nc">Urbd</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBD -- Data element</span>
+
+<span class="sd">    Contains data related to a before or after</span>
+<span class="sd">    image associated with one record.</span>
+
+<span class="sd">    Optional init parms: buffer and offset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBD&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbdeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>             <span class="c1"># URBD eye-catcher &#39;URBD&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbdlen&#39;</span><span class="p">),</span>                <span class="c1"># Length of URBD + related data + filler</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbdlenh&#39;</span><span class="p">),</span>               <span class="c1"># Length of URBD</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbdlend&#39;</span><span class="p">),</span>               <span class="c1"># Length of related data (at URBDDATA)</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbddsnr&#39;</span><span class="p">),</span>               <span class="c1"># Data sequence number for record</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbdtyp&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbdtyp_str</span><span class="p">),</span> <span class="c1"># Type of data</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span><span class="c1"># Reserved area</span>
+            <span class="c1"># Payload data following (before or after image)</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">URBEL</span>    <span class="o">=</span> <span class="mi">32</span>
+<span class="n">URBEEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBE&#39;</span>
+
+<div class="viewcode-block" id="Urbe"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbe">[docs]</a><span class="k">class</span> <span class="nc">Urbe</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBE -- End-of-transaction element</span>
+
+<span class="sd">    indicates the end of the transaction related</span>
+<span class="sd">    to the preceding record and data elements.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBE&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbeeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBE eye-catcher &#39;URBE&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbelen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBE</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbesnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="c1"># Subscription name</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbetsnr&#39;</span><span class="p">),</span>    <span class="c1"># Transaction sequence number</span>
+                                    <span class="c1">#   within subscription/destination</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">URBHL</span>    <span class="o">=</span> <span class="mi">64</span>         <span class="c1"># urbh length</span>
+<span class="n">URBHEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBH&#39;</span>
+<span class="n">URBHVER1</span> <span class="o">=</span> <span class="s1">&#39;01&#39;</span>
+<span class="n">URBHBORD</span> <span class="o">=</span> <span class="mh">0x0001</span>     <span class="c1"># big endian</span>
+<span class="n">URBHBORH</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\x00\x01</span><span class="s1">&#39;</span> <span class="c1"># = high order byte first</span>
+<span class="n">URBHBORL</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\x01\x00</span><span class="s1">&#39;</span> <span class="c1"># little endian</span>
+
+
+<div class="viewcode-block" id="Urbh"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbh">[docs]</a><span class="k">class</span> <span class="nc">Urbh</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBH - Message header</span>
+
+<span class="sd">    URBH is put at the start of each buffer sent to</span>
+<span class="sd">    the messaging system.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBH&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbheye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBH eye-catcher &#39;URBH&#39; (in EBCDIC)</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbhlen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBH</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbhvers&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="c1"># Version indicator for URB* DSECTs:</span>
+            <span class="n">Int2</span><span class="p">(</span>   <span class="s1">&#39;urbhbord&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_HEX</span><span class="p">),</span>     <span class="c1"># Const 1 to indicate the byte order</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbhlent&#39;</span><span class="p">),</span>    <span class="c1"># Total message length (including URBH)</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbhmsnr&#39;</span><span class="p">),</span>    <span class="c1"># Message sequence number per destination</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbhtime&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span>    <span class="c1"># Time (STCK) when message was sent</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbhrpid&#39;</span><span class="p">),</span>    <span class="c1"># Target ID of originating Reptor</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbhrpni&#39;</span><span class="p">),</span>    <span class="c1"># Nucleus ID of originating Reptor</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbhname&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="c1"># Sender name (&#39;REPTOR&#39; if sent by Reptor)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">urbi_rtext</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;STAT&#39;</span><span class="p">:</span> <span class="s1">&#39;Status request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;INST&#39;</span><span class="p">:</span> <span class="s1">&#39;Initial-state request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;TRAN&#39;</span><span class="p">:</span> <span class="s1">&#39;Prior transaction request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;OPND&#39;</span><span class="p">:</span> <span class="s1">&#39;Open destination request&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CLSD&#39;</span><span class="p">:</span> <span class="s1">&#39;Close destination request&#39;</span><span class="p">,</span>
+           <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">urbirt_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">urbi_rtext</span><span class="p">)</span>
+
+<span class="n">URBIL</span>    <span class="o">=</span> <span class="mi">96</span>
+<span class="n">URBIEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBI&#39;</span>
+                  <span class="c1"># urbirt: Request type</span>
+<span class="n">URBIRTST</span> <span class="o">=</span> <span class="s1">&#39;STAT&#39;</span> <span class="c1"># Status request</span>
+<span class="n">URBIRTIS</span> <span class="o">=</span> <span class="s1">&#39;INST&#39;</span> <span class="c1"># Initial state request</span>
+<span class="n">URBIRTTA</span> <span class="o">=</span> <span class="s1">&#39;TRAN&#39;</span> <span class="c1"># Retrieve data for prior transaction</span>
+<span class="n">URBIRTOD</span> <span class="o">=</span> <span class="s1">&#39;OPND&#39;</span> <span class="c1"># Open a destination</span>
+<span class="n">URBIRTCD</span> <span class="o">=</span> <span class="s1">&#39;CLSD&#39;</span> <span class="c1"># Close a destination</span>
+
+
+<div class="viewcode-block" id="Urbi"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbi">[docs]</a><span class="k">class</span> <span class="nc">Urbi</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBI -- Input element</span>
+
+<span class="sd">    contains input data for a request from a</span>
+<span class="sd">    Target Application to the Reptor.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBI&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbieye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBI eye-catcher &#39;URBI&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbilen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBI + selection data + filler</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbilenh&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBI proper (&gt;= URBIL)</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbilend&#39;</span><span class="p">),</span>     <span class="c1"># Length of selection data (may be zero)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbirtok&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Request ID token (returned in response)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbirnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Destination name for response</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbirt&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbirt_str</span><span class="p">),</span> <span class="c1"># Request type: STAT/INST/TRAN</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbidbid&#39;</span><span class="p">),</span>     <span class="c1"># Database ID (INST request)</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbifnr&#39;</span><span class="p">),</span>      <span class="c1"># File number (INST request)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbiinam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Initial-state name (INST request)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbisnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Subscription name or blank (STAT/TRAN req)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbidnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Destination name or blank (STAT/TRAN req)</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiacod&#39;</span><span class="p">),</span>     <span class="c1"># alpha field encoding in selection data</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiwcod&#39;</span><span class="p">),</span>     <span class="c1"># wide field encoding in selection data</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;urbiarc&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>   <span class="c1"># architecture flags for selection data</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbires1&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>  <span class="c1"># Reserved area1</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbitsnr&#39;</span><span class="p">),</span>     <span class="c1"># Transaction seq.no. within</span>
+                                     <span class="c1">#   subscription/destination (TRAN req)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbires2&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area2</span>
+                                     <span class="c1"># Optional selection data (INST request)</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">URBIIRANGE</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">URBIISNLEN</span>  <span class="o">=</span> <span class="mi">4</span>
+<span class="n">URBIIRANGELEN</span>  <span class="o">=</span> <span class="mi">12</span>
+
+
+<div class="viewcode-block" id="Urbi_isns"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbi_isns">[docs]</a><span class="k">class</span> <span class="nc">Urbi_isns</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Urbi_isns -- Initial-State Request ISN list definitions</span>
+
+<span class="sd">    either individual ISNs are possible or</span>
+<span class="sd">    ranges of ISNs with range indicator and 2 ISNs defining the range</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBII&#39;</span><span class="p">,</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiisn&#39;</span><span class="p">),</span>              <span class="c1"># ISN</span>
+                                             <span class="c1">#   or alternatively:</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbiirange&#39;</span><span class="p">,</span><span class="n">repos</span><span class="o">=-</span><span class="mi">4</span><span class="p">),</span>  <span class="c1"># Range indicator</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiisn1&#39;</span><span class="p">),</span>             <span class="c1"># from ISN</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiisn2&#39;</span><span class="p">),</span>             <span class="c1"># to ISN</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="New_Urb"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.New_Urb">[docs]</a><span class="k">class</span> <span class="nc">New_Urb</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; new URB - helper to detect which URB type it is</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;new_URB&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;eye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>       <span class="c1"># eye-catcher &#39;URBx&#39;</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<span class="k">def</span> <span class="nf">urborig_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="c1"># used in URBS and URBT</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: Adabas nucleus&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;G&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: ADARES&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;L&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: ADALOD Load&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: ADARPL Replay&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;S&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: ADASAV&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;Origin: ADALOD Update&#39;</span><span class="p">})</span>
+
+<span class="n">urbr_type</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;delete&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;insert&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">:</span> <span class="s1">&#39;initial state&#39;</span><span class="p">,</span> <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;update&#39;</span><span class="p">}</span>
+<span class="k">def</span> <span class="nf">urbrtyp_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">urbr_type</span><span class="p">)</span>
+
+<span class="n">urbruc_type</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;D&#39;</span><span class="p">:</span> <span class="s1">&#39;Update converted to Delete&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;Update converted to Insert&#39;</span> <span class="p">}</span>
+<span class="k">def</span> <span class="nf">urbruc_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">urbruc_type</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">urbrdcu_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="o">==</span> <span class="s1">&#39;Y&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Delete converted to update&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+<span class="n">URBREYE</span>  <span class="o">=</span> <span class="s1">&#39;URBR&#39;</span>
+<span class="n">URBRL</span>    <span class="o">=</span> <span class="mi">64</span>
+<span class="c1"># Values for field &quot;urbrtyp&quot;</span>
+<span class="n">URBRTYPD</span> <span class="o">=</span> <span class="s1">&#39;D&#39;</span>  <span class="c1"># Delete</span>
+<span class="n">URBRTYPI</span> <span class="o">=</span> <span class="s1">&#39;I&#39;</span>  <span class="c1"># Insert</span>
+<span class="n">URBRTYPR</span> <span class="o">=</span> <span class="s1">&#39;R&#39;</span>  <span class="c1"># Initial State (refresh)</span>
+<span class="n">URBRTYPU</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>  <span class="c1"># Update</span>
+<span class="c1"># Values for field &quot;urbrrsnd&quot;</span>
+<span class="n">URBRRSNY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># Data for same record may have been already sent</span>
+
+
+<div class="viewcode-block" id="Urbr"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbr">[docs]</a><span class="k">class</span> <span class="nc">Urbr</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBR - Record Element</span>
+
+<span class="sd">    contains information related to one record.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBR&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbreye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBR eye-catcher &#39;URBR&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbrlen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBR</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbrrsnr&#39;</span><span class="p">),</span>        <span class="c1"># Record sequence number within transaction</span>
+            <span class="n">Int2</span><span class="p">(</span>   <span class="s1">&#39;urbrdcnt&#39;</span><span class="p">),</span>        <span class="c1"># Count of data elements (URBDs)</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbrfnr&#39;</span><span class="p">),</span>         <span class="c1"># Original Adabas file number</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbrisn&#39;</span><span class="p">),</span>         <span class="c1"># Original Adabas ISN</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbrtime&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span>           <span class="c1"># Time (STCK) of last modification</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbrtyp&#39;</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbrtyp_str</span><span class="p">),</span><span class="c1"># Type of update</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbrrsnd&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbrsnd_str</span><span class="p">),</span><span class="c1"># Ind. possible double delivery</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbrrsp&#39;</span><span class="p">),</span>         <span class="c1"># Response code</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbrsubc&#39;</span><span class="p">),</span>        <span class="c1"># Subcode information</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbrerrc&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Other error code information</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbrdcu&#39;</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbrdcu_str</span><span class="p">),</span><span class="c1"># Indicator for delete to update conversion</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbruc&#39;</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbruc_str</span><span class="p">),</span><span class="c1"># Indicator for update conversion to delete or insert</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>     <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="n">urbs_status</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="s1">&#39;INIT&#39;</span><span class="p">:</span> <span class="s1">&#39;Initial-state processing started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;ERRO&#39;</span><span class="p">:</span> <span class="s1">&#39;Initial-state processing ERROR&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;CMPL&#39;</span><span class="p">:</span> <span class="s1">&#39;Initial-state processing completed&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SUBS&#39;</span><span class="p">:</span> <span class="s1">&#39;Subscription status information&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;STRT&#39;</span><span class="p">:</span> <span class="s1">&#39;Normal Reptor session start&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REST&#39;</span><span class="p">:</span> <span class="s1">&#39;Reptor restart after abnormal end&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;TERM&#39;</span><span class="p">:</span> <span class="s1">&#39;Normal Reptor session termination&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DEAC&#39;</span><span class="p">:</span> <span class="s1">&#39;Replication deactivated&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REAC&#39;</span><span class="p">:</span> <span class="s1">&#39;Replication reactivated&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;TRSP&#39;</span><span class="p">:</span> <span class="s1">&#39;Response to prior-transaction request&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;LOST&#39;</span><span class="p">:</span> <span class="s1">&#39;Possibly lost replication data&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;C5DA&#39;</span><span class="p">:</span> <span class="s1">&#39;Replication user data from C5 command&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;LODS&#39;</span><span class="p">:</span> <span class="s1">&#39;ADALOD LOAD started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;LODE&#39;</span><span class="p">:</span> <span class="s1">&#39;ADALOD LOAD ended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;RPLS&#39;</span><span class="p">:</span> <span class="s1">&#39;Replay process (ADARPL) started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;RPLE&#39;</span><span class="p">:</span> <span class="s1">&#39;Replay process (ADARPL) ended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REFR&#39;</span><span class="p">:</span> <span class="s1">&#39;Resource refreshed&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SAVS&#39;</span><span class="p">:</span> <span class="s1">&#39;ADASAV RESTORE started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SAVE&#39;</span><span class="p">:</span> <span class="s1">&#39;ADASAV RESTORE ended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;RESS&#39;</span><span class="p">:</span> <span class="s1">&#39;ADARES REGENERATE/BACKOUT started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;RESE&#39;</span><span class="p">:</span> <span class="s1">&#39;ADARES REGENERATE/BACKOUT ended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;UPDS&#39;</span><span class="p">:</span> <span class="s1">&#39;ADALOD UPDATE started&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;UPDE&#39;</span><span class="p">:</span> <span class="s1">&#39;ADALOD UPDATE ended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;AUTI&#39;</span><span class="p">:</span> <span class="s1">&#39;Adabas utility service replication&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;CLOS&#39;</span><span class="p">:</span> <span class="s1">&#39;Destination closed&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;OPEN&#39;</span><span class="p">:</span> <span class="s1">&#39;Destination opened&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;ASEC&#39;</span><span class="p">:</span> <span class="s1">&#39;Adabas security replication&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLON&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG turned on for destination&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLOF&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG turned off for destination&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLDO&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG for DB-related input turned on&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLDF&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG for DB-related input turned off&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLDS&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG for DB-related input suspended&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLDR&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG for DB-related input resumed&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;SLDD&#39;</span><span class="p">:</span> <span class="s1">&#39;SLOG for DB-related input disabled&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DFUL&#39;</span><span class="p">:</span> <span class="s1">&#39;Destination full&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DERR&#39;</span><span class="p">:</span> <span class="s1">&#39;Destination error&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DBCO&#39;</span><span class="p">:</span> <span class="s1">&#39;Database connected&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DBDI&#39;</span><span class="p">:</span> <span class="s1">&#39;Database disconnected&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DBNP&#39;</span><span class="p">:</span> <span class="s1">&#39;Database not present&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;DCMP&#39;</span><span class="p">:</span> <span class="s1">&#39;Decompression error: AI,BI,FAI,FBI or KEY&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;REFG&#39;</span><span class="p">:</span> <span class="s1">&#39;Refresh Globals&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;IQOP&#39;</span><span class="p">:</span> <span class="s1">&#39;Input Queue opened&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;IQCL&#39;</span><span class="p">:</span> <span class="s1">&#39;Input Queue closed&#39;</span><span class="p">,</span>
+  <span class="p">}</span>
+
+<div class="viewcode-block" id="urbsst_str"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.urbsst_str">[docs]</a><span class="k">def</span> <span class="nf">urbsst_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="s2">&quot;convert URBS status code to readable string&quot;</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">urbs_status</span><span class="p">)</span></div>
+
+<span class="n">urbssubc_str</span><span class="o">=</span><span class="kc">None</span> <span class="c1"># class method defined later in Urbs class</span>
+
+
+<span class="n">URBSL</span>    <span class="o">=</span> <span class="mi">128</span>
+<span class="n">URBSEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBS&#39;</span>
+
+                  <span class="c1"># urbsrt - Request types:</span>
+<span class="n">URBSRTST</span> <span class="o">=</span> <span class="s1">&#39;STAT&#39;</span> <span class="c1"># Subscription status information</span>
+<span class="n">URBSRTIS</span> <span class="o">=</span> <span class="s1">&#39;INST&#39;</span> <span class="c1"># Initial-state processing information</span>
+<span class="n">URBSRTTA</span> <span class="o">=</span> <span class="s1">&#39;TRAN&#39;</span> <span class="c1"># Response to prior-transaction request</span>
+<span class="n">URBSRTOD</span> <span class="o">=</span> <span class="s1">&#39;OPND&#39;</span> <span class="c1"># Open a destination</span>
+<span class="n">URBSRTCD</span> <span class="o">=</span> <span class="s1">&#39;CLSD&#39;</span> <span class="c1"># Close a destination</span>
+
+                  <span class="c1"># urbsst - Reptor Status/Response</span>
+<span class="n">URBSSTIN</span> <span class="o">=</span> <span class="s1">&#39;INIT&#39;</span> <span class="c1"># Initial-state processing commenced</span>
+<span class="n">URBSSTER</span> <span class="o">=</span> <span class="s1">&#39;ERRO&#39;</span> <span class="c1"># Initial-state erroneous request rejected</span>
+<span class="n">URBSSTCM</span> <span class="o">=</span> <span class="s1">&#39;CMPL&#39;</span> <span class="c1"># Initial-state processing completed</span>
+<span class="n">URBSSTSU</span> <span class="o">=</span> <span class="s1">&#39;SUBS&#39;</span> <span class="c1"># Subscription status information</span>
+<span class="n">URBSSTUP</span> <span class="o">=</span> <span class="s1">&#39;STRT&#39;</span> <span class="c1"># Normal Reptor session start</span>
+<span class="n">URBSSTAR</span> <span class="o">=</span> <span class="s1">&#39;REST&#39;</span> <span class="c1"># Reptor restart after abnormal end</span>
+<span class="n">URBSSTDN</span> <span class="o">=</span> <span class="s1">&#39;TERM&#39;</span> <span class="c1"># Normal Reptor session termination</span>
+<span class="n">URBSSTDA</span> <span class="o">=</span> <span class="s1">&#39;DEAC&#39;</span> <span class="c1"># Replication deactivated</span>
+<span class="n">URBSSTRA</span> <span class="o">=</span> <span class="s1">&#39;REAC&#39;</span> <span class="c1"># Replication reactivated</span>
+<span class="n">URBSSTTR</span> <span class="o">=</span> <span class="s1">&#39;TRSP&#39;</span> <span class="c1"># Response to prior-transaction request</span>
+<span class="n">URBSSTLO</span> <span class="o">=</span> <span class="s1">&#39;LOST&#39;</span> <span class="c1"># Possible lost replication data</span>
+<span class="n">URBSSTC5</span> <span class="o">=</span> <span class="s1">&#39;C5DA&#39;</span> <span class="c1"># Replication user data from C5 command</span>
+
+<span class="n">URBSSTLS</span> <span class="o">=</span> <span class="s1">&#39;LODS&#39;</span> <span class="c1"># ADALOD LOAD started</span>
+<span class="n">URBSSTLE</span> <span class="o">=</span> <span class="s1">&#39;LODE&#39;</span> <span class="c1"># ADALOD LOAD ended</span>
+<span class="n">URBSSTRS</span> <span class="o">=</span> <span class="s1">&#39;RPLS&#39;</span> <span class="c1"># Replay process (ADARPL) started</span>
+<span class="n">URBSSTRE</span> <span class="o">=</span> <span class="s1">&#39;RPLE&#39;</span> <span class="c1"># Replay process (ADARPL) ended</span>
+<span class="n">URBSSTRF</span> <span class="o">=</span> <span class="s1">&#39;REFR&#39;</span> <span class="c1"># Resource refreshed</span>
+<span class="n">URBSSTSS</span> <span class="o">=</span> <span class="s1">&#39;SAVS&#39;</span> <span class="c1"># ADASAV RESTORE started</span>
+<span class="n">URBSSTSE</span> <span class="o">=</span> <span class="s1">&#39;SAVE&#39;</span> <span class="c1"># ADASAV RESTORE ended</span>
+<span class="n">URBSSTGS</span> <span class="o">=</span> <span class="s1">&#39;RESS&#39;</span> <span class="c1"># ADARES REGENERATE/BACKOUT started</span>
+<span class="n">URBSSTGE</span> <span class="o">=</span> <span class="s1">&#39;RESE&#39;</span> <span class="c1"># ADARES REGENERATE/BACKOUT ended</span>
+<span class="n">URBSSTUS</span> <span class="o">=</span> <span class="s1">&#39;UPDS&#39;</span> <span class="c1"># ADALOD UPDATE started</span>
+<span class="n">URBSSTUE</span> <span class="o">=</span> <span class="s1">&#39;UPDE&#39;</span> <span class="c1"># ADALOD UPDATE ended</span>
+<span class="n">URBSSTAU</span> <span class="o">=</span> <span class="s1">&#39;AUTI&#39;</span> <span class="c1"># utility service replication</span>
+<span class="n">URBSSTCL</span> <span class="o">=</span> <span class="s1">&#39;CLOS&#39;</span> <span class="c1"># Destination closed</span>
+<span class="n">URBSSTOP</span> <span class="o">=</span> <span class="s1">&#39;OPEN&#39;</span> <span class="c1"># Destination opened</span>
+<span class="n">URBSSTAS</span> <span class="o">=</span> <span class="s1">&#39;ASEC&#39;</span> <span class="c1"># Adabas security replication</span>
+<span class="n">URBSSTSN</span> <span class="o">=</span> <span class="s1">&#39;SLON&#39;</span> <span class="c1"># SLOG turned on for destination</span>
+<span class="n">URBSSTSF</span> <span class="o">=</span> <span class="s1">&#39;SLOF&#39;</span> <span class="c1"># SLOG turned off for destination</span>
+<span class="n">URBSSTDO</span> <span class="o">=</span> <span class="s1">&#39;SLDO&#39;</span> <span class="c1"># SLOG for DB-related input turned on</span>
+<span class="n">URBSSTDF</span> <span class="o">=</span> <span class="s1">&#39;SLDF&#39;</span> <span class="c1"># SLOG for DB-related input turned off</span>
+<span class="n">URBSSTDS</span> <span class="o">=</span> <span class="s1">&#39;SLDS&#39;</span> <span class="c1"># SLOG for DB-related input suspended</span>
+<span class="n">URBSSTDR</span> <span class="o">=</span> <span class="s1">&#39;SLDR&#39;</span> <span class="c1"># SLOG for DB-related input resumed</span>
+<span class="n">URBSSTDD</span> <span class="o">=</span> <span class="s1">&#39;SLDD&#39;</span> <span class="c1"># SLOG for DB-related input disabled</span>
+<span class="n">URBSSTFL</span> <span class="o">=</span> <span class="s1">&#39;DFUL&#39;</span> <span class="c1"># Destination full</span>
+<span class="n">URBSSTDE</span> <span class="o">=</span> <span class="s1">&#39;DERR&#39;</span> <span class="c1"># Destination error</span>
+<span class="n">URBSSTCO</span> <span class="o">=</span> <span class="s1">&#39;DBCO&#39;</span> <span class="c1"># Database connected</span>
+<span class="n">URBSSTDI</span> <span class="o">=</span> <span class="s1">&#39;DBDI&#39;</span> <span class="c1"># Database disconnected</span>
+<span class="n">URBSSTNP</span> <span class="o">=</span> <span class="s1">&#39;DBNP&#39;</span> <span class="c1"># Database not present</span>
+<span class="n">URBSSTDC</span> <span class="o">=</span> <span class="s1">&#39;DCMP&#39;</span> <span class="c1"># Decompression error: AI,BI,FAI,FBI or KEY</span>
+<span class="n">URBSSTRG</span> <span class="o">=</span> <span class="s1">&#39;REFG&#39;</span> <span class="c1"># Refresh Globals</span>
+<span class="n">URBSSTQO</span> <span class="o">=</span> <span class="s1">&#39;IQOP&#39;</span> <span class="c1"># Input Queue opened</span>
+<span class="n">URBSSTQC</span> <span class="o">=</span> <span class="s1">&#39;IQCL&#39;</span> <span class="c1"># Input Queue closed</span>
+
+<div class="viewcode-block" id="Urbs"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbs">[docs]</a><span class="k">class</span> <span class="nc">Urbs</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBS -- Reptor status/response element</span>
+
+<span class="sd">    Contains status/response information sent</span>
+<span class="sd">    from the Reptor to a Target Application.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">urbssubc_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">urbsrsp</span><span class="o">==</span><span class="n">REPTOR_RSP</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">list_str</span><span class="p">(</span><span class="n">subc</span><span class="p">,</span><span class="n">texts_reptor_subcodes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="c1">#</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBS&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbseye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBS eye-catcher &#39;URBS&#39; #</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbslen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBS + data (C5DA) + filler</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsrtok&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Request ID token (from original request),</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsrt&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>       <span class="c1"># Request type (blank if no request):</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsst&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbsst_str</span><span class="p">),</span> <span class="c1"># Reptor status/response information:</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbstime&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span>  <span class="c1"># Time (STCK) when this URBS was created</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbsrsp&#39;</span><span class="p">),</span>         <span class="c1"># Response code for request</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbssubc&#39;</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">urbssubc_str</span><span class="p">),</span> <span class="c1"># Subcode for request</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbserri&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Other pertinent error information</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsinam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Initial-state name (INIT/CMPL/ERRO message)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbssnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Subscription name (ASEC/C5DA/DCMP/DEAC/</span>
+                                        <span class="c1"># LOST/REAC/REFR/RPLE/RPLS/SUBS/TRSP msg)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsdnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Destination name (DEAC/DERR/FULL/REAC/REFR/SLOF/SLON message)</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbsptim&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span>  <span class="c1"># Time (STCK) transaction processed</span>
+                                        <span class="c1"># for subscription (SUBS)</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbsttim&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span>  <span class="c1"># Time (STCK) transaction commit</span>
+                                        <span class="c1"># (ASEC/AUTI/C5DA/SUBS)</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbstsnr&#39;</span><span class="p">),</span>        <span class="c1"># Transaction sequence number within</span>
+                                        <span class="c1"># subscription/destination (SUBS/TRSP message)</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbsdbid&#39;</span><span class="p">),</span>        <span class="c1"># Database ID  //(ASEC/CMPL/DCMP/DEAC/ERRO/INIT/LODS/</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbsfnr&#39;</span><span class="p">),</span>         <span class="c1"># File number // LODE/LOST/REAC/SAVS/SAVE/UPDS/UPDE msg)</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbslenh&#39;</span><span class="p">),</span>        <span class="c1"># Length of URBS</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbslend&#39;</span><span class="p">),</span>        <span class="c1"># Length of related data (at URBSDATA)</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbsutok&#39;</span><span class="p">),</span>        <span class="c1"># Utility token (CMPL/ERRO/INIT/LODS/LODE/RPLS/RPLE/</span>
+                                        <span class="c1">#   SAVS/SAVE/UPDS/UPDE message)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsorig&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urborig_str</span><span class="p">),</span>  <span class="c1"># Origin of status (C5DA/RPLS/RPLE)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>     <span class="c1"># Reserved area</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsiqnm&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Input Queue name (IQCL/IQOP/REFR msg)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler2&#39;</span><span class="p">,</span>  <span class="mi">8</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>     <span class="c1"># Reserved area</span>
+            <span class="c1">#urbsdata    following here. Add URBSL to the URBS start</span>
+
+            <span class="c1"># For the RPLS/RPLE message, URBSDATA contains a list of 2-byte</span>
+            <span class="c1"># file numbers of the file(s) associated with the replay process</span>
+            <span class="c1"># for the subscription given in URBSSNAM</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">urbsutyp_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="c1"># used in URBSUT</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mh">0x41</span><span class="p">:</span> <span class="s1">&#39;Change field length&#39;</span><span class="p">,</span>
+            <span class="mh">0x44</span><span class="p">:</span> <span class="s1">&#39;Delete file&#39;</span><span class="p">,</span>
+            <span class="mh">0x48</span><span class="p">:</span> <span class="s1">&#39;Refresh file&#39;</span><span class="p">,</span>
+            <span class="mh">0x4a</span><span class="p">:</span> <span class="s1">&#39;Release descriptor&#39;</span><span class="p">,</span>
+            <span class="mh">0x4b</span><span class="p">:</span> <span class="s1">&#39;Rename file&#39;</span><span class="p">,</span>
+            <span class="mh">0x4e</span><span class="p">:</span> <span class="s1">&#39;Switch Reuse ISN&#39;</span><span class="p">,</span>
+            <span class="mh">0x4f</span><span class="p">:</span> <span class="s1">&#39;Switch Reuse DS&#39;</span><span class="p">,</span>
+            <span class="mh">0x55</span><span class="p">:</span> <span class="s1">&#39;Modify FCB&#39;</span><span class="p">,</span>
+            <span class="mh">0x57</span><span class="p">:</span> <span class="s1">&#39;Define file&#39;</span><span class="p">,</span>
+            <span class="mh">0x58</span><span class="p">:</span> <span class="s1">&#39;Write FDT&#39;</span><span class="p">,</span>
+            <span class="mh">0x59</span><span class="p">:</span> <span class="s1">&#39;Add new fields&#39;</span><span class="p">,</span>
+            <span class="mh">0x5c</span><span class="p">:</span> <span class="s1">&#39;Change field format&#39;</span><span class="p">,</span>
+            <span class="mh">0x68</span><span class="p">:</span> <span class="s1">&#39;Switch USERISN&#39;</span><span class="p">,</span>
+            <span class="mh">0x69</span><span class="p">:</span> <span class="s1">&#39;Switch MIXDSDEV&#39;</span><span class="p">,</span>
+            <span class="mh">0x70</span><span class="p">:</span> <span class="s1">&#39;Online invert&#39;</span><span class="p">,</span>
+            <span class="mh">0x78</span><span class="p">:</span> <span class="s1">&#39;Switch MUPEX&#39;</span><span class="p">,</span>
+            <span class="p">})</span>
+
+
+<div class="viewcode-block" id="Urbsu"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu">[docs]</a><span class="k">class</span> <span class="nc">Urbsu</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU -- Reptor Status Adabas Utility Service Detail Element</span>
+<span class="sd">    Contains information about Adabas Online utiltity Service processed</span>
+<span class="sd">    on the input database.</span>
+<span class="sd">    This data follows an URBS with urbsst=URBSSTAU</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsueye&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>     <span class="c1"># URBSU eye-catcher &#39;URBSU&#39; #</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbsutyp&#39;</span><span class="p">,</span><span class="n">ppfunc</span><span class="o">=</span><span class="n">urbsutyp_str</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_HEX</span><span class="p">),</span>   <span class="c1"># Utility function type</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>     <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu41"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu41">[docs]</a><span class="k">class</span> <span class="nc">Urbsu41</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU41 Change field length &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU41&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>    <span class="c1"># field name</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;newlength&#39;</span><span class="p">),</span>       <span class="c1"># new field length</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu44"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu44">[docs]</a><span class="k">class</span> <span class="nc">Urbsu44</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU44 Delete file&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU44&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>           <span class="c1"># Status == &#39;S&#39; keep FDT</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;anchor&#39;</span><span class="p">),</span>              <span class="c1"># Anchor/master file number</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu4a"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4a">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4a</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU4A Release Descriptor &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4A&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># field name</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu4b"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4b">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4b</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU4B Rename File &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4B&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>        <span class="c1"># file name</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu4e"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4e">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4e</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU4e Reuse ISN ON/OFF&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4E&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;isnreuse&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>         <span class="c1"># &#39;ON&#39;/&#39;OFF&#39; #</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu4f"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4f">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4f</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU4f Reuse DS ON/OFF&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4F&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;dsreuse&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>          <span class="c1"># &#39;ON&#39;/&#39;OFF&#39; #</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu55"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu55">[docs]</a><span class="k">class</span> <span class="nc">Urbsu55</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU55 Modify FCB &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU55&#39;</span><span class="p">,</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;assopfac&#39;</span><span class="p">),</span>            <span class="c1"># Asso padding factor</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;datapfac&#39;</span><span class="p">),</span>            <span class="c1"># Data padding factor</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;maxrecl&#39;</span><span class="p">),</span>             <span class="c1"># Max. record length</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;maxui&#39;</span><span class="p">),</span>               <span class="c1"># Max sec alloc Upper Index</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;maxni&#39;</span><span class="p">),</span>               <span class="c1"># Max sec alloc Normal Index</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;maxds&#39;</span><span class="p">),</span>               <span class="c1"># Max sec alloc Data storage</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;pgmrefresh&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>       <span class="c1"># PGMREFRHESH=&#39;Y&#39;/&#39;N&#39; #</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;rplupdateonly&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>    <span class="c1"># RPLUPDATEONLY=&#39;Y&#39;/&#39;N&#39; #</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu5c"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu5c">[docs]</a><span class="k">class</span> <span class="nc">Urbsu5c</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU5C Change Field Format &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU5C&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># Field name</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;newformat&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>        <span class="c1"># New format</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu68"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu68">[docs]</a><span class="k">class</span> <span class="nc">Urbsu68</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU68 USERISN ON/OFF&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU68&#39;</span><span class="p">,</span>
+            <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;userisn&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>            <span class="c1"># 0=ON, 1=OFF</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu69"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu69">[docs]</a><span class="k">class</span> <span class="nc">Urbsu69</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU69 Change MIXDSDEV&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU69&#39;</span><span class="p">,</span>
+            <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;mixdsdev&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>           <span class="c1"># 0=ON, 1=OFF</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu70"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu70">[docs]</a><span class="k">class</span> <span class="nc">Urbsu70</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU70 Online Invert&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU70&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># Descriptor name</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;reason&#39;</span><span class="p">),</span>              <span class="c1"># Reason code</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Urbsu78"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu78">[docs]</a><span class="k">class</span> <span class="nc">Urbsu78</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBSU78 MUPE count &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU78&#39;</span><span class="p">,</span>
+            <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;mupex&#39;</span><span class="p">),</span>                 <span class="c1"># Count=1 or 2</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="c1"># --- URBT ---</span>
+
+<span class="k">def</span> <span class="nf">urbtinst_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Initial-state transaction&#39;</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="nf">urbtptrn_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Prior-transaction request&#39;</span><span class="p">})</span>
+
+<span class="k">def</span> <span class="nf">urbtsort_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,{</span><span class="s1">&#39;Y&#39;</span><span class="p">:</span> <span class="s1">&#39;Transaction records are sorted&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;Transaction records are not sorted&#39;</span><span class="p">})</span>
+
+
+<span class="n">URBTEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBT&#39;</span> <span class="c1">#</span>
+<span class="n">URBTL</span>    <span class="o">=</span> <span class="mi">128</span>
+                <span class="c1"># urbtrsnd: Indicator for possible double delivery</span>
+<span class="n">URBTRSNY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># Data for same transaction may have</span>
+
+                <span class="c1"># urbtinst: Initial-state transaction flag</span>
+<span class="n">URBTINSY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># Data sent by initial-state process</span>
+
+                <span class="c1"># urbtptrn: Indicator for prior-transaction request</span>
+<span class="n">URBTPTRY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># Resending data from prior transaction</span>
+
+                <span class="c1"># urbtcont: Indicator for transaction continuation</span>
+<span class="n">URBTCONY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># More data to follow in the next message</span>
+
+                <span class="c1"># urbtsort: Indicates whether or not the transaction</span>
+<span class="n">URBTSORY</span> <span class="o">=</span> <span class="s1">&#39;Y&#39;</span>  <span class="c1"># records have been sorted by file, ISN, and relative number</span>
+<span class="n">URBTSORN</span> <span class="o">=</span> <span class="s1">&#39;N&#39;</span>  <span class="c1"># Transaction has not been sorted</span>
+
+
+<div class="viewcode-block" id="Urbt"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbt">[docs]</a><span class="k">class</span> <span class="nc">Urbt</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;URBT -- Transaction element</span>
+
+<span class="sd">    Contains information related to one transaction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBT&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbteye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBT eye-catcher &#39;URBT&#39; #</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbtlen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBT</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtsnam&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Subscription name</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbttsnr&#39;</span><span class="p">),</span>     <span class="c1"># Transaction sequence number</span>
+                                     <span class="c1">#   within subscription/destination</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbtrcnt&#39;</span><span class="p">),</span>     <span class="c1"># Count of records (URBRs) in transaction</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbtttim&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span> <span class="c1"># Time (STCK) transaction commit</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbtptim&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span> <span class="c1"># Time (STCK) end of subscription</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbtdbid&#39;</span><span class="p">),</span>     <span class="c1"># Originating Adabas database ID</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbtnuci&#39;</span><span class="p">),</span>     <span class="c1"># Originating Adabas nucleus ID</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;urbtguid&#39;</span><span class="p">,</span> <span class="mi">28</span><span class="p">),</span> <span class="c1"># Originating 28-byte user ID</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbtrpid&#39;</span><span class="p">),</span>     <span class="c1"># Reptor target ID (DBID parameter)</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbtrpni&#39;</span><span class="p">),</span>     <span class="c1"># Reptor nucleus ID (not yet used) =&gt; zero</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtusrv&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>  <span class="c1"># User subscription version indicator,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtrsnd&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbrsnd_str</span><span class="p">),</span>  <span class="c1"># Ind. possible double delivery</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtinst&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbtinst_str</span><span class="p">),</span> <span class="c1"># Ind. for initial state</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtrtok&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Request ID token (if initial state)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtcont&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbcont_str</span><span class="p">),</span>  <span class="c1"># Indicator for transaction continuation:</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;urbtarc&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>   <span class="c1"># Architecture flags for selection data</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtptrn&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbtptrn_str</span><span class="p">),</span> <span class="c1"># Prior-transaction request indicator</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtsort&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbtsort_str</span><span class="p">),</span> <span class="c1"># Transaction records sorted</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbtacod&#39;</span><span class="p">),</span>     <span class="c1"># alpha field encoding in selection data</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbtwcod&#39;</span><span class="p">),</span>     <span class="c1"># wide field encoding in selection data</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbtutok&#39;</span><span class="p">),</span>     <span class="c1"># utility token if data comes from Replay or Adalod Load/Update</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtorig&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urborig_str</span><span class="p">),</span>  <span class="c1"># Origin of transaction</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>  <span class="c1"># Reserved area</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbtsuid&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Security system user id</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler2&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>  <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+<span class="c1"># --- URBU ---</span>
+
+<span class="n">URBUEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBU&#39;</span>
+<span class="n">URBUVER1</span> <span class="o">=</span> <span class="s1">&#39;01&#39;</span>
+<span class="n">URBUL</span>    <span class="o">=</span> <span class="mi">80</span>
+
+<div class="viewcode-block" id="Urbu"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbu">[docs]</a><span class="k">class</span> <span class="nc">Urbu</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;URBU -- ADARPE Extract Header User Element</span>
+
+<span class="sd">    Contains information related to ADARPE extration.</span>
+<span class="sd">    It is the first record on the output file when running ADARPE</span>
+<span class="sd">    with parameter HEADER=YES (default).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBU&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbueye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBU eye-catcher &#39;URBU&#39;</span>
+            <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbulen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBU</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbuvers&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>  <span class="c1"># Version indicator</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbuname&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>  <span class="c1"># Extract name (ADARPE parameter NAME)</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbutime&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span> <span class="c1"># Time (STCK) of ADARPE execution</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbudist&#39;</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>  <span class="c1"># Local time displayable of ADARPE exec</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span>  <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<span class="c1"># --- URBF ---</span>
+
+<span class="n">URBFEYE</span>  <span class="o">=</span> <span class="s1">&#39;URBF&#39;</span>
+<span class="n">URBFL</span> <span class="o">=</span> <span class="mh">0x70</span>    <span class="c1"># length of URBF</span>
+
+<span class="c1"># GFFT version indicator</span>
+<span class="n">URBFVER1</span> <span class="o">=</span> <span class="s1">&#39;01&#39;</span> <span class="c1"># First version</span>
+                <span class="c1"># Future releases may allow a new layout ofthe GFFT.</span>
+                <span class="c1"># In this case URBFVERS will be set to a different value.</span>
+
+<span class="k">def</span> <span class="nf">urbfflag_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bit_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mh">0x01</span><span class="p">,</span> <span class="s1">&#39;Mapping Tool&#39;</span><span class="p">,</span> <span class="s1">&#39;Predict&#39;</span><span class="p">),</span> <span class="c1"># Creation type Predict is default</span>
+            <span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="s1">&#39;Optimized&#39;</span><span class="p">),</span> <span class="c1"># PE/MU used occs. 1-N, preceded by count field</span>
+                                 <span class="c1"># no MUs within PE allowed</span>
+            <span class="p">])</span>
+
+<div class="viewcode-block" id="Urbf"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbf">[docs]</a><span class="k">class</span> <span class="nc">Urbf</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBF -- Reptor Global format field table (GFFT) Header</span>
+
+<span class="sd">    Urbf is the header for a global format field table (GFFT)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBF&#39;</span><span class="p">,</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbfeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBF eye-catcher &#39;URBF&#39;</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbflen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBF + related data (n*URBG)</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbflenh&#39;</span><span class="p">),</span>        <span class="c1"># Length of URBF</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbflend&#39;</span><span class="p">),</span>        <span class="c1"># Length of related data (n*URBG)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbfvers&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>     <span class="c1"># GFFT version indicator</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbffnre&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>     <span class="c1"># File number eye-catcher</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbfflag&#39;</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbfflag_str</span><span class="p">),</span> <span class="c1">#</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbfgfid&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>     <span class="c1"># Global format ID related to GFFT</span>
+            <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbfdbid&#39;</span><span class="p">),</span>        <span class="c1"># DBID of file</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbffnr&#39;</span><span class="p">),</span>         <span class="c1"># File number</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbffnml&#39;</span><span class="p">),</span>        <span class="c1"># Length of file name</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbffnam&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>    <span class="c1"># File/userview name</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbftim1&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span> <span class="c1"># Time (STCK) GFFT was created/refreshed</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbfcntg&#39;</span><span class="p">),</span>        <span class="c1"># Number of following URBG elements</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbfleng&#39;</span><span class="p">),</span>        <span class="c1"># Length of each URBG element</span>
+            <span class="n">Uint8</span><span class="p">(</span>  <span class="s1">&#39;urbftim2&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_STCK</span><span class="p">),</span> <span class="c1"># Time (STCK) GFFT for ADARDE(DEXIT)</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<span class="c1"># --- URBG ---</span>
+
+<span class="n">URBGL</span> <span class="o">=</span> <span class="mh">0x40</span>    <span class="c1"># length of URBG</span>
+
+<span class="k">def</span> <span class="nf">urbgffmt_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">str_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">{</span>
+            <span class="mh">0x00</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>  <span class="c1"># No format (e.g., group)</span>
+            <span class="mh">0x01</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="c1"># Alphanumeric</span>
+            <span class="mh">0x02</span><span class="p">:</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="c1"># Binary</span>
+            <span class="mh">0x03</span><span class="p">:</span> <span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="c1"># Packed</span>
+            <span class="mh">0x04</span><span class="p">:</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="c1"># Unpacked</span>
+            <span class="mh">0x05</span><span class="p">:</span> <span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="c1"># Short floating point               ?</span>
+            <span class="mh">0x06</span><span class="p">:</span> <span class="s1">&#39;G&#39;</span><span class="p">,</span> <span class="c1"># Long floating point                ?</span>
+            <span class="mh">0x10</span><span class="p">:</span> <span class="s1">&#39;Date&#39;</span><span class="p">,</span>   <span class="c1"># Date type field               ?</span>
+            <span class="mh">0x13</span><span class="p">:</span> <span class="s1">&#39;PDate&#39;</span><span class="p">,</span>  <span class="c1"># Packed date (4 bytes packed)  ?</span>
+            <span class="mh">0x20</span><span class="p">:</span> <span class="s1">&#39;Time&#39;</span><span class="p">,</span>   <span class="c1"># Time type field               ?</span>
+            <span class="mh">0x23</span><span class="p">:</span> <span class="s1">&#39;PTime&#39;</span><span class="p">,</span>  <span class="c1"># Packed time (7 bytes packed)  ?</span>
+            <span class="c1">#0x40: &#39;W&#39;,     # Wide character format field setting</span>
+            <span class="mh">0x41</span><span class="p">:</span> <span class="s1">&#39;W&#39;</span><span class="p">,</span>      <span class="c1"># Wide character (used with URBGFFAL)</span>
+            <span class="mh">0x42</span><span class="p">:</span> <span class="s1">&#39;WB&#39;</span><span class="p">,</span>     <span class="c1"># Binary string (used with URBGFFBN)</span>
+            <span class="c1">#0x80: &#39;Signed&#39;,  # Signed        (used with URBGFFBN)</span>
+            <span class="mh">0x82</span><span class="p">:</span> <span class="s1">&#39;B signed&#39;</span><span class="p">,</span> <span class="c1"># Binary Signed (used with URBGFFBN) == Int1/2/4/8 ?</span>
+            <span class="p">})</span>
+
+<span class="c1"># URBGFFMT field format</span>
+<span class="n">URBGFFNF</span> <span class="o">=</span> <span class="mh">0x00</span> <span class="c1"># No format (e.g., group)</span>
+<span class="n">URBGFFAL</span> <span class="o">=</span> <span class="mh">0x01</span> <span class="c1"># Alphanumeric</span>
+<span class="n">URBGFFBN</span> <span class="o">=</span> <span class="mh">0x02</span> <span class="c1"># Binary</span>
+<span class="n">URBGFFPK</span> <span class="o">=</span> <span class="mh">0x03</span> <span class="c1"># Packed</span>
+<span class="n">URBGFFUN</span> <span class="o">=</span> <span class="mh">0x04</span> <span class="c1"># Unpacked</span>
+<span class="n">URBGFFSF</span> <span class="o">=</span> <span class="mh">0x05</span> <span class="c1"># Short floating point</span>
+<span class="n">URBGFFLF</span> <span class="o">=</span> <span class="mh">0x06</span> <span class="c1"># Long floating point</span>
+<span class="n">URBGFFDT</span> <span class="o">=</span> <span class="mh">0x10</span> <span class="c1"># Date type field</span>
+<span class="n">URBGFFPD</span> <span class="o">=</span> <span class="mh">0x13</span> <span class="c1"># Packed date (4 bytes packed)</span>
+<span class="n">URBGFFTM</span> <span class="o">=</span> <span class="mh">0x20</span> <span class="c1"># Time type field</span>
+<span class="n">URBGFFPT</span> <span class="o">=</span> <span class="mh">0x23</span> <span class="c1"># Packed time (7 bytes packed)</span>
+<span class="n">URBGFFWC</span> <span class="o">=</span> <span class="mh">0x40</span> <span class="c1"># Wide character format field setting</span>
+<span class="n">URBGFFWA</span> <span class="o">=</span> <span class="mh">0x41</span> <span class="c1"># Wide character (used with URBGFFAL)</span>
+<span class="n">URBGFFBS</span> <span class="o">=</span> <span class="mh">0x42</span> <span class="c1"># Binary string (used with URBGFFBN)</span>
+<span class="n">URBGFFS1</span> <span class="o">=</span> <span class="mh">0x80</span> <span class="c1"># Signed        (used with URBGFFBN)</span>
+<span class="n">URBGFFSB</span> <span class="o">=</span> <span class="mh">0x82</span> <span class="c1"># Binary Signed (used with URBGFFBN)</span>
+
+
+
+<span class="k">def</span> <span class="nf">urbgtype_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bit_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mh">0x01</span><span class="p">,</span> <span class="s1">&#39;PE&#39;</span><span class="p">),</span>     <span class="c1"># Periodic group (PE) field</span>
+            <span class="p">(</span><span class="mh">0x02</span><span class="p">,</span> <span class="s1">&#39;MU&#39;</span><span class="p">),</span>     <span class="c1"># Multiple value (MU) field</span>
+            <span class="p">(</span><span class="mh">0x04</span><span class="p">,</span> <span class="s1">&#39;fnC&#39;</span><span class="p">),</span>    <span class="c1"># Counter field for MU or PE</span>
+            <span class="p">(</span><span class="mh">0x08</span><span class="p">,</span> <span class="s1">&#39;fnS&#39;</span><span class="p">),</span>    <span class="c1"># S format element as in xxS</span>
+            <span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="s1">&#39;PK&#39;</span><span class="p">),</span>     <span class="c1"># Primary key</span>
+            <span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="s1">&#39;DE&#39;</span><span class="p">),</span>     <span class="c1"># Descriptor</span>
+            <span class="p">(</span><span class="mh">0x40</span><span class="p">,</span> <span class="s1">&#39;UQ&#39;</span><span class="p">),</span>     <span class="c1"># Unique descriptor</span>
+            <span class="p">])</span>
+
+<span class="c1"># URBGTYPE Field type</span>
+<span class="n">URBGFTN</span>  <span class="o">=</span> <span class="mh">0x00</span> <span class="c1"># Normal field</span>
+<span class="n">URBGFTPE</span> <span class="o">=</span> <span class="mh">0x01</span> <span class="c1"># Periodic group (PE) field</span>
+<span class="n">URBGFTMU</span> <span class="o">=</span> <span class="mh">0x02</span> <span class="c1"># Multiple value (MU) field</span>
+<span class="n">URBGFTCT</span> <span class="o">=</span> <span class="mh">0x04</span> <span class="c1"># Counter field for MU or PE</span>
+<span class="n">URBGFTSC</span> <span class="o">=</span> <span class="mh">0x08</span> <span class="c1"># S format element as in xxS</span>
+<span class="n">URBGFTKY</span> <span class="o">=</span> <span class="mh">0x10</span> <span class="c1"># Primary key</span>
+<span class="n">URBGFTDE</span> <span class="o">=</span> <span class="mh">0x20</span> <span class="c1"># Descriptor</span>
+<span class="n">URBGFTUQ</span> <span class="o">=</span> <span class="mh">0x40</span> <span class="c1"># Unique descriptor</span>
+
+
+
+<span class="k">def</span> <span class="nf">urbgflag_str</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">bit_str</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="p">[</span>
+            <span class="p">(</span><span class="mh">0x01</span><span class="p">,</span> <span class="s1">&#39;Do not output&#39;</span><span class="p">),</span> <span class="c1"># Do not output field (e.g. counter field)</span>
+            <span class="p">(</span><span class="mh">0x02</span><span class="p">,</span> <span class="s1">&#39;Repeating field in PE&#39;</span><span class="p">),</span> <span class="c1"># PGC,PA1-N,PB1-N,..</span>
+                                 <span class="c1"># otherwise: fields in PE grouped per occ.</span>
+                                 <span class="c1">#   PA1,PB2,..,PA2,PB2,..</span>
+            <span class="p">(</span><span class="mh">0x04</span><span class="p">,</span> <span class="s1">&#39;Super-DE/field&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mh">0x08</span><span class="p">,</span> <span class="s1">&#39;Sub-DE/field&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="s1">&#39;Optimized&#39;</span><span class="p">),</span> <span class="c1"># PE/MU used occs. 1-N, preceded by count field</span>
+                                 <span class="c1"># no MUs within PE allowed in the form MU1-N(1-N)</span>
+            <span class="p">(</span><span class="mh">0x20</span><span class="p">,</span> <span class="s1">&#39;Default is zero/space, never null&#39;</span><span class="p">),</span>
+            <span class="p">])</span>
+
+
+
+<span class="c1"># URBGFLAG settings</span>
+<span class="n">URBGFFRO</span> <span class="o">=</span> <span class="mh">0x01</span> <span class="c1"># Do not put in output buffer</span>
+<span class="n">URBGFPEE</span> <span class="o">=</span> <span class="mh">0x02</span> <span class="c1"># Field is repeating MU/PE element -range</span>
+                <span class="c1"># e.g. range as in AA1-N,AB1-N,AC1-N...</span>
+                <span class="c1"># A non-repeating field is an array</span>
+                <span class="c1"># of fields, e.g. AA1,AB1,AC1,AA2,AB2,AC2</span>
+<span class="n">URBGFSUP</span> <span class="o">=</span> <span class="mh">0x04</span> <span class="c1"># Super DE/field</span>
+<span class="n">URBGFSUB</span> <span class="o">=</span> <span class="mh">0x08</span> <span class="c1"># Sub DE/field</span>
+<span class="n">URBGFOPT</span> <span class="o">=</span> <span class="mh">0x10</span> <span class="c1"># Optimized field</span>
+<span class="n">URBGFDZS</span> <span class="o">=</span> <span class="mh">0x20</span> <span class="c1"># Field default zero or space - never null</span>
+
+
+<div class="viewcode-block" id="Urbg"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbg">[docs]</a><span class="k">class</span> <span class="nc">Urbg</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; URBG -- Reptor Global format field table (GFFT) element</span>
+
+<span class="sd">    Urgb contains one field of many defined in a schema of a file</span>
+<span class="sd">    being replicated. One or more Urbg follow one Urbf related</span>
+<span class="sd">    to a global format that determines the structure of a</span>
+<span class="sd">    related record.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBG&#39;</span><span class="p">,</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgidx&#39;</span><span class="p">),</span>         <span class="c1"># Element index in GFFT</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfid&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>      <span class="c1"># Field short name</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbgffmt&#39;</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbgffmt_str</span><span class="p">),</span> <span class="c1"># Field format</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbgtype&#39;</span><span class="p">,</span> <span class="n">ppfunc</span><span class="o">=</span><span class="n">urbgtype_str</span><span class="p">),</span> <span class="c1"># Field type</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgflen&#39;</span><span class="p">),</span>        <span class="c1"># Field length</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfprc&#39;</span><span class="p">),</span>        <span class="c1"># Decimal place/precision</span>
+            <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbgflag&#39;</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_HEX</span><span class="p">),</span> <span class="c1"># ppfunc=urbgflag_str), # Flags</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;filler1&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="c1"># 1st level of occurrences:</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfrno&#39;</span><span class="p">),</span>        <span class="c1"># Range number</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfrfm&#39;</span><span class="p">),</span>        <span class="c1"># From-range number</span>
+            <span class="c1"># 2st level of occurrences: 0x10</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfono&#39;</span><span class="p">),</span>        <span class="c1"># Occurrence number</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfofm&#39;</span><span class="p">),</span>        <span class="c1"># From-occurrence number</span>
+            <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgfnml&#39;</span><span class="p">),</span>        <span class="c1"># Length of field long name</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfnam&#39;</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span>    <span class="c1"># Field long name</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfgrp&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>     <span class="c1"># Name of PE group</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfmtx&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>     <span class="c1"># External Format Type  (Bytes?)</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfrpn&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>     <span class="c1"># Redefined parent name</span>
+            <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgffon&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>     <span class="c1"># Field order number</span>
+            <span class="n">Bytes</span><span class="p">(</span>  <span class="s1">&#39;filler2&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_NONE</span><span class="p">),</span> <span class="c1"># Reserved area</span>
+            <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;v.r.l&#39;</span>
+<span class="k">if</span> <span class="n">__version__</span> <span class="o">==</span> <span class="s1">&#39;v.r.l&#39;</span><span class="p">:</span>
+    <span class="n">_svndate</span><span class="o">=</span><span class="s1">&#39;$Date: 2018-11-09 15:31:28 +0100 (Fr, 09 Nov 2018) $&#39;</span>
+    <span class="n">_svnrev</span><span class="o">=</span><span class="s1">&#39;$Rev: 878 $&#39;</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;Dev &#39;</span> <span class="o">+</span>  <span class="n">_svnrev</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                  <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_svndate</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+
+<span class="c1">#  Copyright 2004-ThisYear Software AG</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#      http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2004-2019, software AG
+      <span class="lastupdated">
+        Last updated on Dec 12, 2019.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

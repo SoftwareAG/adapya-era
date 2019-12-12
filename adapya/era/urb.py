@@ -1,0 +1,996 @@
+#! /usr/bin/env python
+# -*- coding: latin1 -*-
+""" urb.py - User Replication Buffer Definitions
+
+"""
+from adapya.adabas import adaerror
+from adapya.base.datamap import Datamap,String,Uint1,Uint2,Uint4,Uint8
+from adapya.base.datamap import Bytes,Int2,Int4,T_NONE,T_HEX,T_STCK
+from adapya.base.datamap import list_str,str_str,bit_str
+
+
+REPTOR_RSP = 131 # Replication response code
+texts_reptor_subcodes = ('',
+  'URBD and Data exceeds output buffer', #01
+  'Subscription user exit response in URBRERRC', #02
+  'Space shortage in nucleus (LREPL)', #03
+  'Space shortage in Reptor (LREPL)', #04
+  'Subscription user exit set invalid data length (URBDLEND)', #5
+  'Response destination not found for status request', #6
+  'Unspecified destination and subscription in status request', #7
+  'Subscription or Destination not found for status request', #8
+  'Initial state name not found', #9
+  'Response destinations must be same for all requests in one message', #10
+
+  'Initial-state names must be same for all requests in one message', #11
+  'INITIALSTATE DBID/FNR definition not found as requested in URBI', #12
+  'SELCRIT (presently not supported) or invalid type specified', #13
+  'DBID/FNR must be specified in Initial-state request and definition', #14
+  'URBILEND>0 for Initial-state all records', #15
+  'Invalid ISNLIST or ISN range specification', #16
+  'Initial-state process stopped by operator', #17
+  'Request token must be same in all URBIs of a message', #18
+  'URBILEND=0 for Initial-state with selection', #19
+  'Invalid key value when decompressing in subscription', #20
+
+  'Invalid UES parameters - URBIARC/ACOD/WCOD are non-zero'\
+  ' and Reptor is not UES enabled', #21
+  'Initial-state request for deactivated DBID/FNR', #22
+  'Invalid UES parameters - URBIARC/ACOD/WCOD must not all be blanks', #23
+  'Invalid UES parameters - URBIARC/ACOD/WCOD should be zero', #24
+  'Reserved URBIRES1 and URBIRES2 fields did not contain zeros', #25
+  'Destination name not found', #26
+  'No active destinations for status request', #27
+  'Initial State request received after Reptor shutdown started', #28
+  '', #29 unused
+  'Unknown response destination name in URBI', #30
+
+  'Unknown destination name in URBI', #31
+  'Unknown subscription name in URBI', #32
+  'URBIDNAM destination not related to subscription ', #33
+  'Specified subscription has no resend buffer defined', #34
+  'Requested transaction not found in resend buffer', #35
+  'Specified subscription is not active', #36
+  'Invalid transaction in resend buffer', #37
+  'No active destinations', #38
+  'Selection data not permitted for TRAN request', #39
+  'DBID and file number not permitted for TRAN request', #40
+
+  'Initial-state name not permitted for TRAN request', #41
+  'UES parameters must be zero in URBI for TRAN request', #42
+  'Unused URBIRES1 and URBIRES2 must be zero for TRAN request', #43
+  'Number of active concurent initial-state requests exceeded IMAXREQ', #44
+  'Input request URBH eyecatcher is invalid', #45
+  'Input request URBHLEN is invalid',  #46
+  'Input request URBHBORD is invalid', #47
+  'Input request URBHVERS is invalid', #48
+  'Input request message truncated',   #49
+  'Input request URBHLENT is invalid', #50
+
+  'Input request URBILENH is invalid', #51
+  'Input request URBILEND is invalid', #52
+  'Input request URBILEN is invalid',  #53
+  'Input request reserved area is not zero', #54
+  'Input request more than one status received', #55
+  'Input request invalid URBI request received', #56
+  'Input request different interleaved requests received', #57
+  'Invalid destination for response', #58
+  'Replay request for inactive database', #59
+  'Invalid (undefined/outdated) replay token', #60
+
+  '''Invalid request sent to Reptor. RBL is insufficient,
+     no FB provided on Init handshake or other such errors''', #61
+  '''Record data suppressed because FDT as of time of update
+     no longer available''',                                   #62
+  'File given in C5/R cmd is not replicated',                  #63
+  'Extended subscription compare between field types unsupported', #64
+  'Extended subscription field in condition not found in format buffer', #65
+  'Extended subscription field in condition not selectable', #66
+  'Extended subscription FLIST data provided by user invalid or out of range', #67
+  'Extended subscription unexpected error',  #68
+  'Replay for same DBID/FNR already running', #69
+  'File specified not found in Reptor subscription', #70
+
+  'DATE/TIME format or value incorrect', #71
+  'Incorrect replay parameters', #72
+  'Replay subscription deactivated', #73
+  'Replay destination deactivated', #74
+  'Replay destination without SLOG closed', #75
+  'ADARPL terminated abnormally', #76
+  'Invalid replay status transition', #77
+  'New transactions not held during replay', #78
+  'Replay process canceled by user', #79
+  'Timeout while waiting for file reactivation in Adabas', #80
+
+  'A TOKEN for an existing RRU was found but was not generated by Replay', #81
+  'RRDSORT is not Y or N, so the ADABAS is not currently connected w/Reptor', #82
+  'Neither Subscriptions nor Destinations specified by Replay request', #83
+  """Replication data from ADABAS can flow
+   to active Subsription/Destination pair
+   involved in Replay-only mode Replay.""", #84
+  'Replay file deactivated', #85
+  'Invalid format buffer for destination type ADABAS update commands', #86
+  'Unexpected message sequence number', #87
+  'Unrecognized eye-catcher in control block following the URBH', #88
+  'Same subscription name specified more than once in Replay process initialization', #89
+  'Same destination name specified more than once in Replay process initialization', #90
+
+  'Replay Start Date/Time not supplied for Automatic Replay', #91
+  'Timeout parameter to high', #92
+  'PLOG info not recorded in Reptor system file ', #93
+  'AI/BI format buffer used also for key', #94
+  'Attempt to set user/reptor encoding failed', #95
+  'Initial State target nuc down (RSP148)', #96
+  'Format buffer contains LOB field - not supported', #97
+  'ADABAS nucleus is higher version than the Reptor version', #98
+  'Subscription name (URBISNAM) may not be specified for this type of input request', # 99
+  'Transaction sequence number (URBITNSR) may not be specified for this type of input request', # 100
+  'Open or close destination input request failed on some tasks', #101
+  'Open or close destination input request failed', #102
+  'Open or close destination request invalid or was issued while already being requested', # 103
+  'Begin byte in field filter longer than field length', #104
+  'Begin byte plus portion length in field filter longer than field length', #105
+  'Begin byte or length not supported for field with format U,P,F,G or W', #106
+  'Length value invalid for field', #107
+  'Input request URBI eye-catcher invalid', #108
+  'Adabas security (ADASCR) function invalidly replicated to subscription file defined with SFSECURITYFILE=NO', #109
+  'Invalid Adabas security (ADASCR) pseudo transaction has been replicated to the Reptor', #110
+  'Replicated record (delete, insert, refresh, or update) invalidly replicated to subscription file defined with SFSECURITYFILE=YES', #111
+  'Request to convert an update to a delete failed because no before image was provided', #112
+  )
+
+
+#
+#  Plug-in special replication response code 131 subcode texts
+#
+
+def plugrsp131(rsp,subcode,errc):
+    """Set Response 131 Reptor subcodes to text plugin"""
+    return 'Reptor Response 131'\
+            + ' with subcode=%d, info=%r: '%(subcode, errc)\
+            + datamap.list_str(subcode,urb.texts_reptor_subcodes)
+
+adaerror.plugrsp(REPTOR_RSP, plugrsp131)  # set the rsp plugin for resp. 131
+
+def urbcont_str(s): # used in URBC and URBT
+    return str_str(s,{'Y': 'Transaction will be continued in next message'})
+
+def urbrsnd_str(s): # used in URBR and URBT
+    return str_str(s,{'Y': 'Possible double delivery'})
+
+URBCEYE  = 'URBC'
+URBCL    = 48
+URBCCONY = 'Y'  # set in urbccont if more data to follow in next msg
+
+class Urbc(Datamap):
+    """ URBC -- Continuation element
+
+    Contains information related to a transaction
+    that is continued in the current message.
+
+    Optional init parms: buffer and offset
+
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBC',
+            String( 'urbceye', 4),  # URBC eye-catcher 'URBC'
+            Int4(   'urbclen'),     # Length of URBC
+            String( 'urbcsnam', 8), # Subscription name
+            Uint4(  'urbctsnr'),    # Current transaction sequence number
+                                    #   within subscription/destination
+            Uint4(  'urbcrsnr'),    # Current record sequence number
+            Uint4(  'urbcdsnr'),    # Current data sequence number for record
+            String( 'urbccont', 1, ppfunc=urbcont_str), # Indicator transaction continuation
+            String( 'filler1', 19, opt=T_NONE), # Reserved area
+            **kw)
+
+
+urbd_type={'A':'after image', 'B':'before image','K':'key before image'}
+
+def urbdtyp_str(s):
+    return str_str(s,urbd_type)
+
+
+URBDEYE  = 'URBD'
+URBDL    = 32
+
+# urbdtyp contents:
+URBDTYPA = 'A'    # After  image of data storage
+URBDTYPB = 'B'    # Before image of data storage
+URBDTYPK = 'K'    # Before image of primary key
+
+class Urbd(Datamap):
+    """ URBD -- Data element
+
+    Contains data related to a before or after
+    image associated with one record.
+
+    Optional init parms: buffer and offset
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBD',
+            String( 'urbdeye', 4),             # URBD eye-catcher 'URBD'
+            Int4(   'urbdlen'),                # Length of URBD + related data + filler
+            Int4(   'urbdlenh'),               # Length of URBD
+            Int4(   'urbdlend'),               # Length of related data (at URBDDATA)
+            Uint4(  'urbddsnr'),               # Data sequence number for record
+            String( 'urbdtyp', 1, ppfunc=urbdtyp_str), # Type of data
+            String( 'filler1', 11, opt=T_NONE),# Reserved area
+            # Payload data following (before or after image)
+            **kw)
+
+
+URBEL    = 32
+URBEEYE  = 'URBE'
+
+class Urbe(Datamap):
+    """ URBE -- End-of-transaction element
+
+    indicates the end of the transaction related
+    to the preceding record and data elements.
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBE',
+            String( 'urbeeye', 4),  # URBE eye-catcher 'URBE'
+            Int4(   'urbelen'),     # Length of URBE
+            String( 'urbesnam', 8), # Subscription name
+            Uint4(  'urbetsnr'),    # Transaction sequence number
+                                    #   within subscription/destination
+            String( 'filler1', 12, opt=T_NONE), # Reserved area
+            **kw)
+
+
+URBHL    = 64         # urbh length
+URBHEYE  = 'URBH'
+URBHVER1 = '01'
+URBHBORD = 0x0001     # big endian
+URBHBORH = '\x00\x01' # = high order byte first
+URBHBORL = '\x01\x00' # little endian
+
+
+class Urbh(Datamap):
+    """ URBH - Message header
+
+    URBH is put at the start of each buffer sent to
+    the messaging system.
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBH',
+            String( 'urbheye', 4),  # URBH eye-catcher 'URBH' (in EBCDIC)
+            Int4(   'urbhlen'),     # Length of URBH
+            String( 'urbhvers', 2), # Version indicator for URB* DSECTs:
+            Int2(   'urbhbord', opt=T_HEX),     # Const 1 to indicate the byte order
+            Uint4(  'urbhlent'),    # Total message length (including URBH)
+            Uint4(  'urbhmsnr'),    # Message sequence number per destination
+            Uint8(  'urbhtime', opt=T_STCK),    # Time (STCK) when message was sent
+            Uint2(  'urbhrpid'),    # Target ID of originating Reptor
+            Uint2(  'urbhrpni'),    # Nucleus ID of originating Reptor
+            String( 'urbhname', 8), # Sender name ('REPTOR' if sent by Reptor)
+            String( 'filler1', 24, opt=T_NONE), # Reserved area
+            **kw)
+
+
+urbi_rtext={'STAT': 'Status request',
+            'INST': 'Initial-state request',
+            'TRAN': 'Prior transaction request',
+            'OPND': 'Open destination request',
+            'CLSD': 'Close destination request',
+           }
+
+def urbirt_str(s):
+    return str_str(s,urbi_rtext)
+
+URBIL    = 96
+URBIEYE  = 'URBI'
+                  # urbirt: Request type
+URBIRTST = 'STAT' # Status request
+URBIRTIS = 'INST' # Initial state request
+URBIRTTA = 'TRAN' # Retrieve data for prior transaction
+URBIRTOD = 'OPND' # Open a destination
+URBIRTCD = 'CLSD' # Close a destination
+
+
+class Urbi(Datamap):
+    """ URBI -- Input element
+
+    contains input data for a request from a
+    Target Application to the Reptor.
+    """
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBI',
+            String( 'urbieye', 4),   # URBI eye-catcher 'URBI'
+            Int4(   'urbilen'),      # Length of URBI + selection data + filler
+            Int4(   'urbilenh'),     # Length of URBI proper (>= URBIL)
+            Int4(   'urbilend'),     # Length of selection data (may be zero)
+            String( 'urbirtok', 8),  # Request ID token (returned in response)
+            String( 'urbirnam', 8),  # Destination name for response
+            String( 'urbirt', 4, ppfunc=urbirt_str), # Request type: STAT/INST/TRAN
+            Uint2(  'urbidbid'),     # Database ID (INST request)
+            Uint2(  'urbifnr'),      # File number (INST request)
+            String( 'urbiinam', 8),  # Initial-state name (INST request)
+            String( 'urbisnam', 8),  # Subscription name or blank (STAT/TRAN req)
+            String( 'urbidnam', 8),  # Destination name or blank (STAT/TRAN req)
+            Uint4(  'urbiacod'),     # alpha field encoding in selection data
+            Uint4(  'urbiwcod'),     # wide field encoding in selection data
+            Bytes(  'urbiarc', 1),   # architecture flags for selection data
+            String( 'urbires1', 3, opt=T_NONE),  # Reserved area1
+            Uint4(  'urbitsnr'),     # Transaction seq.no. within
+                                     #   subscription/destination (TRAN req)
+            String( 'urbires2', 16, opt=T_NONE), # Reserved area2
+                                     # Optional selection data (INST request)
+            **kw)
+
+
+URBIIRANGE = -1
+URBIISNLEN  = 4
+URBIIRANGELEN  = 12
+
+
+class Urbi_isns(Datamap):
+    """ Urbi_isns -- Initial-State Request ISN list definitions
+
+    either individual ISNs are possible or
+    ranges of ISNs with range indicator and 2 ISNs defining the range
+    """
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBII',
+            Uint4(  'urbiisn'),              # ISN
+                                             #   or alternatively:
+            Int4(   'urbiirange',repos=-4),  # Range indicator
+            Uint4(  'urbiisn1'),             # from ISN
+            Uint4(  'urbiisn2'),             # to ISN
+            **kw)
+
+class New_Urb(Datamap):
+    """ new URB - helper to detect which URB type it is
+    """
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'new_URB',
+            String( 'eye', 4),       # eye-catcher 'URBx'
+            **kw)
+
+def urborig_str(s):
+    # used in URBS and URBT
+    return str_str(s,{'A': 'Origin: Adabas nucleus',
+                      'G': 'Origin: ADARES',
+                      'L': 'Origin: ADALOD Load',
+                      'R': 'Origin: ADARPL Replay',
+                      'S': 'Origin: ADASAV',
+                      'U': 'Origin: ADALOD Update'})
+
+urbr_type={'D': 'delete', 'I': 'insert', 'R': 'initial state', 'U': 'update'}
+def urbrtyp_str(s):
+    return str_str(s,urbr_type)
+
+urbruc_type={'D': 'Update converted to Delete', 'I': 'Update converted to Insert' }
+def urbruc_str(s):
+    return str_str(s,urbruc_type)
+
+def urbrdcu_str(s):
+    if s == 'Y':
+        return 'Delete converted to update'
+    else:
+        return ''
+
+URBREYE  = 'URBR'
+URBRL    = 64
+# Values for field "urbrtyp"
+URBRTYPD = 'D'  # Delete
+URBRTYPI = 'I'  # Insert
+URBRTYPR = 'R'  # Initial State (refresh)
+URBRTYPU = 'U'  # Update
+# Values for field "urbrrsnd"
+URBRRSNY = 'Y'  # Data for same record may have been already sent
+
+
+class Urbr(Datamap):
+    """ URBR - Record Element
+
+    contains information related to one record.
+    """
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBR',
+            String( 'urbreye', 4),      # URBR eye-catcher 'URBR'
+            Int4(   'urbrlen'),         # Length of URBR
+            Uint4(  'urbrrsnr'),        # Record sequence number within transaction
+            Int2(   'urbrdcnt'),        # Count of data elements (URBDs)
+            Uint2(  'urbrfnr'),         # Original Adabas file number
+            Uint4(  'urbrisn'),         # Original Adabas ISN
+            Uint8(  'urbrtime', opt=T_STCK),           # Time (STCK) of last modification
+            String( 'urbrtyp',  1, ppfunc=urbrtyp_str),# Type of update
+            String( 'urbrrsnd', 1, ppfunc=urbrsnd_str),# Ind. possible double delivery
+            Uint2(  'urbrrsp'),         # Response code
+            Uint4(  'urbrsubc'),        # Subcode information
+            String( 'urbrerrc', 8),     # Other error code information
+            String( 'urbrdcu',  1, ppfunc=urbrdcu_str),# Indicator for delete to update conversion
+            String( 'urbruc',  1, ppfunc=urbruc_str),# Indicator for update conversion to delete or insert
+            String( 'filler1', 18, opt=T_NONE),     # Reserved area
+            **kw)
+
+
+urbs_status = {
+  'INIT': 'Initial-state processing started',
+  'ERRO': 'Initial-state processing ERROR',
+  'CMPL': 'Initial-state processing completed',
+  'SUBS': 'Subscription status information',
+  'STRT': 'Normal Reptor session start',
+  'REST': 'Reptor restart after abnormal end',
+  'TERM': 'Normal Reptor session termination',
+  'DEAC': 'Replication deactivated',
+  'REAC': 'Replication reactivated',
+  'TRSP': 'Response to prior-transaction request',
+  'LOST': 'Possibly lost replication data',
+  'C5DA': 'Replication user data from C5 command',
+  'LODS': 'ADALOD LOAD started',
+  'LODE': 'ADALOD LOAD ended',
+  'RPLS': 'Replay process (ADARPL) started',
+  'RPLE': 'Replay process (ADARPL) ended',
+  'REFR': 'Resource refreshed',
+  'SAVS': 'ADASAV RESTORE started',
+  'SAVE': 'ADASAV RESTORE ended',
+  'RESS': 'ADARES REGENERATE/BACKOUT started',
+  'RESE': 'ADARES REGENERATE/BACKOUT ended',
+  'UPDS': 'ADALOD UPDATE started',
+  'UPDE': 'ADALOD UPDATE ended',
+  'AUTI': 'Adabas utility service replication',
+  'CLOS': 'Destination closed',
+  'OPEN': 'Destination opened',
+  'ASEC': 'Adabas security replication',
+  'SLON': 'SLOG turned on for destination',
+  'SLOF': 'SLOG turned off for destination',
+  'SLDO': 'SLOG for DB-related input turned on',
+  'SLDF': 'SLOG for DB-related input turned off',
+  'SLDS': 'SLOG for DB-related input suspended',
+  'SLDR': 'SLOG for DB-related input resumed',
+  'SLDD': 'SLOG for DB-related input disabled',
+  'DFUL': 'Destination full',
+  'DERR': 'Destination error',
+  'DBCO': 'Database connected',
+  'DBDI': 'Database disconnected',
+  'DBNP': 'Database not present',
+  'DCMP': 'Decompression error: AI,BI,FAI,FBI or KEY',
+  'REFG': 'Refresh Globals',
+  'IQOP': 'Input Queue opened',
+  'IQCL': 'Input Queue closed',
+  }
+
+def urbsst_str(s):
+    "convert URBS status code to readable string"
+    return str_str(s,urbs_status)
+
+urbssubc_str=None # class method defined later in Urbs class
+
+
+URBSL    = 128
+URBSEYE  = 'URBS'
+
+                  # urbsrt - Request types:
+URBSRTST = 'STAT' # Subscription status information
+URBSRTIS = 'INST' # Initial-state processing information
+URBSRTTA = 'TRAN' # Response to prior-transaction request
+URBSRTOD = 'OPND' # Open a destination
+URBSRTCD = 'CLSD' # Close a destination
+
+                  # urbsst - Reptor Status/Response
+URBSSTIN = 'INIT' # Initial-state processing commenced
+URBSSTER = 'ERRO' # Initial-state erroneous request rejected
+URBSSTCM = 'CMPL' # Initial-state processing completed
+URBSSTSU = 'SUBS' # Subscription status information
+URBSSTUP = 'STRT' # Normal Reptor session start
+URBSSTAR = 'REST' # Reptor restart after abnormal end
+URBSSTDN = 'TERM' # Normal Reptor session termination
+URBSSTDA = 'DEAC' # Replication deactivated
+URBSSTRA = 'REAC' # Replication reactivated
+URBSSTTR = 'TRSP' # Response to prior-transaction request
+URBSSTLO = 'LOST' # Possible lost replication data
+URBSSTC5 = 'C5DA' # Replication user data from C5 command
+
+URBSSTLS = 'LODS' # ADALOD LOAD started
+URBSSTLE = 'LODE' # ADALOD LOAD ended
+URBSSTRS = 'RPLS' # Replay process (ADARPL) started
+URBSSTRE = 'RPLE' # Replay process (ADARPL) ended
+URBSSTRF = 'REFR' # Resource refreshed
+URBSSTSS = 'SAVS' # ADASAV RESTORE started
+URBSSTSE = 'SAVE' # ADASAV RESTORE ended
+URBSSTGS = 'RESS' # ADARES REGENERATE/BACKOUT started
+URBSSTGE = 'RESE' # ADARES REGENERATE/BACKOUT ended
+URBSSTUS = 'UPDS' # ADALOD UPDATE started
+URBSSTUE = 'UPDE' # ADALOD UPDATE ended
+URBSSTAU = 'AUTI' # utility service replication
+URBSSTCL = 'CLOS' # Destination closed
+URBSSTOP = 'OPEN' # Destination opened
+URBSSTAS = 'ASEC' # Adabas security replication
+URBSSTSN = 'SLON' # SLOG turned on for destination
+URBSSTSF = 'SLOF' # SLOG turned off for destination
+URBSSTDO = 'SLDO' # SLOG for DB-related input turned on
+URBSSTDF = 'SLDF' # SLOG for DB-related input turned off
+URBSSTDS = 'SLDS' # SLOG for DB-related input suspended
+URBSSTDR = 'SLDR' # SLOG for DB-related input resumed
+URBSSTDD = 'SLDD' # SLOG for DB-related input disabled
+URBSSTFL = 'DFUL' # Destination full
+URBSSTDE = 'DERR' # Destination error
+URBSSTCO = 'DBCO' # Database connected
+URBSSTDI = 'DBDI' # Database disconnected
+URBSSTNP = 'DBNP' # Database not present
+URBSSTDC = 'DCMP' # Decompression error: AI,BI,FAI,FBI or KEY
+URBSSTRG = 'REFG' # Refresh Globals
+URBSSTQO = 'IQOP' # Input Queue opened
+URBSSTQC = 'IQCL' # Input Queue closed
+
+class Urbs(Datamap):
+    """ URBS -- Reptor status/response element
+
+    Contains status/response information sent
+    from the Reptor to a Target Application.
+    """
+
+    def urbssubc_str(self, subc):
+        if self.urbsrsp==REPTOR_RSP:
+            return list_str(subc,texts_reptor_subcodes)
+        else:
+            return '' #
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBS',
+            String( 'urbseye', 4),      # URBS eye-catcher 'URBS' #
+            Int4(   'urbslen'),         # Length of URBS + data (C5DA) + filler
+            String( 'urbsrtok', 8),     # Request ID token (from original request),
+            String( 'urbsrt', 4),       # Request type (blank if no request):
+            String( 'urbsst', 4, ppfunc=urbsst_str), # Reptor status/response information:
+            Uint8(  'urbstime', opt=T_STCK),  # Time (STCK) when this URBS was created
+            Uint4(  'urbsrsp'),         # Response code for request
+            Uint4(  'urbssubc', ppfunc=self.urbssubc_str), # Subcode for request
+            String( 'urbserri', 8),     # Other pertinent error information
+            String( 'urbsinam', 8),     # Initial-state name (INIT/CMPL/ERRO message)
+            String( 'urbssnam', 8),     # Subscription name (ASEC/C5DA/DCMP/DEAC/
+                                        # LOST/REAC/REFR/RPLE/RPLS/SUBS/TRSP msg)
+            String( 'urbsdnam', 8),     # Destination name (DEAC/DERR/FULL/REAC/REFR/SLOF/SLON message)
+            Uint8(  'urbsptim', opt=T_STCK),  # Time (STCK) transaction processed
+                                        # for subscription (SUBS)
+            Uint8(  'urbsttim', opt=T_STCK),  # Time (STCK) transaction commit
+                                        # (ASEC/AUTI/C5DA/SUBS)
+            Uint4(  'urbstsnr'),        # Transaction sequence number within
+                                        # subscription/destination (SUBS/TRSP message)
+            Uint2(  'urbsdbid'),        # Database ID  //(ASEC/CMPL/DCMP/DEAC/ERRO/INIT/LODS/
+            Uint2(  'urbsfnr'),         # File number // LODE/LOST/REAC/SAVS/SAVE/UPDS/UPDE msg)
+            Int4(   'urbslenh'),        # Length of URBS
+            Int4(   'urbslend'),        # Length of related data (at URBSDATA)
+            Uint2(  'urbsutok'),        # Utility token (CMPL/ERRO/INIT/LODS/LODE/RPLS/RPLE/
+                                        #   SAVS/SAVE/UPDS/UPDE message)
+            String( 'urbsorig', 1, ppfunc=urborig_str),  # Origin of status (C5DA/RPLS/RPLE)
+            String( 'filler1',  5, opt=T_NONE),     # Reserved area
+            String( 'urbsiqnm', 8),     # Input Queue name (IQCL/IQOP/REFR msg)
+            String( 'filler2',  8, opt=T_NONE),     # Reserved area
+            #urbsdata    following here. Add URBSL to the URBS start
+
+            # For the RPLS/RPLE message, URBSDATA contains a list of 2-byte
+            # file numbers of the file(s) associated with the replay process
+            # for the subscription given in URBSSNAM
+            **kw)
+
+
+def urbsutyp_str(s):
+    # used in URBSUT
+    return str_str(s, {
+            0x41: 'Change field length',
+            0x44: 'Delete file',
+            0x48: 'Refresh file',
+            0x4a: 'Release descriptor',
+            0x4b: 'Rename file',
+            0x4e: 'Switch Reuse ISN',
+            0x4f: 'Switch Reuse DS',
+            0x55: 'Modify FCB',
+            0x57: 'Define file',
+            0x58: 'Write FDT',
+            0x59: 'Add new fields',
+            0x5c: 'Change field format',
+            0x68: 'Switch USERISN',
+            0x69: 'Switch MIXDSDEV',
+            0x70: 'Online invert',
+            0x78: 'Switch MUPEX',
+            })
+
+
+class Urbsu(Datamap):
+    """ URBSU -- Reptor Status Adabas Utility Service Detail Element
+    Contains information about Adabas Online utiltity Service processed
+    on the input database.
+    This data follows an URBS with urbsst=URBSSTAU
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU',
+            String( 'urbsueye', 6),     # URBSU eye-catcher 'URBSU' #
+            Uint1(  'urbsutyp',ppfunc=urbsutyp_str, opt=T_HEX),   # Utility function type
+            Bytes(  'filler1', 25, opt=T_NONE),     # Reserved area
+            **kw)
+
+class Urbsu41(Datamap):
+    """ URBSU41 Change field length """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU41',
+            String( 'fieldname', 2),    # field name
+            Int4(   'newlength'),       # new field length
+            **kw)
+
+class Urbsu44(Datamap):
+    """ URBSU44 Delete file"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU44',
+            String( 'status', 2),           # Status == 'S' keep FDT
+            Uint2(  'anchor'),              # Anchor/master file number
+            **kw)
+
+class Urbsu4a(Datamap):
+    """ URBSU4A Release Descriptor """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU4A',
+            String( 'fieldname', 2),        # field name
+            **kw)
+
+class Urbsu4b(Datamap):
+    """ URBSU4B Rename File """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU4B',
+            String( 'filename', 16),        # file name
+            **kw)
+
+class Urbsu4e(Datamap):
+    """ URBSU4e Reuse ISN ON/OFF"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU4E',
+            String( 'isnreuse', 4),         # 'ON'/'OFF' #
+            **kw)
+
+class Urbsu4f(Datamap):
+    """ URBSU4f Reuse DS ON/OFF"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU4F',
+            String( 'dsreuse', 4),          # 'ON'/'OFF' #
+            **kw)
+
+class Urbsu55(Datamap):
+    """ URBSU55 Modify FCB """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU55',
+            Uint2(  'assopfac'),            # Asso padding factor
+            Uint2(  'datapfac'),            # Data padding factor
+            Uint4(  'maxrecl'),             # Max. record length
+            Uint2(  'maxui'),               # Max sec alloc Upper Index
+            Uint2(  'maxni'),               # Max sec alloc Normal Index
+            Uint2(  'maxds'),               # Max sec alloc Data storage
+            String( 'pgmrefresh', 1),       # PGMREFRHESH='Y'/'N' #
+            String( 'rplupdateonly', 1),    # RPLUPDATEONLY='Y'/'N' #
+            **kw)
+
+class Urbsu5c(Datamap):
+    """ URBSU5C Change Field Format """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU5C',
+            String( 'fieldname', 2),        # Field name
+            String( 'newformat', 1),        # New format
+            String( 'filler1', 1),
+            **kw)
+
+class Urbsu68(Datamap):
+    """ URBSU68 USERISN ON/OFF"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU68',
+            Int4( 'userisn', 4),            # 0=ON, 1=OFF
+            **kw)
+
+class Urbsu69(Datamap):
+    """ URBSU69 Change MIXDSDEV"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU69',
+            Int4( 'mixdsdev', 4),           # 0=ON, 1=OFF
+            **kw)
+
+class Urbsu70(Datamap):
+    """ URBSU70 Online Invert"""
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU70',
+            String( 'fieldname', 2),        # Descriptor name
+            Uint1(  'reason'),              # Reason code
+            Bytes(  'filler1', 5),
+            **kw)
+
+class Urbsu78(Datamap):
+    """ URBSU78 MUPE count """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBSU78',
+            Int4( 'mupex'),                 # Count=1 or 2
+            **kw)
+
+
+# --- URBT ---
+
+def urbtinst_str(s):
+    return str_str(s,{'Y': 'Initial-state transaction'})
+
+def urbtptrn_str(s):
+    return str_str(s,{'Y': 'Prior-transaction request'})
+
+def urbtsort_str(s):
+    return str_str(s,{'Y': 'Transaction records are sorted',
+                      'N': 'Transaction records are not sorted'})
+
+
+URBTEYE  = 'URBT' #
+URBTL    = 128
+                # urbtrsnd: Indicator for possible double delivery
+URBTRSNY = 'Y'  # Data for same transaction may have
+
+                # urbtinst: Initial-state transaction flag
+URBTINSY = 'Y'  # Data sent by initial-state process
+
+                # urbtptrn: Indicator for prior-transaction request
+URBTPTRY = 'Y'  # Resending data from prior transaction
+
+                # urbtcont: Indicator for transaction continuation
+URBTCONY = 'Y'  # More data to follow in the next message
+
+                # urbtsort: Indicates whether or not the transaction
+URBTSORY = 'Y'  # records have been sorted by file, ISN, and relative number
+URBTSORN = 'N'  # Transaction has not been sorted
+
+
+class Urbt(Datamap):
+    """URBT -- Transaction element
+
+    Contains information related to one transaction.
+    """
+
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBT',
+            String( 'urbteye', 4),   # URBT eye-catcher 'URBT' #
+            Int4(   'urbtlen'),      # Length of URBT
+            String( 'urbtsnam', 8),  # Subscription name
+            Uint4(  'urbttsnr'),     # Transaction sequence number
+                                     #   within subscription/destination
+            Uint4(  'urbtrcnt'),     # Count of records (URBRs) in transaction
+            Uint8(  'urbtttim', opt=T_STCK), # Time (STCK) transaction commit
+            Uint8(  'urbtptim', opt=T_STCK), # Time (STCK) end of subscription
+            Uint2(  'urbtdbid'),     # Originating Adabas database ID
+            Uint2(  'urbtnuci'),     # Originating Adabas nucleus ID
+            Bytes(  'urbtguid', 28), # Originating 28-byte user ID
+            Uint2(  'urbtrpid'),     # Reptor target ID (DBID parameter)
+            Uint2(  'urbtrpni'),     # Reptor nucleus ID (not yet used) => zero
+            String( 'urbtusrv', 2),  # User subscription version indicator,
+            String( 'urbtrsnd', 1, ppfunc=urbrsnd_str),  # Ind. possible double delivery
+            String( 'urbtinst', 1, ppfunc=urbtinst_str), # Ind. for initial state
+            String( 'urbtrtok', 8),  # Request ID token (if initial state)
+            String( 'urbtcont', 1, ppfunc=urbcont_str),  # Indicator for transaction continuation:
+            Bytes(  'urbtarc', 1),   # Architecture flags for selection data
+            String( 'urbtptrn', 1, ppfunc=urbtptrn_str), # Prior-transaction request indicator
+            String( 'urbtsort', 1, ppfunc=urbtsort_str), # Transaction records sorted
+            Uint4(  'urbtacod'),     # alpha field encoding in selection data
+            Uint4(  'urbtwcod'),     # wide field encoding in selection data
+            Uint2(  'urbtutok'),     # utility token if data comes from Replay or Adalod Load/Update
+            String( 'urbtorig', 1, ppfunc=urborig_str),  # Origin of transaction
+            String( 'filler1', 1, opt=T_NONE),  # Reserved area
+            String( 'urbtsuid', 8),  # Security system user id
+            String( 'filler2', 16, opt=T_NONE),  # Reserved area
+            **kw)
+
+
+# --- URBU ---
+
+URBUEYE  = 'URBU'
+URBUVER1 = '01'
+URBUL    = 80
+
+class Urbu(Datamap):
+    """URBU -- ADARPE Extract Header User Element
+
+    Contains information related to ADARPE extration.
+    It is the first record on the output file when running ADARPE
+    with parameter HEADER=YES (default).
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBU',
+            String( 'urbueye', 4),   # URBU eye-catcher 'URBU'
+            Int4(   'urbulen'),      # Length of URBU
+            String( 'urbuvers', 2),  # Version indicator
+            String( 'urbuname', 8),  # Extract name (ADARPE parameter NAME)
+            Uint8(  'urbutime', opt=T_STCK), # Time (STCK) of ADARPE execution
+            String( 'urbudist', 22, opt=T_NONE),  # Local time displayable of ADARPE exec
+            String( 'filler1', 32, opt=T_NONE),  # Reserved area
+            **kw)
+
+# --- URBF ---
+
+URBFEYE  = 'URBF'
+URBFL = 0x70    # length of URBF
+
+# GFFT version indicator
+URBFVER1 = '01' # First version
+                # Future releases may allow a new layout ofthe GFFT.
+                # In this case URBFVERS will be set to a different value.
+
+def urbfflag_str(s):
+    return bit_str(s, [
+            (0x01, 'Mapping Tool', 'Predict'), # Creation type Predict is default
+            (0x10, 'Optimized'), # PE/MU used occs. 1-N, preceded by count field
+                                 # no MUs within PE allowed
+            ])
+
+class Urbf(Datamap):
+    """ URBF -- Reptor Global format field table (GFFT) Header
+
+    Urbf is the header for a global format field table (GFFT)
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBF',
+            String( 'urbfeye', 4),      # URBF eye-catcher 'URBF'
+            Uint4(  'urbflen'),         # Length of URBF + related data (n*URBG)
+            Uint4(  'urbflenh'),        # Length of URBF
+            Uint4(  'urbflend'),        # Length of related data (n*URBG)
+            String( 'urbfvers', 2),     # GFFT version indicator
+            String( 'urbffnre', 5),     # File number eye-catcher
+            Uint1(  'urbfflag', ppfunc=urbfflag_str), #
+            String( 'urbfgfid', 8),     # Global format ID related to GFFT
+            Uint4(  'urbfdbid'),        # DBID of file
+            Uint2(  'urbffnr'),         # File number
+            Uint2(  'urbffnml'),        # Length of file name
+            String( 'urbffnam', 32),    # File/userview name
+            Uint8(  'urbftim1', opt=T_STCK), # Time (STCK) GFFT was created/refreshed
+            Uint2(  'urbfcntg'),        # Number of following URBG elements
+            Uint2(  'urbfleng'),        # Length of each URBG element
+            Uint8(  'urbftim2', opt=T_STCK), # Time (STCK) GFFT for ADARDE(DEXIT)
+            Bytes(  'filler1', 20, opt=T_NONE), # Reserved area
+            **kw)
+
+# --- URBG ---
+
+URBGL = 0x40    # length of URBG
+
+def urbgffmt_str(s):
+    return str_str(s, {
+            0x00: '',  # No format (e.g., group)
+            0x01: 'A', # Alphanumeric
+            0x02: 'B', # Binary
+            0x03: 'P', # Packed
+            0x04: 'U', # Unpacked
+            0x05: 'g', # Short floating point               ?
+            0x06: 'G', # Long floating point                ?
+            0x10: 'Date',   # Date type field               ?
+            0x13: 'PDate',  # Packed date (4 bytes packed)  ?
+            0x20: 'Time',   # Time type field               ?
+            0x23: 'PTime',  # Packed time (7 bytes packed)  ?
+            #0x40: 'W',     # Wide character format field setting
+            0x41: 'W',      # Wide character (used with URBGFFAL)
+            0x42: 'WB',     # Binary string (used with URBGFFBN)
+            #0x80: 'Signed',  # Signed        (used with URBGFFBN)
+            0x82: 'B signed', # Binary Signed (used with URBGFFBN) == Int1/2/4/8 ?
+            })
+
+# URBGFFMT field format
+URBGFFNF = 0x00 # No format (e.g., group)
+URBGFFAL = 0x01 # Alphanumeric
+URBGFFBN = 0x02 # Binary
+URBGFFPK = 0x03 # Packed
+URBGFFUN = 0x04 # Unpacked
+URBGFFSF = 0x05 # Short floating point
+URBGFFLF = 0x06 # Long floating point
+URBGFFDT = 0x10 # Date type field
+URBGFFPD = 0x13 # Packed date (4 bytes packed)
+URBGFFTM = 0x20 # Time type field
+URBGFFPT = 0x23 # Packed time (7 bytes packed)
+URBGFFWC = 0x40 # Wide character format field setting
+URBGFFWA = 0x41 # Wide character (used with URBGFFAL)
+URBGFFBS = 0x42 # Binary string (used with URBGFFBN)
+URBGFFS1 = 0x80 # Signed        (used with URBGFFBN)
+URBGFFSB = 0x82 # Binary Signed (used with URBGFFBN)
+
+
+
+def urbgtype_str(s):
+    return bit_str(s, [
+            (0x01, 'PE'),     # Periodic group (PE) field
+            (0x02, 'MU'),     # Multiple value (MU) field
+            (0x04, 'fnC'),    # Counter field for MU or PE
+            (0x08, 'fnS'),    # S format element as in xxS
+            (0x10, 'PK'),     # Primary key
+            (0x20, 'DE'),     # Descriptor
+            (0x40, 'UQ'),     # Unique descriptor
+            ])
+
+# URBGTYPE Field type
+URBGFTN  = 0x00 # Normal field
+URBGFTPE = 0x01 # Periodic group (PE) field
+URBGFTMU = 0x02 # Multiple value (MU) field
+URBGFTCT = 0x04 # Counter field for MU or PE
+URBGFTSC = 0x08 # S format element as in xxS
+URBGFTKY = 0x10 # Primary key
+URBGFTDE = 0x20 # Descriptor
+URBGFTUQ = 0x40 # Unique descriptor
+
+
+
+def urbgflag_str(s):
+    return bit_str(s, [
+            (0x01, 'Do not output'), # Do not output field (e.g. counter field)
+            (0x02, 'Repeating field in PE'), # PGC,PA1-N,PB1-N,..
+                                 # otherwise: fields in PE grouped per occ.
+                                 #   PA1,PB2,..,PA2,PB2,..
+            (0x04, 'Super-DE/field'),
+            (0x08, 'Sub-DE/field'),
+            (0x10, 'Optimized'), # PE/MU used occs. 1-N, preceded by count field
+                                 # no MUs within PE allowed in the form MU1-N(1-N)
+            (0x20, 'Default is zero/space, never null'),
+            ])
+
+
+
+# URBGFLAG settings
+URBGFFRO = 0x01 # Do not put in output buffer
+URBGFPEE = 0x02 # Field is repeating MU/PE element -range
+                # e.g. range as in AA1-N,AB1-N,AC1-N...
+                # A non-repeating field is an array
+                # of fields, e.g. AA1,AB1,AC1,AA2,AB2,AC2
+URBGFSUP = 0x04 # Super DE/field
+URBGFSUB = 0x08 # Sub DE/field
+URBGFOPT = 0x10 # Optimized field
+URBGFDZS = 0x20 # Field default zero or space - never null
+
+
+class Urbg(Datamap):
+    """ URBG -- Reptor Global format field table (GFFT) element
+
+    Urgb contains one field of many defined in a schema of a file
+    being replicated. One or more Urbg follow one Urbf related
+    to a global format that determines the structure of a
+    related record.
+    """
+    def __init__(self, **kw):
+        Datamap.__init__(self, 'URBG',
+            Uint2(  'urbgidx'),         # Element index in GFFT
+            String( 'urbgfid', 2),      # Field short name
+            Uint1(  'urbgffmt', ppfunc=urbgffmt_str), # Field format
+            Uint1(  'urbgtype', ppfunc=urbgtype_str), # Field type
+            Uint2(  'urbgflen'),        # Field length
+            Uint2(  'urbgfprc'),        # Decimal place/precision
+            Uint1(  'urbgflag', opt=T_HEX), # ppfunc=urbgflag_str), # Flags
+            Bytes(  'filler1', 1, opt=T_NONE), # Reserved area
+            # 1st level of occurrences:
+            Uint2(  'urbgfrno'),        # Range number
+            Uint2(  'urbgfrfm'),        # From-range number
+            # 2st level of occurrences: 0x10
+            Uint2(  'urbgfono'),        # Occurrence number
+            Uint2(  'urbgfofm'),        # From-occurrence number
+            Uint2(  'urbgfnml'),        # Length of field long name
+            String( 'urbgfnam', 32),    # Field long name
+            String( 'urbgfgrp', 2),     # Name of PE group
+            String( 'urbgfmtx', 2),     # External Format Type  (Bytes?)
+            String( 'urbgfrpn', 2),     # Redefined parent name
+            String( 'urbgffon', 2),     # Field order number
+            Bytes(  'filler2', 2, opt=T_NONE), # Reserved area
+            **kw)
+
+
+
+__version__ = '1.0.1'
+if __version__ == '1.0.1':
+    _svndate='$Date: 2018-11-09 15:31:28 +0100 (Fri, 09 Nov 2018) $'
+    _svnrev='$Rev: 878 $'
+    __version__ = 'Dev ' +  _svnrev.strip('$') + \
+                  ' '.join(_svndate.strip('$').split()[0:3])
+
+
+#  Copyright 2004-2019 Software AG
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.

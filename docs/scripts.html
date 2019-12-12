@@ -1,0 +1,610 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Scripts &mdash; adapya-era 1.0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="_static/SAG2015.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package Reference" href="modules.html" />
+    <link rel="prev" title="Installation" href="installing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> adapya-era
+          
+
+          
+            
+            <img src="_static/SAG2015.ico" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installing.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scripts</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#outq-py-replicator-output-queue-reader">outq.py - Replicator output queue reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inq-py-replicator-input-queue-writer">inq.py - Replicator input queue writer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#readris-py-processor-for-sequential-replicator-output">readris.py - processor for sequential Replicator output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#demo-application-employee-telephone-list">Demo application Employee Telephone List</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#reptor-parameters">Reptor Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intial-state-request-for-selected-records">Intial-State Request for Selected Records</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-of-client-processing-a-record">Trace of Client Processing a Record</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#reading-the-replicated-file-on-the-target-database">Reading the Replicated File on the Target Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#web-application-employee-telephone-list">Web Application “Employee Telephone List”</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Package Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indices.html">Indices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">adapya-era</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Scripts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/scripts.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="scripts">
+<h1>Scripts<a class="headerlink" href="#scripts" title="Permalink to this headline">¶</a></h1>
+<p>There are some scripts in adapya-era that can be run on the command line.
+They accept Unix style parameters. A help page is shown with the help option.</p>
+<div class="section" id="outq-py-replicator-output-queue-reader">
+<h2>outq.py - Replicator output queue reader<a class="headerlink" href="#outq-py-replicator-output-queue-reader" title="Permalink to this headline">¶</a></h2>
+<p>outq.py listens to the Reptor output queue via EntireX Broker ACI and prints each Reptor
+message according to its interpreted URB* blocks.</p>
+<p>The program is terminated by CTRL-C or when some program exception
+occurs.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Usage: python [-O] outq.py [options]
+
+-O run optimzied, debug code not generated do not display interpreded URB\*
+
+Options:
+-h, --help display this help
+
+-b, --broker .. id of broker ETBxxxxx or hostname:port
+
+-c, --class .. server class
+
+-n, --name .. server name
+
+-s, --service .. service (Reptor output queue)
+
+-u, --userid .. user id to be used
+
+-t, --trace .. sum of trace flags
+
+1 - dump buffers before Broker call
+
+2 - after call
+
+4 - print broker calls
+
+8 - detailed print of URB buffers
+
+Example:
+python outq.py -b ETB50019 -u MM -s MMSERV
+</pre></div>
+</div>
+</div>
+<div class="section" id="inq-py-replicator-input-queue-writer">
+<h2>inq.py - Replicator input queue writer<a class="headerlink" href="#inq-py-replicator-input-queue-writer" title="Permalink to this headline">¶</a></h2>
+<p>inq.py sends messages to the Replicator input queue via EntireX Broker ACI
+and terminates.</p>
+<p>The following input requests are defined:</p>
+<ul class="simple">
+<li><p>Status</p></li>
+<li><p>Initial-state-request</p></li>
+<li><p>Prior-transaction request</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Usage: python inq.py [options]
+
+Options:
+
+-h, --help display this help
+-b, --brokerid .. id of broker ETBxxxxx or hostname:port
+-c, --class .. server class
+-n, --name .. server name
+-s, --service .. service (Reptor input queue)
+-u, --userid .. user id to be used
+-k, --token token
+-r, --rnam .. response destination name
+-e, --arc .. architecture of input URB\* and of data
+
+is the integer of the sum of
+0/1 - high/low order byte first
+0/2 - ASCII/EBCDIC
+0/4/8 - IBM390/VAX/IEEE floating point
+
+-t, --trace .. sum of trace flags
+1 - dump buffers before Broker call
+2 - after call
+4 - print broker calls
+
+for type subscription status (STAT)
+-p, --snam .. subscription
+-d, --dnam .. destination
+
+for type Prior transaction request (TRAN)
+-p, --snam .. subscription
+-d, --dnam .. destination
+-q, --tseq .. transaction sequence number
+
+for type Initial-state request (INST)
+-a --dbid .. database id
+-f --fnr .. file number or fnr_list (see below)
+-i --inam .. initial-state name
+-l --isnl .. ISN or isn_list (see below)
+-v --value value_string for selection criteria
+-g --acode .. encoding of alpha values in value_string
+-w --wcode .. encoding of wide values in value_string
+
+An encoding is specified as cpX with
+
+X = ECS code page number, e.g. cp37 for US EBCIDIC code page 37,
+    or as a name defined in ecscodec.py, e.g. utf8 for ECS code
+    page 4091)
+
+fnr_list list of files for which initial state is to be requested
+
+e.g. (1,2,3,4) requests it for files 1-4
+
+no space can be within the parenthesises otherwise it must be
+surrounded by double quotes
+
+
+isn_list list of ISNs or ISN ranges surrounded by parenthesis. e.g.
+
+  (1,2,3,4,10-1000,2001-2999,9999)
+
+No spaces allowed unless list enclosed in double quotes
+
+
+value_string value string matching the selection criterion defined
+in the INIITALSTATE parameters. A sequence of values can be
+specified by enclosing the comma separated values with parenthesis.
+No spaces allowed unless enclosed in double quotes. In addition a
+sequence element may be also:
+
+  x&#39;hexvalue&#39; for a hexadecimal value
+  e&#39;string&#39; for a string to be converted to EBCDIC
+</pre></div>
+</div>
+<p>Examples:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="n">ETB50019</span> <span class="o">-</span><span class="n">u</span> <span class="n">MM</span> <span class="o">-</span><span class="n">c</span> <span class="n">REPTOR</span> <span class="o">-</span><span class="n">n</span> <span class="n">MMSERV</span> <span class="o">-</span><span class="n">s</span> <span class="n">IN1</span> <span class="o">-</span><span class="n">d</span> <span class="n">OUT1</span>
+
+<span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="n">ETB50019</span> <span class="o">--</span><span class="n">userid</span> <span class="n">MM</span> <span class="o">--</span><span class="k">class</span> <span class="nc">REPTOR</span> <span class="o">--</span><span class="n">name</span> <span class="n">MMSERV</span> <span class="o">--</span><span class="n">service</span> <span class="n">IN1</span> <span class="o">-</span><span class="n">dnam</span> <span class="n">OUT1</span>
+
+
+<span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">b</span> <span class="n">ETB50019</span> <span class="o">--</span><span class="n">userid</span> <span class="n">MM</span> <span class="o">--</span><span class="k">class</span> <span class="nc">REPTOR</span> <span class="o">--</span><span class="n">name</span> <span class="n">MMSERV</span> <span class="o">--</span><span class="n">service</span> <span class="n">IN1</span> <span class="o">--</span><span class="n">rnam</span> <span class="n">OUT1</span> <span class="o">--</span><span class="n">token</span> <span class="n">TOKTOK</span>
+   <span class="o">--</span><span class="n">inam</span> <span class="n">ICOLOR</span> <span class="o">--</span><span class="n">dbid</span> <span class="mi">12345</span> <span class="o">--</span><span class="n">fnr</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+                                    <span class="o">-----</span> <span class="o">=</span> <span class="n">file</span>\<span class="n">_list</span>
+
+<span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">...</span> <span class="o">--</span><span class="n">isnl</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">11</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span><span class="mi">25</span><span class="p">)</span>     <span class="n">requests</span> <span class="n">initial</span> <span class="n">state</span> <span class="k">for</span> <span class="n">ISNs</span> <span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span> <span class="mi">11</span> <span class="n">thru</span> <span class="mi">20</span> <span class="ow">and</span> <span class="mi">25</span>
+
+<span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">...</span> <span class="o">--</span><span class="n">value</span> <span class="p">(</span><span class="n">GR001</span><span class="p">,</span><span class="n">x</span><span class="s1">&#39;89AB&#39;</span><span class="p">,</span><span class="n">e</span><span class="s1">&#39;&quot;ABC &quot;&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">alternatively</span> <span class="s2">&quot;(GR001,x&#39;89AB&#39;,e&#39;ABC &#39;)&quot;</span>
+
+   <span class="k">with</span> <span class="n">value</span> <span class="n">being</span> <span class="n">composed</span> <span class="n">of</span> <span class="s1">&#39;GR001&#39;</span><span class="p">,</span><span class="n">x</span><span class="s1">&#39;89AB&#39;</span><span class="p">,</span><span class="n">x</span><span class="s1">&#39;C1C2C340&#39;</span>
+
+<span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">...</span> <span class="o">--</span><span class="n">value</span> <span class="s2">&quot;A B &quot;</span> <span class="o">--</span><span class="n">arc</span> <span class="mi">9</span> <span class="o">--</span><span class="n">acode</span> <span class="n">cp1252</span> <span class="o">--</span><span class="n">wcode</span> <span class="n">utf8</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="readris-py-processor-for-sequential-replicator-output">
+<h2>readris.py - processor for sequential Replicator output<a class="headerlink" href="#readris-py-processor-for-sequential-replicator-output" title="Permalink to this headline">¶</a></h2>
+<p>Read and process sequential replication output records as
+produced by ADARIS or ADARPE.</p>
+<p>Processing can be</p>
+<ul class="simple">
+<li><p>prepare the data as input for ADACMP and ADAMUP (-w / –write)</p></li>
+<li><p>apply the data to an Adabas target database (-a / – ada)</p></li>
+</ul>
+<p>If the dataset is located on z/OS use the -d otherwise the
+-f parameter to specify a local file.</p>
+<p>The remote dataset is a variable blocked sequential dataset.
+It is fetched per FTP-get from z/OS as binary with RDW record prefix.</p>
+<p>When the -w/–write &lt;file prefix&gt; parameter is specified</p>
+<ul class="simple">
+<li><p>the records are written to &lt;file prefix&gt;cmpin.d&lt;dbid&gt;f&lt;fnr&gt;</p></li>
+<li><p>the related ISNs are stored to &lt;file prefix&gt;mupisn.d&lt;dbid&gt;f&lt;fnr&gt;</p></li>
+</ul>
+<p>With the -a/–ada &lt;target config file&gt; the configuration for applying
+the replication data to an Adabas target database.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Usage: readris [options]
+
+Options:
+    -a  --ada           Adabas database target configuration
+                        (e.g tapa2config for tapa12config.py)
+    -d  --dsn           remote sequential dataset name
+    -f  --fname         local file name
+    -n, --numrec        &lt;numrec&gt; number of records to process
+    -s, --skiprec       &lt;skiprec&gt; number of records skip before processing
+
+    -v, --verbose       [0]|1|2|4|8|16|32
+    -w  --write         file prefix
+                        FTP parameters:
+    -c, --config        set/show configuration
+    -h, --host          &lt;host name&gt; of IBM FTP server         (*)
+    -p, --pwd           &lt;password&gt;  FTP ser1.0.1ogin password (*)
+    -u, --user          &lt;userid&gt;                              (*)
+
+    -t  --test          &lt;name&gt; testing LNKUEX &lt;name&gt; DLL/SO
+                        instead of adalnkx call the exit is called directly
+    -?, --help
+
+defaults marked with (*) are taken from configuration (-c)
+The configuration values are stored ciphered in file ~/.toolz
+
+verbose 1/2 - FTP, 4 - dump records (exclusive RDW), 8 - display URB fields
+        16 - dump CB, 32 - dump FB and RB
+
+if executed in Python optimized mode no URB short form will be printed
+    (python -o readris.py ...)
+
+Examples:
+
+1. set configuration user, password
+
+   &gt;&gt; readris --config --user hugo --pwd secret
+
+2. read remote ADARIS output dataset with verbose FTP operations; user and password
+   are taken from configuration; creates the output files
+   rpe2.cmpin.d10006f024 and rpe2.mupisn.d10006f024
+
+   &gt;&gt; readris -d mm.temp.ris1 -h da3f -v8 -w rpe2.
+
+3. read local file with ADARIS or ADARPE data and store in Adabas database
+   target db/fnr and subscription info is in tapa12config.py
+
+   &gt;&gt; readris -f mm.temp.rpeapemu -a tapa12config
+</pre></div>
+</div>
+</div>
+<div class="section" id="demo-application-employee-telephone-list">
+<h2>Demo application Employee Telephone List<a class="headerlink" href="#demo-application-employee-telephone-list" title="Permalink to this headline">¶</a></h2>
+<p>The demo application processes the replication for the Adabas example
+file EMPLOYEE.</p>
+<p>In the Reptor definitions the format EMPLTEL defines a subset of the
+original EMPLOYEE fields. This shows how to reduce overhead in only
+replicating required information or how to hide sensitive information.</p>
+<div class="section" id="reptor-parameters">
+<h3>Reptor Parameters<a class="headerlink" href="#reptor-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ADARPD</span> <span class="n">SUBSCRIPTION</span> <span class="n">NAME</span><span class="o">=</span><span class="n">EMPLOYEE</span>
+<span class="n">ADARPD</span>   <span class="n">SACODE</span><span class="o">=</span><span class="mi">819</span><span class="p">,</span><span class="n">SWCODE</span><span class="o">=</span><span class="mi">4091</span><span class="p">,</span><span class="n">SARC</span><span class="o">=</span><span class="mi">9</span>
+<span class="n">ADARPD</span>   <span class="n">SDESTINATION</span><span class="o">=</span><span class="s1">&#39;OUT1&#39;</span>
+<span class="n">ADARPD</span>   <span class="n">SFILE</span><span class="o">=</span><span class="mi">11</span><span class="p">,</span><span class="n">SFDBID</span><span class="o">=</span><span class="mi">10006</span>
+<span class="n">ADARPD</span>   <span class="n">SGFORMATAI</span><span class="o">=</span><span class="n">EMPLTEL</span>
+
+<span class="n">ADARPD</span> <span class="n">GFORMAT</span> <span class="n">NAME</span><span class="o">=</span><span class="n">EMPLTEL</span> <span class="n">Fields</span> <span class="n">extracted</span> <span class="k">for</span> <span class="n">Telephone</span> <span class="n">List</span> <span class="n">Webapp</span>
+<span class="n">ADARPD</span> <span class="n">GFB</span><span class="o">=</span><span class="s1">&#39;AA,AC,AD,AE,&#39;</span> <span class="n">PERSONNEL</span><span class="o">-</span><span class="n">ID</span> <span class="n">FIRST</span><span class="o">-</span><span class="n">NAME</span> <span class="n">MIDDLE</span> <span class="n">LAST</span><span class="o">-</span><span class="n">NAME</span>
+<span class="n">ADARPD</span> <span class="n">GFB</span><span class="o">=</span><span class="s1">&#39;AH,8,U,AL,&#39;</span> <span class="n">BIRTH</span> <span class="n">COUNTRY</span>
+<span class="n">ADARPD</span> <span class="n">GFB</span><span class="o">=</span><span class="s1">&#39;AN,AM,AO,AP.&#39;</span> <span class="n">AREA</span><span class="o">-</span><span class="n">CODE</span> <span class="n">PHONE</span> <span class="n">DEPT</span> <span class="n">JOB</span><span class="o">-</span><span class="n">TITLE</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<p>The following lines configure the client program - see out1Config.py:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># define the mapping of data in record buffer to attributes</span>
+<span class="c1"># of EmpTel class</span>
+
+<span class="n">empTelFormat</span><span class="o">=</span><span class="s1">&#39;AA,AC,AD,AE,AH,8,U,AL,AN,AM,AO,AP.&#39;</span>
+
+<span class="c1"># create datamap object for Employees-Telephone-List</span>
+
+<span class="n">emp</span><span class="o">=</span><span class="n">Datamap</span><span class="p">(</span><span class="s1">&#39;EmplTel&#39;</span><span class="p">,</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;personnel_id&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;firstname&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;m_initial&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;lastname&#39;</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;birth&#39;</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;areacode&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">,</span> <span class="mi">15</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;department&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+    <span class="n">String</span><span class="p">(</span><span class="s1">&#39;jobtitle&#39;</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="c1"># define formats and mapping for each file specified in subscription</span>
+<span class="n">psf</span><span class="o">=</span><span class="n">ParmsSfile</span><span class="p">(</span><span class="n">sdbid</span><span class="o">=</span><span class="mi">10006</span><span class="p">,</span><span class="n">sfnr</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span><span class="n">tdbid</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span><span class="n">tfnr</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+               <span class="n">fb</span><span class="o">=</span><span class="n">empTelFormat</span><span class="p">,</span><span class="n">dmap</span><span class="o">=</span><span class="n">emp</span><span class="p">)</span>
+
+<span class="c1"># define subscription with all its sfiles defined</span>
+<span class="n">psu</span><span class="o">=</span><span class="n">ParmsSubscription</span><span class="p">(</span><span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;EMPLOYEE&#39;</span><span class="p">,</span><span class="n">sversion</span><span class="o">=</span><span class="s1">&#39;01&#39;</span><span class="p">,</span><span class="n">sfiles</span><span class="o">=</span><span class="p">[</span><span class="n">psf</span><span class="p">])</span>
+
+<span class="c1"># define Reptor Broker parameters</span>
+<span class="n">pbs</span><span class="o">=</span><span class="n">ParmsBrokerService</span><span class="p">(</span>
+    <span class="n">broker_id</span><span class="o">=</span><span class="s1">&#39;ETB50019&#39;</span><span class="p">,</span>
+    <span class="n">server_class</span><span class="o">=</span><span class="s1">&#39;REPTOR&#39;</span><span class="p">,</span>
+    <span class="n">server_name</span><span class="o">=</span><span class="s1">&#39;MMSERV&#39;</span><span class="p">,</span>
+    <span class="n">service</span><span class="o">=</span><span class="s1">&#39;OUT1&#39;</span><span class="p">,</span>
+    <span class="n">user_id</span><span class="o">=</span><span class="s1">&#39;UEmplTel&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="intial-state-request-for-selected-records">
+<h3>Intial-State Request for Selected Records<a class="headerlink" href="#intial-state-request-for-selected-records" title="Permalink to this headline">¶</a></h3>
+<p>The following requests Initial-state for the EMPLOYEE file selecting
+records 20002000 through 20003999:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">python</span> <span class="n">inq</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">inam</span> <span class="n">IEMPLAA</span> <span class="o">--</span><span class="n">dbid</span> <span class="mi">10006</span> <span class="o">--</span><span class="n">fnr</span> <span class="mi">9</span>
+               <span class="o">--</span><span class="n">value</span> <span class="mi">2000200020003999</span>
+               <span class="o">--</span><span class="n">acode</span> <span class="n">cp819</span> <span class="o">--</span><span class="n">wcode</span> <span class="n">utf8</span> <span class="o">--</span><span class="n">arc</span> <span class="mi">9</span>
+               <span class="o">--</span><span class="n">rnam</span> <span class="n">OUT2</span> <span class="o">--</span><span class="n">token</span> <span class="n">TOKTOTOK</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="trace-of-client-processing-a-record">
+<h3>Trace of Client Processing a Record<a class="headerlink" href="#trace-of-client-processing-a-record" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">python</span> <span class="n">rcOut1</span><span class="o">.</span><span class="n">py</span>
+
+<span class="n">URBR</span> <span class="o">--</span> <span class="n">initial</span> <span class="n">state</span> <span class="n">record</span> <span class="n">fnr</span> <span class="mi">9</span> <span class="n">isn</span> <span class="mi">828</span>
+
+<span class="n">URBD</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="n">after</span> <span class="n">image</span>
+<span class="mi">0000</span> <span class="mi">32303030</span> <span class="mi">32393030</span> <span class="mi">544</span><span class="n">F4D20</span> <span class="mi">20202020</span> <span class="mi">20002900</span><span class="n">TOM</span>
+<span class="mi">0010</span> <span class="mi">20202020</span> <span class="mi">20202020</span> <span class="mi">20202020</span> <span class="mi">20202020</span>
+<span class="mi">1</span> <span class="n">identical</span> <span class="n">line</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="n">suppressed</span>
+<span class="mi">0030</span> <span class="mi">44494</span><span class="n">C57</span> <span class="mi">4</span><span class="n">F525448</span> <span class="mi">20202020</span> <span class="mi">20202020</span> <span class="n">DILWORTH</span>
+<span class="mi">0050</span> <span class="mi">31303120</span> <span class="mi">20283231</span> <span class="mi">39293436</span> <span class="mi">342</span><span class="n">D3234</span> <span class="mi">101</span> <span class="p">(</span><span class="mi">219</span><span class="p">)</span><span class="mi">464</span><span class="o">-</span><span class="mi">2</span>
+<span class="mi">0060</span> <span class="mi">32312020</span> <span class="mi">4</span><span class="n">D474D54</span> <span class="mi">31305345</span> <span class="mi">43524554</span> <span class="mi">21</span> <span class="n">MGMT10SECRE</span>
+<span class="mi">0070</span> <span class="mi">41525920</span> <span class="mi">20202020</span> <span class="mi">20202020</span> <span class="mi">20202020</span> <span class="n">ARY</span>
+<span class="mi">0080</span> <span class="mi">202020</span>
+
+<span class="n">Enter</span> <span class="n">URBD</span> <span class="n">handler</span><span class="p">:</span> <span class="n">R</span> <span class="n">A</span><span class="p">,</span> <span class="n">isn</span> <span class="mi">828</span>
+<span class="n">cmd</span><span class="o">=</span><span class="n">E1</span> <span class="n">op1</span><span class="o">/</span><span class="mi">2</span><span class="o">=</span> <span class="o">/</span> <span class="n">dbid</span><span class="o">=</span><span class="mi">12</span> <span class="n">fnr</span><span class="o">=</span><span class="mi">7</span> <span class="n">rsp</span><span class="o">=</span><span class="mi">113</span>
+<span class="n">cid</span><span class="o">=</span> <span class="n">isn</span><span class="o">=</span><span class="mi">828</span> <span class="n">isl</span><span class="o">=</span><span class="mi">0</span> <span class="n">isq</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">Note</span><span class="p">:</span> <span class="n">Before</span> <span class="n">Image</span> <span class="ow">not</span> <span class="n">found</span> <span class="n">ISN</span> <span class="mi">828</span>
+
+<span class="n">cmd</span><span class="o">=</span><span class="n">N2</span> <span class="n">op1</span><span class="o">/</span><span class="mi">2</span><span class="o">=</span> <span class="o">/</span> <span class="n">dbid</span><span class="o">=</span><span class="mi">12</span> <span class="n">fnr</span><span class="o">=</span><span class="mi">7</span> <span class="n">rsp</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">cid</span><span class="o">=</span> <span class="n">isn</span><span class="o">=</span><span class="mi">828</span> <span class="n">isl</span><span class="o">=</span><span class="mi">0</span> <span class="n">isq</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">Exit</span> <span class="n">URBD</span> <span class="n">handler</span><span class="p">:</span> <span class="n">R</span> <span class="n">A</span><span class="p">,</span> <span class="n">isn</span> <span class="mi">828</span><span class="o">/</span><span class="mi">828</span><span class="p">,</span> <span class="n">num</span> <span class="n">recs</span> <span class="mi">18</span>
+
+<span class="n">URBE</span> <span class="o">--</span> <span class="n">end</span> <span class="n">of</span> <span class="n">transaction</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">subscription</span> <span class="n">EMPLOYEE</span>
+
+<span class="n">Enter</span> <span class="n">URBE</span> <span class="n">handler</span><span class="p">:</span> <span class="n">EMPLOYEE</span> <span class="n">tsnr</span> <span class="mi">0</span><span class="p">,</span> <span class="ow">in</span> <span class="n">TA</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cnt</span> <span class="mi">9</span>
+<span class="n">End</span> <span class="n">Transaction</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">subscription</span> <span class="n">EMPLOYEE</span> <span class="k">with</span> <span class="mi">9</span> <span class="n">updates</span>
+
+<span class="n">cmd</span><span class="o">=</span><span class="n">ET</span> <span class="n">op1</span><span class="o">/</span><span class="mi">2</span><span class="o">=</span> <span class="o">/</span> <span class="n">dbid</span><span class="o">=</span><span class="mi">12</span> <span class="n">fnr</span><span class="o">=</span><span class="mi">7</span> <span class="n">rsp</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">cid</span><span class="o">=</span> <span class="n">isn</span><span class="o">=</span><span class="mi">828</span> <span class="n">isl</span><span class="o">=</span><span class="mi">0</span> <span class="n">isq</span><span class="o">=</span><span class="mi">0</span>
+
+<span class="n">Exit</span> <span class="n">URBE</span> <span class="n">handler</span><span class="p">:</span> <span class="n">EMPLOYEE</span><span class="p">,</span> <span class="n">tsnr</span> <span class="mi">0</span><span class="p">,</span> <span class="ow">in</span> <span class="n">TA</span> <span class="mi">0</span><span class="p">,</span> <span class="n">cnt</span> <span class="mi">9</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="reading-the-replicated-file-on-the-target-database">
+<h3>Reading the Replicated File on the Target Database<a class="headerlink" href="#reading-the-replicated-file-on-the-target-database" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&gt;</span><span class="n">python</span> <span class="n">EmpltelReadIsn</span><span class="o">.</span><span class="n">py</span>
+
+<span class="n">Read</span> <span class="n">by</span> <span class="n">ISN</span> <span class="n">on</span> <span class="n">Employees</span><span class="o">-</span><span class="n">Telephonelist</span> <span class="n">file</span> <span class="mi">7</span> <span class="n">on</span> <span class="n">database</span> <span class="mi">12</span>
+<span class="n">starting</span> <span class="kn">from</span> <span class="nn">ISN</span> <span class="mi">0</span> <span class="k">for</span> <span class="mi">1100</span> <span class="n">records</span>
+
+<span class="mi">820</span> <span class="mi">20002100</span> <span class="n">Forrest</span><span class="p">,</span> <span class="n">Mona</span> <span class="n">D</span><span class="o">.</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">312</span><span class="p">)</span><span class="mi">824</span><span class="o">-</span><span class="mi">9206</span> <span class="n">SALE40</span> <span class="mi">0028</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">23</span> <span class="n">Secretary</span> <span class="p">[</span><span class="c1">#]_</span>
+<span class="mi">821</span> <span class="mi">20002200</span> <span class="n">Dekker</span><span class="p">,</span> <span class="n">Sylvia</span> <span class="n">Jennifer</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">213</span><span class="p">)</span><span class="mi">183</span><span class="o">-</span><span class="mi">1707</span> <span class="n">TECH10</span> <span class="mi">0026</span><span class="o">-</span><span class="mi">03</span><span class="o">-</span><span class="mi">05</span> <span class="n">Dba</span>
+<span class="mi">822</span> <span class="mi">20002300</span> <span class="n">Smith</span><span class="p">,</span> <span class="n">Elsa</span> <span class="n">R</span><span class="o">.</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">213</span><span class="p">)</span><span class="mi">793</span><span class="o">-</span><span class="mi">6785</span> <span class="n">TECH10</span> <span class="mi">0027</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">02</span> <span class="n">Programmer</span>
+<span class="mi">823</span> <span class="mi">20002400</span> <span class="n">Ferrari</span><span class="p">,</span> <span class="n">Shirly</span> <span class="n">Phyllis</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">415</span><span class="p">)</span><span class="mi">822</span><span class="o">-</span><span class="mi">9155</span> <span class="n">SALE20</span> <span class="mi">0034</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">31</span> <span class="n">Sales</span> <span class="n">Person</span>
+<span class="mi">824</span> <span class="mi">20002500</span> <span class="n">Alexander</span><span class="p">,</span> <span class="n">Holly</span> <span class="n">P</span><span class="o">.</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">608</span><span class="p">)</span><span class="mi">793</span><span class="o">-</span><span class="mi">6137</span> <span class="n">SALE20</span> <span class="mi">0046</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">02</span> <span class="n">Sales</span> <span class="n">Person</span>
+<span class="mi">825</span> <span class="mi">20002600</span> <span class="n">Mcdonald</span><span class="p">,</span> <span class="n">Rosa</span> <span class="n">Jennifer</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">316</span><span class="p">)</span><span class="mi">409</span><span class="o">-</span><span class="mi">2438</span> <span class="n">SALE20</span> <span class="mi">0056</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">16</span> <span class="n">Sales</span> <span class="n">Person</span>
+<span class="mi">826</span> <span class="mi">20002700</span> <span class="n">Romerio</span><span class="p">,</span> <span class="n">Virginia</span> <span class="n">S</span><span class="o">.</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">301</span><span class="p">)</span><span class="mi">738</span><span class="o">-</span><span class="mi">5508</span> <span class="n">MGMT30</span> <span class="mi">0045</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">06</span> <span class="n">Manager</span>
+<span class="mi">827</span> <span class="mi">20002800</span> <span class="n">Davenport</span><span class="p">,</span> <span class="n">Ann</span> <span class="n">Phyllis</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">415</span><span class="p">)</span><span class="mi">538</span><span class="o">-</span><span class="mi">7860</span> <span class="n">TECH10</span> <span class="mi">0048</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">25</span> <span class="n">Analyst</span>
+<span class="mi">828</span> <span class="mi">20002900</span> <span class="n">Dilworth</span><span class="p">,</span> <span class="n">Tom</span> <span class="n">USA</span> <span class="mi">0101</span> <span class="p">(</span><span class="mi">219</span><span class="p">)</span><span class="mi">464</span><span class="o">-</span><span class="mi">2421</span> <span class="n">MGMT10</span> <span class="mi">0040</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">24</span> <span class="n">Secretary</span>
+<span class="n">Sequential</span> <span class="n">Read</span> <span class="n">by</span> <span class="n">ISN</span> <span class="n">returned</span> <span class="mi">9</span> <span class="n">record</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="web-application-employee-telephone-list">
+<h3>Web Application “Employee Telephone List”<a class="headerlink" href="#web-application-employee-telephone-list" title="Permalink to this headline">¶</a></h3>
+<p>The “Employee Telephone List” web application is implemented by the
+function select() in module emplist.py
+It is executed as publishing handler under the open source Apache web
+server using the mod_python extension. Components:</p>
+<p>The Apache configuration file “hppt.conf” needs the following additional
+lines:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LoadModule</span> <span class="n">python</span>\<span class="n">_module</span> <span class="n">modules</span><span class="o">/</span><span class="n">mod</span>\<span class="n">_python</span><span class="o">.</span><span class="n">so</span>
+<span class="n">Alias</span> <span class="o">/</span><span class="n">apps</span> <span class="s2">&quot;C:/ADA/WEB/apps&quot;</span>
+<span class="c1"># emplist.py must be copied here as well as images/ subdirectory</span>
+<span class="o">&lt;</span><span class="n">Directory</span> <span class="s2">&quot;C:/ADA/WEB/apps&quot;</span><span class="o">&gt;</span>
+<span class="n">Options</span> <span class="n">Indexes</span> <span class="n">MultiViews</span>
+<span class="n">AllowOverride</span> <span class="n">All</span>
+<span class="n">Order</span> <span class="n">allow</span><span class="p">,</span><span class="n">deny</span>
+<span class="n">Allow</span> <span class="kn">from</span> <span class="nn">all</span>
+<span class="n">AddHandler</span> <span class="n">mod</span>\<span class="n">_python</span> <span class="o">.</span><span class="n">py</span>
+<span class="n">PythonHandler</span> <span class="n">mod</span>\<span class="n">_python</span><span class="o">.</span><span class="n">publisher</span>
+<span class="n">PythonDebug</span> <span class="n">On</span>
+<span class="n">PythonPath</span> <span class="s2">&quot;sys.path+[&#39;c:/ADA/python/dev&#39;]&quot;</span>
+<span class="n">SetEnv</span> <span class="n">HTMLDIR</span> <span class="s2">&quot;C:/ADA/WEB/apps&quot;</span>
+<span class="o">&lt;/</span><span class="n">Directory</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="figure align-center">
+<img alt="" src="_images/image006.jpg" />
+</div>
+<p>To browse the telephone list enter the URL e.g.</p>
+<p><a class="reference external" href="http://localhost/apps/emplist.py/select">http://localhost/apps/emplist.py/select</a></p>
+<p>To select with search criteria on name or department enter the URL e.g.</p>
+<p><a class="reference external" href="http://localhost/apps/emplist.py/select?name=S*;dept=M*">http://localhost/apps/emplist.py/select?name=S*;dept=M*</a></p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="Package Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installing.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2004-2019, software AG
+      <span class="lastupdated">
+        Last updated on Dec 12, 2019.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

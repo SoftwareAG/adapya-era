@@ -1,0 +1,1024 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>adapya.era.reptor &mdash; adapya-era 1.0.1 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/SAG2015.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> adapya-era
+          
+
+          
+            
+            <img src="../../../_static/SAG2015.ico" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installing.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../scripts.html">Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Package Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../indices.html">Indices</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">adapya-era</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>adapya.era.reptor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for adapya.era.reptor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: latin1 -*-</span>
+<span class="sd">&quot;&quot;&quot; reptor.py - Event Replication for Adabas main module</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>          <span class="c1"># PY3</span>
+
+<span class="kn">from</span> <span class="nn">adapya.base.defs</span> <span class="k">import</span> <span class="n">adalog</span> <span class="k">as</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="k">import</span> <span class="n">adaerror</span>
+
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbc</span><span class="p">,</span><span class="n">Urbd</span><span class="p">,</span><span class="n">Urbe</span><span class="p">,</span><span class="n">Urbh</span><span class="p">,</span><span class="n">Urbi</span><span class="p">,</span><span class="n">Urbr</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbs</span><span class="p">,</span><span class="n">Urbsu</span><span class="p">,</span><span class="n">Urbt</span><span class="p">,</span><span class="n">Urbu</span><span class="p">,</span><span class="n">Urbi_isns</span><span class="p">,</span><span class="n">New_Urb</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbf</span><span class="p">,</span><span class="n">Urbg</span><span class="p">,</span><span class="n">URBFL</span><span class="p">,</span><span class="n">URBGL</span><span class="p">,</span><span class="n">URBFVER1</span><span class="p">,</span><span class="n">URBFEYE</span><span class="p">,</span><span class="n">urbfflag_str</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBHEYE</span><span class="p">,</span><span class="n">URBHL</span><span class="p">,</span><span class="n">URBHBORD</span><span class="p">,</span><span class="n">URBHVER1</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBCEYE</span><span class="p">,</span><span class="n">URBCL</span><span class="p">,</span><span class="n">URBDEYE</span><span class="p">,</span><span class="n">URBDL</span><span class="p">,</span><span class="n">urbd_type</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBEEYE</span><span class="p">,</span><span class="n">URBEL</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBIEYE</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="n">URBIRTIS</span><span class="p">,</span><span class="n">URBIIRANGE</span><span class="p">,</span><span class="n">URBIIRANGELEN</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBIISNLEN</span><span class="p">,</span><span class="n">URBIRTTA</span><span class="p">,</span><span class="n">URBIRTST</span><span class="p">,</span><span class="n">URBIRTCD</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBREYE</span><span class="p">,</span><span class="n">URBRL</span><span class="p">,</span><span class="n">urbr_type</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBSEYE</span><span class="p">,</span><span class="n">URBSL</span><span class="p">,</span><span class="n">URBSSTAU</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBTEYE</span><span class="p">,</span><span class="n">URBTL</span><span class="p">,</span><span class="n">URBTRSNY</span><span class="p">,</span><span class="n">URBTINSY</span><span class="p">,</span><span class="n">URBTCONY</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBUEYE</span><span class="p">,</span><span class="n">URBUL</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">urbs_status</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">REPTOR_RSP</span><span class="p">,</span><span class="n">texts_reptor_subcodes</span>
+
+<span class="kn">from</span> <span class="nn">adapya.base.dump</span> <span class="k">import</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">conv</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">datamap</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">ecscodec</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">stck</span>
+<span class="kn">import</span> <span class="nn">binascii</span>
+<span class="kn">import</span> <span class="nn">types</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">adapya.era</span> <span class="k">import</span> <span class="n">xtra</span>  <span class="c1"># external optional plugin</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">xtra</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">fname</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+<span class="n">substat</span><span class="o">=</span><span class="kc">None</span>
+
+<div class="viewcode-block" id="ReptorError"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.ReptorError">[docs]</a><span class="k">class</span> <span class="nc">ReptorError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span> <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ParmsSubscription"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.ParmsSubscription">[docs]</a><span class="k">class</span> <span class="nc">ParmsSubscription</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="s2">&quot;defines parameters for updating the target database&quot;</span>
+    <span class="n">rblmax</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">fblmax</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">sversion</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sfiles</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        subscription = name of subscription to handle</span>
+<span class="sd">        version      = 2 byte version string compared with Reptor SVERSION</span>
+<span class="sd">        sfiles       = list of ParmSubsFile objects</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span><span class="o">=</span><span class="n">subscription</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sfiles</span><span class="o">=</span><span class="n">sfiles</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sfiles</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tdbid</span><span class="o">=</span><span class="n">sfiles</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tdbid</span>
+
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sfiles</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">dmap</span><span class="p">:</span>
+                <span class="n">sz</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">dmap</span><span class="o">.</span><span class="n">getsize</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sz</span> <span class="o">=</span> <span class="mh">0x7ff0</span>
+            <span class="k">if</span> <span class="n">ParmsSubscription</span><span class="o">.</span><span class="n">rblmax</span> <span class="o">&lt;</span> <span class="n">sz</span><span class="p">:</span>
+                <span class="n">ParmsSubscription</span><span class="o">.</span><span class="n">rblmax</span> <span class="o">=</span> <span class="n">sz</span>
+            <span class="k">if</span> <span class="n">ParmsSubscription</span><span class="o">.</span><span class="n">fblmax</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fb</span><span class="p">):</span>
+                <span class="n">ParmsSubscription</span><span class="o">.</span><span class="n">fblmax</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">fb</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tdbid</span> <span class="o">!=</span> <span class="n">s</span><span class="o">.</span><span class="n">tdbid</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Multiple target DBIDs not supported in subscription processing&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ParmsSfile"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.ParmsSfile">[docs]</a><span class="k">class</span> <span class="nc">ParmsSfile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Defines parameters for updating the target database</span>
+<span class="sd">        source and target database/file parameters</span>
+<span class="sd">        and the record format</span>
+
+<span class="sd">        :param sdbid: source database id</span>
+<span class="sd">        :param sfnr:  source file number</span>
+<span class="sd">        :param tdbid: target database id</span>
+<span class="sd">        :param tfnr:  target file number</span>
+<span class="sd">        :param fb:    format buffer when storing data</span>
+<span class="sd">        :param dmap:  datamap object describing fields in record</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fb</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">dmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">handler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+                 <span class="n">sdbid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sfnr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">tdbid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">tfnr</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sdbid</span><span class="o">=</span><span class="n">sdbid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sfnr</span><span class="o">=</span><span class="n">sfnr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tdbid</span><span class="o">=</span><span class="n">tdbid</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tfnr</span><span class="o">=</span><span class="n">tfnr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fb</span><span class="o">=</span><span class="n">fb</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="o">=</span><span class="n">handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dmap</span><span class="o">=</span><span class="n">dmap</span>
+
+        <span class="k">if</span> <span class="n">dmap</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbl</span> <span class="o">=</span> <span class="n">dmap</span><span class="o">.</span><span class="n">getsize</span><span class="p">()</span>  <span class="c1"># set size of datamap</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rbl</span> <span class="o">=</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="SubscriptionStatus"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.SubscriptionStatus">[docs]</a><span class="k">class</span> <span class="nc">SubscriptionStatus</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Holds current processing status of message(s) received&quot;&quot;&quot;</span>
+    <span class="n">snam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">sdbid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">sfnr</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">smap</span><span class="o">=</span><span class="kc">None</span></div>
+
+<span class="n">typURBH</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c1"># input type with URBH header (from Message Queue or ADARIS)</span>
+                <span class="c1"># set in ProcessingStatus().type with the first message</span>
+
+
+<span class="c1"># create datamap objects for each structure</span>
+<span class="n">cc</span><span class="o">=</span><span class="n">Urbc</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dd</span><span class="o">=</span><span class="n">Urbd</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ee</span><span class="o">=</span><span class="n">Urbe</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ff</span><span class="o">=</span><span class="n">Urbf</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">gg</span><span class="o">=</span><span class="n">Urbg</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">hh</span><span class="o">=</span><span class="n">Urbh</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ii</span><span class="o">=</span><span class="n">Urbi</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">nn</span><span class="o">=</span><span class="n">New_Urb</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">rr</span><span class="o">=</span><span class="n">Urbr</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ss</span><span class="o">=</span><span class="n">Urbs</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ssu</span><span class="o">=</span><span class="n">Urbsu</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">tt</span><span class="o">=</span><span class="n">Urbt</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">uu</span><span class="o">=</span><span class="n">Urbu</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ii_isns</span><span class="o">=</span><span class="n">Urbi_isns</span><span class="p">(</span><span class="n">buffer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<div class="viewcode-block" id="setURBebcdic"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.setURBebcdic">[docs]</a><span class="k">def</span> <span class="nf">setURBebcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set all URB blocks to EBCDIC or not.</span>
+<span class="sd">    Implicitely the byte encoding will be set to CP037 or Latin1</span>
+
+<span class="sd">    :param TrueFalse: True (set to EBDIC) or False</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cc</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">dd</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ee</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">gg</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">nn</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">rr</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ssu</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">tt</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">uu</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span>
+    <span class="n">ii_isns</span><span class="o">.</span><span class="n">setEbcdic</span><span class="p">(</span><span class="n">TrueFalse</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="setURBnwbo"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.setURBnwbo">[docs]</a><span class="k">def</span> <span class="nf">setURBnwbo</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;set all URB blocks to NETWORKBO byte order&quot;&quot;&quot;</span>
+    <span class="n">cc</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">dd</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">ee</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">ii</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">datamap</span><span class="o">.</span><span class="n">NETWORKBO</span>
+    <span class="n">ff</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">gg</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">datamap</span><span class="o">.</span><span class="n">NETWORKBO</span>
+    <span class="n">rr</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">ss</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">ssu</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">tt</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">uu</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">datamap</span><span class="o">.</span><span class="n">NETWORKBO</span>
+    <span class="n">ii_isns</span><span class="o">=</span><span class="n">nn</span><span class="o">.</span><span class="n">byteOrder</span><span class="o">=</span><span class="n">datamap</span><span class="o">.</span><span class="n">NETWORKBO</span></div>
+
+
+<div class="viewcode-block" id="makeURBH"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.makeURBH">[docs]</a><span class="k">def</span> <span class="nf">makeURBH</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span> <span class="n">msgNo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">senderName</span><span class="o">=</span><span class="s1">&#39;Admin&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;write URB header at beginning of buffer</span>
+
+<span class="sd">    :param msgNo:      message number (optional)</span>
+<span class="sd">    :param senderName: 8 byte name identifying the sender</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span>
+
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbheye</span><span class="o">=</span><span class="n">URBHEYE</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhlen</span><span class="o">=</span><span class="n">URBHL</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhvers</span><span class="o">=</span><span class="n">URBHVER1</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhbord</span><span class="o">=</span><span class="n">URBHBORD</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="o">=</span><span class="n">URBHL</span>     <span class="c1"># current / total msg length</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhmsnr</span><span class="o">=</span><span class="n">msgNo</span>     <span class="c1"># msg seq number per sender</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhtime</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhrpid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhrpni</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhname</span><span class="o">=</span><span class="n">senderName</span></div>
+
+<span class="k">def</span> <span class="nf">setTotalLength</span><span class="p">(</span><span class="n">totalLength</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">totalLength</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;new total length </span><span class="si">%d</span><span class="s1"> exceeds buffer size </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>
+                          <span class="p">(</span><span class="n">totalLength</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">))</span> <span class="p">)</span>
+    <span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="o">=</span><span class="n">totalLength</span>
+
+<div class="viewcode-block" id="makeURBS"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.makeURBS">[docs]</a><span class="k">def</span> <span class="nf">makeURBS</span><span class="p">(</span><span class="n">token</span><span class="o">=</span><span class="s1">&#39;TEST&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; create an URBS which can be received on an output queue</span>
+
+<span class="sd">        :param token: token for URBS</span>
+<span class="sd">        :return: current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBSL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+         <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBSL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="n">ss</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbseye</span><span class="o">=</span><span class="n">URBSEYE</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbslen</span><span class="o">=</span><span class="n">URBSL</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbslenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbslend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbsrtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbsrt</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ss</span><span class="o">.</span><span class="n">urbsst</span><span class="o">=</span><span class="s1">&#39;TEST&#39;</span>
+
+    <span class="n">setTotalLength</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBSL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ss</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBSL</span>  <span class="c1"># return current message size</span></div>
+
+
+
+
+<div class="viewcode-block" id="requestInst"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.requestInst">[docs]</a><span class="k">def</span> <span class="nf">requestInst</span><span class="p">(</span><span class="n">dbid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">fnr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">instname</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">token</span><span class="o">=</span><span class="s1">&#39;INSTREQU&#39;</span><span class="p">,</span>
+        <span class="n">rspDest</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">isnl</span><span class="o">=</span><span class="p">[],</span><span class="n">value</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">arc</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">acode</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">wcode</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; create URBI with initial state request element for an initial</span>
+<span class="sd">        state definition</span>
+
+<span class="sd">        :param instname: initial state name and</span>
+<span class="sd">        :param dbid: database id</span>
+<span class="sd">        :param fnr: file number</span>
+
+<span class="sd">        optional are:</span>
+
+<span class="sd">        :param rspDest: response destination</span>
+<span class="sd">        :param isnl: selected ISN list</span>
+<span class="sd">        :param value: selection value</span>
+<span class="sd">        :param arc: architecture</span>
+<span class="sd">        :param acode: alfa encoding</span>
+<span class="sd">        :param wcode: wide encoding</span>
+
+<span class="sd">        :return: current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBIL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+         <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbieye</span><span class="o">=</span><span class="n">URBIEYE</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="o">=</span><span class="n">rspDest</span>     <span class="c1"># destination name for response</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="o">=</span><span class="n">URBIRTIS</span>      <span class="c1"># Initial-state request type</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="o">=</span><span class="n">dbid</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="o">=</span><span class="n">fnr</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="o">=</span><span class="n">instname</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+    <span class="n">i0</span><span class="o">=</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>      <span class="c1"># value for selection criterion</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">isnl</span><span class="p">)</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span>
+              <span class="s1">&#39;ISN(s) and selection value cannot be specified both&#39;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">i0</span><span class="p">:</span><span class="n">i0</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)]</span><span class="o">=</span><span class="n">value</span>
+            <span class="n">i1</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="n">i1</span>
+            <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">i1</span><span class="o">+</span><span class="n">URBIL</span>
+            <span class="n">i1</span><span class="o">+=</span><span class="n">i0</span>
+            <span class="n">setTotalLength</span><span class="p">(</span><span class="n">i1</span><span class="p">)</span>
+
+            <span class="n">ii</span><span class="o">.</span><span class="n">urbiarc</span><span class="o">=</span><span class="n">arc</span>
+            <span class="n">ii</span><span class="o">.</span><span class="n">urbiacod</span><span class="o">=</span><span class="n">ecscodec</span><span class="o">.</span><span class="n">getecs</span><span class="p">(</span><span class="n">acode</span><span class="p">)</span>
+            <span class="n">ii</span><span class="o">.</span><span class="n">urbiwcod</span><span class="o">=</span><span class="n">ecscodec</span><span class="o">.</span><span class="n">getecs</span><span class="p">(</span><span class="n">wcode</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">i1</span>
+
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">isnl</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>     <span class="c1"># no ISN list -&gt; complete file</span>
+        <span class="n">setTotalLength</span><span class="p">(</span><span class="n">i0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">i0</span>  <span class="c1"># return current message size</span>
+
+    <span class="k">else</span><span class="p">:</span>                  <span class="c1"># ISN list</span>
+        <span class="n">ii_isns</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+        <span class="n">ii_isns</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">isnl</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">urbiirange</span><span class="o">=</span><span class="n">URBIIRANGE</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">urbiisn1</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">urbiisn2</span><span class="o">=</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">offset</span><span class="o">+=</span><span class="n">URBIIRANGELEN</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">urbiisn</span><span class="o">=</span><span class="n">i</span>
+                <span class="n">ii_isns</span><span class="o">.</span><span class="n">offset</span><span class="o">+=</span><span class="n">URBIISNLEN</span>
+        <span class="n">i1</span><span class="o">=</span><span class="n">ii_isns</span><span class="o">.</span><span class="n">offset</span>
+        <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="n">i1</span><span class="o">-</span><span class="n">i0</span>
+        <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">i1</span><span class="o">-</span><span class="n">i0</span><span class="o">+</span><span class="n">URBIL</span>
+        <span class="n">setTotalLength</span><span class="p">(</span><span class="n">i1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">i1</span>  <span class="c1"># return current message size</span></div>
+
+
+<div class="viewcode-block" id="requestPriorTrans"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.requestPriorTrans">[docs]</a><span class="k">def</span> <span class="nf">requestPriorTrans</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rspDest</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                  <span class="n">transSeqno</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s1">&#39;PRIORRQ&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;create URBI Prior Transaction request element for</span>
+<span class="sd">       subscription, transaction sequence number within subscription</span>
+<span class="sd">       and destination</span>
+<span class="sd">       if rspDest (response destination) it will receive</span>
+<span class="sd">       a status response URBS as well</span>
+<span class="sd">       returns current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBIL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="n">transSeqno</span><span class="o">&lt;=</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;transSeqno </span><span class="si">%d</span><span class="s1"> must be &gt; 0&#39;</span> <span class="o">%</span> <span class="n">transSeqno</span><span class="p">)</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbieye</span><span class="o">=</span><span class="n">URBIEYE</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="o">=</span><span class="n">rspDest</span>     <span class="c1"># destination name for response</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="o">=</span><span class="n">URBIRTTA</span>      <span class="c1"># request type: Prior transaction seqno</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="o">=</span><span class="n">subscription</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="o">=</span><span class="n">destination</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbitsnr</span><span class="o">=</span><span class="n">transSeqno</span>
+
+    <span class="n">setTotalLength</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>  <span class="c1"># return current message size</span></div>
+
+
+<div class="viewcode-block" id="requestStatus"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.requestStatus">[docs]</a><span class="k">def</span> <span class="nf">requestStatus</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rspDest</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                  <span class="n">token</span><span class="o">=</span><span class="s1">&#39;STATUSRQ&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;create URBI status request element for</span>
+<span class="sd">       destination and/or subscription</span>
+<span class="sd">       if rspDest (response destination) it will receive</span>
+<span class="sd">       a status response URBS as well</span>
+<span class="sd">       returns current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBIL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbieye</span><span class="o">=</span><span class="n">URBIEYE</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="o">=</span><span class="n">rspDest</span>     <span class="c1"># destination name for response</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="o">=</span><span class="n">URBIRTST</span>      <span class="c1"># status request type</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="o">=</span><span class="n">subscription</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="o">=</span><span class="n">destination</span>
+
+    <span class="n">setTotalLength</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>  <span class="c1"># return current message size</span></div>
+
+
+<div class="viewcode-block" id="requestCloseDest"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.requestCloseDest">[docs]</a><span class="k">def</span> <span class="nf">requestCloseDest</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rspDest</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s1">&#39;CLSDrqst&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;create URBI &#39;close destination&#39; request element for destination</span>
+<span class="sd">       if rspDest (response destination) it will receive</span>
+<span class="sd">       a status response URBS as well</span>
+<span class="sd">       returns current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBIL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbieye</span><span class="o">=</span><span class="n">URBIEYE</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="o">=</span><span class="n">rspDest</span>     <span class="c1"># destination name for response</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="o">=</span><span class="n">URBIRTCD</span>      <span class="c1"># Close destination request type</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="o">=</span><span class="n">destination</span>
+
+    <span class="n">setTotalLength</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>  <span class="c1"># return current message size</span></div>
+
+
+<div class="viewcode-block" id="requestOpenDest"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.requestOpenDest">[docs]</a><span class="k">def</span> <span class="nf">requestOpenDest</span><span class="p">(</span><span class="n">destination</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">rspDest</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">token</span><span class="o">=</span><span class="s1">&#39;OPNDrqst&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;create URBI &#39;open destination&#39; request element for destination</span>
+<span class="sd">       if rspDest (response destination) it will receive</span>
+<span class="sd">       a status response URBS as well</span>
+<span class="sd">       returns current message size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">URBIL</span><span class="o">+</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;Buffer full: </span><span class="si">%d</span><span class="s1"> + </span><span class="si">%d</span><span class="s1"> &gt; </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span>\
+          <span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="p">)))</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">buffer</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbieye</span><span class="o">=</span><span class="n">URBIEYE</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilenh</span><span class="o">=</span><span class="n">URBIL</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="o">=</span><span class="n">token</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="o">=</span><span class="n">rspDest</span>     <span class="c1"># destination name for response</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="o">=</span><span class="n">URBIRTOD</span>      <span class="c1"># &#39;Open destination&#39; request type</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+    <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="o">=</span><span class="n">destination</span>
+
+    <span class="n">setTotalLength</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span>  <span class="c1"># return current message size</span></div>
+
+<span class="n">LOGURBH</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">LOGURBT</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">LOGURBR</span><span class="o">=</span><span class="mi">4</span>
+<span class="n">LOGURBD</span><span class="o">=</span><span class="mi">8</span>
+<span class="n">LOGURBDD</span><span class="o">=</span><span class="mi">16</span> <span class="c1"># LOG DATA of URBD</span>
+<span class="n">LOGURBE</span><span class="o">=</span><span class="mi">32</span>  <span class="c1"># LOG end of transaction</span>
+<span class="n">LOGURBC</span><span class="o">=</span><span class="mi">128</span>
+<span class="n">LOGURBU</span><span class="o">=</span><span class="mi">256</span>
+<span class="n">LOGURBS</span><span class="o">=</span><span class="mi">512</span>
+<span class="n">LOGURBI</span><span class="o">=</span><span class="mi">1024</span>
+<span class="n">LOGURBF</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">11</span> <span class="c1"># log URBF and URBG</span>
+<span class="n">LOGallURB</span><span class="o">=</span><span class="mi">2</span><span class="o">**</span><span class="mi">12</span><span class="o">-</span><span class="mi">1</span>
+
+
+<div class="viewcode-block" id="Replicator"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.Replicator">[docs]</a><span class="k">class</span> <span class="nc">Replicator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Replicator class can process replication data</span>
+
+<span class="sd">        A provider or consumer of replication stream</span>
+<span class="sd">        can set handlers via setHandler() which will be called</span>
+<span class="sd">        to process the different URB* messages</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">handUrbc</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbd</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbe</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbf</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbi</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbh</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbr</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbs</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbt</span><span class="o">=</span><span class="kc">None</span>
+    <span class="n">handUrbu</span><span class="o">=</span><span class="kc">None</span>
+
+    <span class="n">typ</span> <span class="o">=</span> <span class="mi">0</span>        <span class="c1"># input type   # urbh type</span>
+    <span class="n">perrors</span> <span class="o">=</span> <span class="mi">0</span>     <span class="c1"># number of errors detected</span>
+    <span class="n">pcount</span> <span class="o">=</span> <span class="mi">0</span>      <span class="c1"># number of buffers or records processed</span>
+    <span class="n">logging</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">ecodec</span> <span class="o">=</span> <span class="s1">&#39;cp037&#39;</span>
+
+<div class="viewcode-block" id="Replicator.process"><a class="viewcode-back" href="../../../modules.html#adapya.era.reptor.Replicator.process">[docs]</a>    <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">buffer</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">substat</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Process a message received from Reptor</span>
+
+<span class="sd">            :param status: uow status</span>
+<span class="sd">            :param substat: may reference the subscription status class instance</span>
+<span class="sd">                for processing subscription data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pcount</span> <span class="o">+=</span> <span class="mi">1</span>      <span class="c1"># count number of process() calls</span>
+
+        <span class="k">if</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="mi">32</span><span class="p">:</span>                 <span class="c1"># minimum URB header is 32</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">perrors</span> <span class="o">+=</span> <span class="mi">1</span>         <span class="c1"># count processing errors</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Replication Record </span><span class="si">%d</span><span class="s1">: too short&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pcount</span><span class="p">)</span>
+            <span class="n">dump</span><span class="p">(</span><span class="n">buffer</span><span class="p">[:</span><span class="n">length</span><span class="p">],</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="c1"># the first record or buffer decides for the rest if it is</span>
+        <span class="c1"># - messages from broker or ADARIS: always starts with URBH</span>
+        <span class="c1"># - ASCII or EBCDIC format of the URBs</span>
+        <span class="c1"># - other type is from ADARPE: URBs in EBCDIC and Network byte order</span>
+
+        <span class="c1"># if self.pcount == 1:</span>
+        <span class="k">if</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># ADARIS binary output may have records starting with URBH and other URB types</span>
+              <span class="c1"># intermixed</span>
+            <span class="c1"># datamap.dataIsEbcdic=0       (default)</span>
+            <span class="c1"># datamap.setNativeByteOrder() (default)</span>
+            <span class="k">if</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xE4\xD9\xC2</span><span class="s1">&#39;</span><span class="p">:</span>  <span class="c1"># URBx in EBCDIC?</span>
+                <span class="c1"># datamap.dataIsEbcdic = 1</span>
+                <span class="n">setURBebcdic</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xC8</span><span class="s1">&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">|=</span> <span class="n">typURBH</span>
+                    <span class="k">if</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x01</span><span class="s1">&#39;</span><span class="p">:</span>
+                        <span class="c1"># datamap.setNetworkByteOrder()</span>
+                        <span class="n">setURBnwbo</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span> <span class="c1"># ADARPE type (no URBH)</span>
+                    <span class="c1"># datamap.setNetworkByteOrder()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">typURBH</span> <span class="c1"># reset possible URBH type</span>
+                    <span class="n">setURBnwbo</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;URB&#39;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">3</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;H&#39;</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">|=</span> <span class="n">typURBH</span>
+                    <span class="c1"># setURBebcdic(False)  # default</span>
+                    <span class="k">if</span> <span class="n">buffer</span><span class="p">[</span><span class="mi">10</span><span class="p">:</span><span class="mi">12</span><span class="p">]</span> <span class="o">==</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00\x01</span><span class="s1">&#39;</span><span class="p">:</span>
+                        <span class="c1"># datamap.setNetworkByteOrder()</span>
+                        <span class="n">setURBnwbo</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">&amp;=</span> <span class="o">~</span><span class="n">typURBH</span> <span class="c1"># reset possible URBH type</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">perrors</span> <span class="o">+=</span> <span class="mi">1</span>         <span class="c1"># count processing errors</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Replication Record </span><span class="si">% d</span><span class="s1">: no URB* prefix detected&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pcount</span><span class="p">)</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="n">header</span><span class="o">=</span><span class="s1">&#39;Buffer received&#39;</span><span class="p">,</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span><span class="s1">&#39;No URB* prefix detected but &quot;</span><span class="si">%s</span><span class="s1">&quot;&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">buffer</span><span class="p">[:</span><span class="mi">3</span><span class="p">],))</span>
+        <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGallURB</span><span class="p">:</span> <span class="c1"># any logging</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URB in EBCDIC = </span><span class="si">%d</span><span class="s1">, URBH messages = </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">datamap</span><span class="o">.</span><span class="n">dataIsEbcdic</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">&amp;</span> <span class="n">typURBH</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">&amp;</span> <span class="n">typURBH</span><span class="p">:</span>
+            <span class="n">hh</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+            <span class="n">hh</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="mi">0</span>
+
+            <span class="k">if</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbheye</span> <span class="o">!=</span> <span class="n">URBHEYE</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">perrors</span> <span class="o">+=</span> <span class="mi">1</span>         <span class="c1"># count processing errors</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Replication Record </span><span class="si">% d</span><span class="s1">: no URBH prefix detected&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">pcount</span><span class="p">)</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">buffer</span><span class="p">[:</span><span class="n">length</span><span class="p">],</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">if</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhvers</span> <span class="o">!=</span> <span class="n">URBHVER1</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Record </span><span class="si">%d</span><span class="s1">: incompatible URBH version </span><span class="si">%s</span><span class="s1"> received / expected </span><span class="si">%s</span><span class="s1">:&#39;</span> <span class="o">%</span>\
+                  <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pcount</span><span class="p">,</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhvers</span><span class="p">,</span> <span class="n">URBHVER1</span><span class="p">))</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">buffer</span><span class="p">[:</span><span class="n">length</span><span class="p">],</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="n">total_length</span><span class="o">=</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span>
+
+            <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBH</span><span class="p">:</span> <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">URBH </span><span class="si">%s</span><span class="s1"> msg </span><span class="si">%d</span><span class="s1"> total-len </span><span class="si">%d</span><span class="s1"> rpid </span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="s1"> </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span>
+                    <span class="p">(</span><span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">hh</span><span class="o">.</span><span class="n">urbhtime</span><span class="p">),</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhmsnr</span><span class="p">,</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhlent</span><span class="p">,</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhrpid</span><span class="p">,</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhrpni</span><span class="p">,</span> <span class="n">hh</span><span class="o">.</span><span class="n">urbhname</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbh</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">handUrbh</span><span class="p">(</span><span class="n">hh</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+            <span class="n">offset</span> <span class="o">=</span> <span class="n">URBHL</span>
+            <span class="n">rest_length</span> <span class="o">=</span> <span class="n">total_length</span> <span class="o">-</span> <span class="n">URBHL</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">offset</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">rest_length</span> <span class="o">=</span> <span class="n">length</span>
+
+        <span class="k">while</span> <span class="n">rest_length</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+
+            <span class="n">nn</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+
+            <span class="k">if</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBDEYE</span><span class="p">:</span>
+                <span class="n">dd</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">dd</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBD</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBD(</span><span class="si">%d</span><span class="s1">) </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dd</span><span class="o">.</span><span class="n">urbddsnr</span><span class="p">,</span> <span class="n">urbd_type</span><span class="p">[</span><span class="n">dd</span><span class="o">.</span><span class="n">urbdtyp</span><span class="p">]))</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBDD</span><span class="p">:</span>
+                        <span class="n">datalen</span> <span class="o">=</span> <span class="n">dd</span><span class="o">.</span><span class="n">urbdlend</span>
+                        <span class="n">dump</span><span class="p">(</span><span class="n">dd</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">URBDL</span><span class="p">:</span><span class="n">offset</span><span class="o">+</span><span class="n">URBDL</span><span class="o">+</span><span class="n">datalen</span><span class="p">],</span>
+                             <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbd</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbd</span><span class="p">(</span><span class="n">dd</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span> <span class="o">-=</span> <span class="n">dd</span><span class="o">.</span><span class="n">urbdlen</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">dd</span><span class="o">.</span><span class="n">urbdlen</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBEEYE</span><span class="p">:</span>
+                <span class="n">ee</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">ee</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBE</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBE -- end of transaction </span><span class="si">%d</span><span class="s1"> for subscription </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                            <span class="p">(</span><span class="n">ee</span><span class="o">.</span><span class="n">urbetsnr</span><span class="p">,</span> <span class="n">ee</span><span class="o">.</span><span class="n">urbesnam</span><span class="p">))</span>
+                <span class="n">rest_length</span> <span class="o">-=</span> <span class="n">URBEL</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">URBEL</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbe</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbe</span><span class="p">(</span><span class="n">ee</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBREYE</span><span class="p">:</span>
+                <span class="n">rr</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">rr</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBH</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBR -- </span><span class="si">%s</span><span class="s1"> record fnr </span><span class="si">%d</span><span class="s1"> isn </span><span class="si">%d</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                        <span class="p">(</span><span class="n">urbr_type</span><span class="p">[</span><span class="n">rr</span><span class="o">.</span><span class="n">urbrtyp</span><span class="p">],</span> <span class="n">rr</span><span class="o">.</span><span class="n">urbrfnr</span><span class="p">,</span> <span class="n">rr</span><span class="o">.</span><span class="n">urbrisn</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">rr</span><span class="o">.</span><span class="n">urbrrsp</span><span class="p">:</span>
+                            <span class="n">rspTxt</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+                            <span class="n">rspTxt</span><span class="o">=</span><span class="n">adaerror</span><span class="o">.</span><span class="n">rsptext</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">urbrrsp</span><span class="p">,</span><span class="n">rr</span><span class="o">.</span><span class="n">urbrsubc</span><span class="p">,</span><span class="n">erri</span><span class="o">=</span><span class="n">rr</span><span class="o">.</span><span class="n">urbrerrc</span><span class="p">)</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span> <span class="n">rspTxt</span> <span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbr</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbr</span><span class="p">(</span><span class="n">rr</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span><span class="o">-=</span><span class="n">URBRL</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">URBRL</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBTEYE</span><span class="p">:</span>
+                <span class="n">tt</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">tt</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBT</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtarc</span> <span class="o">&gt;</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">:</span>
+                            <span class="n">encstr</span> <span class="o">=</span> <span class="s1">&#39;arc=</span><span class="si">%d</span><span class="s1">, acode=</span><span class="si">%s</span><span class="s1">, wcode=</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>\
+                                <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtarc</span><span class="p">),</span> <span class="n">ecscodec</span><span class="o">.</span><span class="n">getcodec</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtacod</span><span class="p">),</span>
+                                    <span class="n">ecscodec</span><span class="o">.</span><span class="n">getcodec</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtwcod</span><span class="p">))</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">encstr</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
+
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBT -- transaction </span><span class="si">%d</span><span class="s1"> with </span><span class="si">%d</span><span class="s1"> records for subscription </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                            <span class="s1">&#39;     guid </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                            <span class="s1">&#39;     ET </span><span class="si">%s</span><span class="s1"> dbid </span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                            <span class="s1">&#39;     RP </span><span class="si">%s</span><span class="s1"> rpid </span><span class="si">%d</span><span class="s1">/</span><span class="si">%d</span><span class="s1"> </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>  \
+                            <span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbttsnr</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtrcnt</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtsnam</span><span class="p">,</span>
+                            <span class="n">binascii</span><span class="o">.</span><span class="n">hexlify</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtguid</span><span class="p">),</span>
+                            <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtttim</span><span class="p">),</span>  <span class="n">tt</span><span class="o">.</span><span class="n">urbtdbid</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtnuci</span><span class="p">,</span>
+                            <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">tt</span><span class="o">.</span><span class="n">urbtptim</span><span class="p">),</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtrpid</span><span class="p">,</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtrpni</span><span class="p">,</span>
+                            <span class="n">encstr</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtrsnd</span><span class="o">==</span><span class="n">URBTRSNY</span><span class="p">:</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;     -- possible double delivery --&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtinst</span><span class="o">==</span><span class="n">URBTINSY</span><span class="p">:</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;     -- initial state --&#39;</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">tt</span><span class="o">.</span><span class="n">urbtcont</span><span class="o">==</span><span class="n">URBTCONY</span><span class="p">:</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;     -- to be continued with next message --&#39;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbt</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbt</span><span class="p">(</span><span class="n">tt</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span><span class="o">-=</span><span class="n">URBTL</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">URBTL</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBCEYE</span><span class="p">:</span>
+                <span class="n">cc</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">cc</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBC</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBC -- transaction </span><span class="si">%d</span><span class="s1"> continued record </span><span class="si">%d</span><span class="s1"> dseq </span><span class="si">%d</span><span class="s1"> subs </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                            <span class="o">%</span> <span class="p">(</span><span class="n">cc</span><span class="o">.</span><span class="n">urbctsnr</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">urbcrsnr</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">urbcdsnr</span><span class="p">,</span> <span class="n">cc</span><span class="o">.</span><span class="n">urbcsnam</span><span class="p">))</span>
+                        <span class="k">if</span> <span class="n">cc</span><span class="o">.</span><span class="n">urbccont</span><span class="o">==</span><span class="n">URBTCONY</span><span class="p">:</span>
+                            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;     -- to be continued with next message --&#39;</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbc</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbc</span><span class="p">(</span><span class="n">cc</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span><span class="o">-=</span><span class="n">URBCL</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">URBCL</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBSEYE</span><span class="p">:</span>
+                <span class="n">ss</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">ss</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBS</span><span class="p">:</span>
+                        <span class="n">subcTxt</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                        <span class="k">if</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsrsp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">subcTxt</span><span class="o">=</span><span class="s1">&#39; -&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">urbssubc</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsrsp</span><span class="o">==</span><span class="n">REPTOR_RSP</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbssubc</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts_reptor_subcodes</span><span class="p">):</span>
+                                    <span class="n">subcTxt</span> <span class="o">+=</span> <span class="s1">&#39;- &#39;</span><span class="o">+</span><span class="n">texts_reptor_subcodes</span><span class="p">[</span><span class="n">ss</span><span class="o">.</span><span class="n">urbssubc</span><span class="p">]</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsrsp</span> <span class="ow">in</span> <span class="n">adaerror</span><span class="o">.</span><span class="n">rspdict</span><span class="p">:</span>
+                                    <span class="n">subcTxt</span> <span class="o">+=</span> <span class="s1">&#39; - &#39;</span><span class="o">+</span><span class="n">adaerror</span><span class="o">.</span><span class="n">rspdict</span><span class="p">[</span><span class="n">ss</span><span class="o">.</span><span class="n">urbsrsp</span><span class="p">]</span>
+
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBS </span><span class="si">%s</span><span class="s1"> -- </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> \
+                              <span class="s1">&#39;     subs </span><span class="si">%s</span><span class="s1"> dest </span><span class="si">%s</span><span class="s1"> init </span><span class="si">%s</span><span class="s1"> rsp </span><span class="si">%d%s</span><span class="s1"> </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                              <span class="s1">&#39;     ET </span><span class="si">%s</span><span class="s1"> dbid </span><span class="si">%d</span><span class="s1"> fnr </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                              <span class="s1">&#39;     RP </span><span class="si">%s</span><span class="s1"> tsnr </span><span class="si">%d</span><span class="s1"> rtok </span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span>  \
+                            <span class="p">(</span><span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">urbstime</span><span class="p">),</span>
+                             <span class="n">urbs_status</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">urbsst</span><span class="p">,</span><span class="n">ss</span><span class="o">.</span><span class="n">urbsst</span><span class="p">),</span>
+                             <span class="n">ss</span><span class="o">.</span><span class="n">urbssnam</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsdnam</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsinam</span><span class="p">,</span>
+                             <span class="n">ss</span><span class="o">.</span><span class="n">urbsrsp</span><span class="p">,</span> <span class="n">subcTxt</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbserri</span><span class="p">,</span>
+                             <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">urbsttim</span><span class="p">),</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsdbid</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsfnr</span><span class="p">,</span>
+                             <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">urbsptim</span><span class="p">),</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbstsnr</span><span class="p">,</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsrtok</span><span class="p">))</span>
+
+                        <span class="n">datalen</span> <span class="o">=</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbslend</span>
+                        <span class="k">if</span> <span class="n">datalen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbsst</span> <span class="o">==</span> <span class="n">URBSSTAU</span><span class="p">:</span>  <span class="c1"># online utility</span>
+                                <span class="n">ssu</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                                <span class="n">ssu</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="o">+</span><span class="n">URBSL</span>
+                                <span class="n">ssu</span><span class="o">.</span><span class="n">dprint</span><span class="p">()</span>
+                            <span class="k">elif</span> <span class="n">xtra</span><span class="p">:</span>
+                                <span class="n">xtra</span><span class="o">.</span><span class="n">urbslog</span><span class="p">(</span><span class="n">ss</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">dump</span><span class="p">(</span><span class="n">ss</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">URBSL</span><span class="p">:</span><span class="n">offset</span><span class="o">+</span><span class="n">URBSL</span><span class="o">+</span><span class="n">datalen</span><span class="p">],</span>
+                                     <span class="n">header</span><span class="o">=</span><span class="s1">&#39;     Reptor Status/Response Data&#39;</span><span class="p">,</span>
+                                     <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbs</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbs</span><span class="p">(</span><span class="n">ss</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span> <span class="o">-=</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbslen</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">ss</span><span class="o">.</span><span class="n">urbslen</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBIEYE</span><span class="p">:</span>
+                <span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">ii</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBI</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span> <span class="o">!=</span> <span class="n">URBIRTST</span> <span class="ow">and</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span> <span class="o">!=</span> <span class="n">URBIRTIS</span><span class="p">:</span>
+                            <span class="n">rtypeText</span> <span class="o">=</span> <span class="s1">&#39;Unknown request type &#39;</span> <span class="o">+</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">rtypeText</span> <span class="o">=</span> <span class="n">urbi_rtext</span><span class="p">[</span><span class="n">ii</span><span class="o">.</span><span class="n">urbirt</span><span class="p">]</span>
+
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBI </span><span class="si">%s</span><span class="s1"> -- token </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> \
+                              <span class="s1">&#39;     subs </span><span class="si">%s</span><span class="s1"> dest </span><span class="si">%s</span><span class="s1"> rdest </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> \
+                              <span class="s1">&#39;     init </span><span class="si">%s</span><span class="s1"> dbid </span><span class="si">%d</span><span class="s1"> fnr </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> \
+                             <span class="p">(</span><span class="n">rtypeText</span><span class="p">,</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbirtok</span><span class="p">,</span>
+                             <span class="n">ii</span><span class="o">.</span><span class="n">urbisnam</span><span class="p">,</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbidnam</span><span class="p">,</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbirnam</span><span class="p">,</span>
+                             <span class="n">ii</span><span class="o">.</span><span class="n">urbiinam</span><span class="p">,</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbidbid</span><span class="p">,</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbifnr</span><span class="p">))</span>
+
+                        <span class="n">datalen</span> <span class="o">=</span> <span class="n">ii</span><span class="o">.</span><span class="n">urbilend</span>
+                        <span class="k">if</span> <span class="n">datalen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">dump</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">buffer</span><span class="p">[</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="p">:</span><span class="n">offset</span><span class="o">+</span><span class="n">URBIL</span><span class="o">+</span><span class="n">datalen</span><span class="p">],</span>
+                                 <span class="n">header</span><span class="o">=</span><span class="s1">&#39;     Initial-state selection&#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;    &#39;</span><span class="p">,</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbi</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbi</span><span class="p">(</span><span class="n">ii</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span><span class="o">-=</span><span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span>
+                <span class="n">offset</span><span class="o">+=</span><span class="n">ii</span><span class="o">.</span><span class="n">urbilen</span>
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBUEYE</span><span class="p">:</span>
+                <span class="n">uu</span><span class="o">.</span><span class="n">buffer</span><span class="o">=</span><span class="n">buffer</span>
+                <span class="n">uu</span><span class="o">.</span><span class="n">offset</span><span class="o">=</span><span class="n">offset</span>
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBU</span><span class="p">:</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBU -- ADARPE </span><span class="si">%s</span><span class="s1"> extract from </span><span class="si">%s</span><span class="s1"> (local time)</span><span class="se">\n</span><span class="s1">&#39;</span>\
+                              <span class="o">%</span> <span class="p">(</span><span class="n">uu</span><span class="o">.</span><span class="n">urbuname</span><span class="p">,</span> <span class="n">uu</span><span class="o">.</span><span class="n">urbudist</span><span class="p">))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbu</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbu</span><span class="p">(</span><span class="n">uu</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+                <span class="n">rest_length</span> <span class="o">-=</span> <span class="n">URBUL</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">URBUL</span>
+
+
+            <span class="k">elif</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span> <span class="o">==</span> <span class="n">URBFEYE</span><span class="p">:</span> <span class="c1"># global format field table (GFFT)</span>
+                <span class="n">ff</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span>
+                <span class="n">ff</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span>
+
+                <span class="k">if</span> <span class="n">__debug__</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logging</span> <span class="o">&amp;</span> <span class="n">LOGURBF</span><span class="p">:</span>
+                        <span class="c1"># ff.urbffnam[: ff.urbffnml]</span>
+                        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;URBF -- gfid=</span><span class="si">%s</span><span class="s1"> db=</span><span class="si">%d</span><span class="s1">, fnr=</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> \
+                              <span class="s1">&#39;     fnam=</span><span class="si">%s</span><span class="s1">, items=</span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> \
+                              <span class="s1">&#39;     created=</span><span class="si">%s</span><span class="s1"> with </span><span class="si">%s</span><span class="se">\n</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
+                            <span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">urbfgfid</span><span class="p">,</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbfdbid</span><span class="p">,</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbffnr</span><span class="p">,</span>
+                             <span class="n">ff</span><span class="o">.</span><span class="n">urbffnam</span><span class="p">,</span><span class="n">ff</span><span class="o">.</span><span class="n">urbfcntg</span><span class="p">,</span>
+                             <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">urbftim1</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">19</span><span class="p">],</span>
+                             <span class="n">urbfflag_str</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">urbfflag</span><span class="p">),</span>
+                             <span class="s1">&#39;     processed=</span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">stck</span><span class="o">.</span><span class="n">sstckd</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">urbftim2</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">19</span><span class="p">]</span>
+                                                        <span class="k">if</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbftim2</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+                             <span class="p">))</span>
+
+                        <span class="n">datalen</span> <span class="o">=</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbflend</span>
+                        <span class="k">if</span> <span class="n">datalen</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">gg</span><span class="o">.</span><span class="n">buffer</span> <span class="o">=</span> <span class="n">buffer</span>
+                            <span class="n">gg</span><span class="o">.</span><span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span><span class="o">+</span><span class="n">URBFL</span>
+
+                            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ff</span><span class="o">.</span><span class="n">urbfcntg</span><span class="p">):</span>
+                                <span class="n">gg</span><span class="o">.</span><span class="n">dprint</span><span class="p">()</span>
+                                <span class="n">gg</span><span class="o">.</span><span class="n">offset</span> <span class="o">+=</span> <span class="n">URBGL</span>
+
+                <span class="n">rest_length</span> <span class="o">-=</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbflen</span>
+                <span class="n">offset</span> <span class="o">+=</span> <span class="n">ff</span><span class="o">.</span><span class="n">urbflen</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">handUrbf</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handUrbf</span><span class="p">(</span><span class="n">ff</span><span class="p">,</span> <span class="n">substat</span><span class="p">)</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Unknown Structure </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">nn</span><span class="o">.</span><span class="n">eye</span><span class="p">)</span>
+                <span class="n">dump</span><span class="p">(</span><span class="n">buffer</span><span class="p">[</span><span class="n">offset</span><span class="p">:</span><span class="n">offset</span><span class="o">+</span><span class="n">rest_length</span><span class="p">],</span><span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">,</span><span class="n">ecodec</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ecodec</span><span class="p">)</span>
+                <span class="k">break</span></div>
+
+    <span class="k">def</span> <span class="nf">setHandler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">urbType</span><span class="p">,</span> <span class="n">function</span><span class="p">):</span>
+        <span class="c1"># print( &#39;setHandler called&#39;, urbType, function)</span>
+        <span class="k">if</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBC&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbc</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBD&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbd</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBE&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbe</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBF&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbf</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBH&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbh</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBR&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbr</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBS&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbs</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBT&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbt</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBI&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbi</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">elif</span> <span class="n">urbType</span><span class="o">==</span><span class="s1">&#39;URBU&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handUrbu</span><span class="o">=</span><span class="n">function</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ReptorError</span><span class="p">(</span> <span class="s1">&#39;unknown structure </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">urbType</span><span class="p">,))</span></div>
+
+
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;v.r.l&#39;</span>
+<span class="k">if</span> <span class="n">__version__</span> <span class="o">==</span> <span class="s1">&#39;v.r.l&#39;</span><span class="p">:</span>
+    <span class="n">_svndate</span><span class="o">=</span><span class="s1">&#39;$Date: 2019-09-04 15:18:09 +0200 (Wed, 04 Sep 2019) $&#39;</span>
+    <span class="n">_svnrev</span><span class="o">=</span><span class="s1">&#39;$Rev: 938 $&#39;</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;Dev &#39;</span> <span class="o">+</span>  <span class="n">_svnrev</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span> <span class="o">+</span> \
+                  <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_svndate</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
+
+<span class="c1">#  Copyright 2004-ThisYear Software AG</span>
+<span class="c1">#</span>
+<span class="c1">#  Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1">#  you may not use this file except in compliance with the License.</span>
+<span class="c1">#  You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#      http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1">#  Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1">#  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1">#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1">#  See the License for the specific language governing permissions and</span>
+<span class="c1">#  limitations under the License.</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2004-2019, software AG
+      <span class="lastupdated">
+        Last updated on Dec 12, 2019.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
