@@ -429,8 +429,8 @@ class Tapada(reptor.Replicator):
       self.bytes+=hh.urbhlent
 
 
-__version__ = '1.0.1'
-if __version__ == '1.0.1':
+__version__ = '1.0.2'
+if __version__ == '1.0.2':
     _svndate='$Date: 2018-05-30 17:31:49 +0200 (Wed, 30 May 2018) $'
     _svnrev='$Rev: 837 $'
     __version__ = 'Dev ' +  _svnrev.strip('$') + \

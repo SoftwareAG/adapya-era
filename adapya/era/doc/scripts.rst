@@ -196,7 +196,7 @@ the replication data to an Adabas target database.
                             FTP parameters:
         -c, --config        set/show configuration
         -h, --host          <host name> of IBM FTP server         (*)
-        -p, --pwd           <password>  FTP ser1.0.1ogin password (*)
+        -p, --pwd           <password>  FTP ser1.0.2ogin password (*)
         -u, --user          <userid>                              (*)
 
         -t  --test          <name> testing LNKUEX <name> DLL/SO

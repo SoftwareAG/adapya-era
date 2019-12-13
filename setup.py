@@ -27,7 +27,7 @@ install_requires = [
 README = open(os.path.join(os.path.dirname(__file__), 'README.rst')).read()
 
 setup(  name='adapya-era',
-    version='1.0.1',
+    version='1.0.2',
     author='mmueller',
     author_email='mm@softwareag.com',
     description='adapya-era - services library of the Event Replicator for Adabas',
@@ -56,7 +56,7 @@ setup(  name='adapya-era',
     long_description=README,
     zip_safe=False,
     scripts = ['adapya/era/scripts/inq.py','adapya/era/scripts/outq.py',
-        'adapya/adabas/scripts/readris.py',],
+        'adapya/era/scripts/readris.py',],
     packages=['adapya', 'adapya.era'],
     install_requires=install_requires,
     namespace_packages=['adapya'],

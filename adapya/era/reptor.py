@@ -799,8 +799,8 @@ class Replicator(object):
             raise ReptorError( 'unknown structure %s'% (urbType,))
 
 
-__version__ = '1.0.1'
-if __version__ == '1.0.1':
+__version__ = '1.0.2'
+if __version__ == '1.0.2':
     _svndate='$Date: 2019-09-04 15:18:09 +0200 (Wed, 04 Sep 2019) $'
     _svnrev='$Rev: 938 $'
     __version__ = 'Dev ' +  _svnrev.strip('$') + \

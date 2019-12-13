@@ -973,8 +973,8 @@ class Urbg(Datamap):
 
 
 
-__version__ = '1.0.1'
-if __version__ == '1.0.1':
+__version__ = '1.0.2'
+if __version__ == '1.0.2':
     _svndate='$Date: 2018-11-09 15:31:28 +0100 (Fri, 09 Nov 2018) $'
     _svnrev='$Rev: 878 $'
     __version__ = 'Dev ' +  _svnrev.strip('$') + \
