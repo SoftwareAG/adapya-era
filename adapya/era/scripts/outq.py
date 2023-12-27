@@ -1,3 +1,4 @@
+
 #! /usr/bin/env python
 # -*- coding: latin1 -*-
 """ outq.py -- Reptor output queue reader
@@ -10,10 +11,8 @@ With a configuration file it it possible to define EXX broker parameters
 and subscription formats
 
 
- Usage: python [-O] outq.py [options]
+ Usage: python outq.py [options]
 
- -O                         run optimized, debug code not generated
-                            do not display interpreted URB*
  Options:
 
     -h, --help              display this help
@@ -38,7 +37,8 @@ and subscription formats
                             1 - dump buffers before Broker call
                             2 -              after call
                             4 - print broker calls, URB short and data
-                            8 - detailed print of URB buffers
+                            8 - tracking status of URB buffers
+                           16 - no URB detail print
     Experimental:
     -i  --convid            conversation id (default ANY if --sconv else NEW)
     -F, --flush             delete all UOWs for given queue and terminate
@@ -46,13 +46,13 @@ and subscription formats
     -S, --send              Send test URBS to output queue
 
  Example:
-    python outq.py -b ETB50019 -u MM -s MMSERV
+    python outq.py -b ibm1:3000 -u MM -s REPTOR/MMSERV/OUT3 -t 12
 
     outq -k demo.EmployeeReplication.rcOut1Config
 
 
-$Date: 2018-10-10 18:37:47 +0200 (Wed, 10 Oct 2018) $
-$Rev: 876 $
+$Date: 2023-12-01 00:54:33 +0100 (Fri, 01 Dec 2023) $
+$Rev: 1072 $
 """
 from __future__ import print_function          # PY3
 
@@ -62,6 +62,7 @@ from adapya.era import urb
 from adapya.era.reptor import ReptorError
 
 from adapya.base.conv import str2ebc
+from adapya.base.datamap import NETWORKBO, funpack
 import sys
 import getopt
 
@@ -77,7 +78,7 @@ else:
     PY3 = False
     getinput = raw_input
 
-
+printDetail = 0
 
 
 if __name__=='__main__':
@@ -159,6 +160,12 @@ if __name__=='__main__':
             buser=arg
         elif opt in ('-t', '--trace'):
             btrace=int(arg)
+            if btrace & 8:
+                if btrace & 16:
+                    btrace &= 0x0f # reset 16 flag
+                else:
+                    printDetail = 1
+
         elif opt in ('-a', '--xml'):    # target adapter XML messages
             xmls=1
 
@@ -174,9 +181,18 @@ if __name__=='__main__':
         fd=open('dump.log', 'w')
 
     if config:
-        # absolute     'adabas.arf.demo.EmployeeReplication.rcOut1Config'
+        # absolute     'adapya.era.demo.EmployeeReplication.rcOut1Config'
         # relative     'demo.EmployeeReplication.rcOut1Config'
-        cm =__import__(config,globals(),locals(),['psu',],-1)
+        # cm =__import__(config,globals(),locals(),['psu',],-1) level must be >=0
+        ## cm =__import__(config,globals(),locals(),['psu',],0)
+
+        #import importlib
+        #cm = importlib.import_module(config, package=None)
+
+        from importlib.machinery import SourceFileLoader
+        cm = SourceFileLoader(config,config+'.py').load_module()
+
+
         subconf=cm.psu  # currently only one subscription
         print('\n -- Using Configuration %s for Subscription %s --' %(
             config, subconf.subscription))
@@ -184,6 +200,7 @@ if __name__=='__main__':
             print('\tsdbid=%d, sfnr=%d, datamap=%s' % (
                 sfile.sdbid,sfile.sfnr,sfile.dmap.dmname))
         substat=reptor.SubscriptionStatus()  # keep status of messages received
+        substat.trace = btrace  # trace setting
 
         if cm.pbs:
             # broker parameters specified in configuration
@@ -232,21 +249,25 @@ if __name__=='__main__':
 
 
     def detailPrint(ss,substat):
-        ss.dprint()
+        if printDetail:
+            ss.dprint()
 
     def transPrint(ss,substat):
-        ss.dprint()
+        if printDetail:
+            ss.dprint()
         if substat:
             substat.snam=ss.urbtsnam    # remember subscription name
             substat.sdbid=ss.urbtdbid    # and dbid
 
     def recPrint(ss,substat):
-        ss.dprint()
+        if printDetail:
+            ss.dprint()
         if substat:
             substat.sfnr=ss.urbrfnr
 
     def dataPrint(ss,substat):
-        ss.dprint()
+        if printDetail:
+            ss.dprint()
         if not substat:
             i=ss.offset+urb.URBDL
             j=i+ss.urbdlend
@@ -401,6 +422,15 @@ if __name__=='__main__':
                     if 1 and bb.receive_buffer[0:7] == str2ebc('ART241E'):
                         # disable if conversion errors with field values to output codepage
                         arts = bb.receive_buffer[7:bb.return_length].decode('cp037','xmlcharrefreplace')
+                        print(arts)
+                        artx=xml.dom.minidom.parseString(arts)
+                        artp = artx.toprettyxml()
+                        print(artp)
+                    elif 1 and bb.receive_buffer[0:7] == str2ebc('ART241X'):
+                        cpnum = funpack(bb.receive_buffer[7:11], 'u', byteorder=NETWORKBO,ebcdic=1)
+                        # msglen = funpack(bb.receive_buffer[11:15], 'B', byteorder=NETWORKBO,ebcdic=1)
+                        # disable if conversion errors with field values to output codepage
+                        arts = bb.receive_buffer[15:bb.return_length].decode('cp%d' % cpnum,'xmlcharrefreplace')
                         # print(arts)
                         artx=xml.dom.minidom.parseString(arts)
                         artp = artx.toprettyxml()
@@ -432,7 +462,7 @@ if __name__=='__main__':
                         header='Receive buffer', prefix='    ',ecodec=repli.ecodec)
                     if 1 and  bb.receive_buffer[0:7] == str2ebc('ART241E'):
                         # disable if conv errors with field values to output codepage (cp1252)
-                        arts = bb.receive_buffer[7:bb.return_length].decode('cp037','xmlcharrefreplace')
+                        arts = bb.receive_buffer[15:bb.return_length].decode('cp037','xmlcharrefreplace')
                         # print(arts)
                         artx=xml.dom.minidom.parseString(arts)
                         artp = artx.toprettyxml()
@@ -467,7 +497,7 @@ if __name__=='__main__':
         if dumplog:
             fd.close() # close dump log
 
-#  Copyright 2004-ThisYear Software AG
+#  Copyright 2004-2023 Software AG
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.

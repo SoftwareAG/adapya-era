@@ -14,7 +14,10 @@ The package also consists of scripts that can send requests to the Replicator an
 receive event data via the EntireX Broker messaging system.
 
 *adapya-era* is part of a set of Python packages including adapya-adabas
-a client library for Adabas database access.
+a client library for Adabas database access and adapya-entirex a client library
+to Entirex Broker
+
+
 
 For more information about *Event Replicator for Adabas* see
 
@@ -44,6 +47,11 @@ For more information about *Event Replicator for Adabas* see
 Change History
 ==============
 
+**adapya-era 1.3.0 (Dec 2023)**
+
+- scripts/outq: improved import of metadata for record output
+
+
 **adapya-era 1.0.0 (May 2018)**
 
 - Support of Python 3.5 and higher
@@ -58,7 +66,7 @@ Change History
 adapya-era License
 ==================
 
-Copyright 2004-2019 Software AG
+Copyright 2004-2023 Software AG
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

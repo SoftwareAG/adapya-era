@@ -1,44 +1,47 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Overview &mdash; adapya-era 1.0.2 documentation</title>
+  <title>Overview &mdash; adapya-era 1.3.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="_static/SAG2015.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Installation" href="installing.html" />
-    <link rel="prev" title="adapya-era 1.0.2" href="index.html" /> 
+    <link rel="prev" title="adapya-era 1.3.0" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -65,7 +68,7 @@
             
             
               <div class="version">
-                1.0.2
+                1.3.0
               </div>
             
           
@@ -82,6 +85,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -104,6 +108,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -138,18 +143,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Overview</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -173,7 +180,8 @@ event replication data through a messaging system like MQ series or EntireX Brok
 <p>The package also consists of scripts that can send requests to the Replicator and
 receive event data via the EntireX Broker messaging system.</p>
 <p><em>adapya-era</em> is part of a set of Python packages including adapya-adabas
-a client library for Adabas database access.</p>
+a client library for Adabas database access and adapya-entirex a client library
+to Entirex Broker</p>
 <p>For more information about <em>Event Replicator for Adabas</em> see</p>
 <ul class="simple">
 <li><p>Information of the <a class="reference external" href="https://resources.softwareag.com/adabas-natural/event-replicator-for-adabas-on-the-mainframe">Software AG Product</a></p></li>
@@ -195,6 +203,10 @@ on Windows, Linux and Rocket Python on z/OS from version 2.7.12)</p></li>
 </ol>
 <div class="section" id="change-history">
 <h2>Change History<a class="headerlink" href="#change-history" title="Permalink to this headline">¶</a></h2>
+<p><strong>adapya-era 1.3.0 (Dec 2023)</strong></p>
+<ul class="simple">
+<li><p>scripts/outq: improved import of metadata for record output</p></li>
+</ul>
 <p><strong>adapya-era 1.0.0 (May 2018)</strong></p>
 <ul class="simple">
 <li><p>Support of Python 3.5 and higher</p></li>
@@ -205,7 +217,7 @@ on Windows, Linux and Rocket Python on z/OS from version 2.7.12)</p></li>
 </div>
 <div class="section" id="adapya-era-license">
 <h2>adapya-era License<a class="headerlink" href="#adapya-era-license" title="Permalink to this headline">¶</a></h2>
-<p>Copyright 2004-2019 Software AG</p>
+<p>Copyright 2004-2023 Software AG</p>
 <p>Licensed under the Apache License, Version 2.0 (the “License”);
 you may not use this file except in compliance with the License.</p>
 <p>You may obtain a copy of the License at</p>
@@ -223,32 +235,32 @@ limitations under the License.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="installing.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="index.html" class="btn btn-neutral float-left" title="adapya-era 1.0.2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="installing.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="adapya-era 1.3.0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2004-2019, software AG
+        &#169; Copyright 2004-2023, software AG.
       <span class="lastupdated">
-        Last updated on Dec 13, 2019.
+        Last updated on Dec 07, 2023.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -256,7 +268,6 @@ limitations under the License.</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

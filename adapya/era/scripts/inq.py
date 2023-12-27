@@ -116,7 +116,7 @@ inq ... --value "A B " --arc 9 --acode cp1252 --wcode utf8
 Initial state chunky mode
 -------------------------
 
-The processing will be split in several initial state chunks. The
+The processing will be split in se1.3.0 initial state chunks. The
 next chunk will only be requested once the previous is completed as
 reported on the target adapter log file.
 

@@ -1,40 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Package Reference &mdash; adapya-era 1.0.2 documentation</title>
+  <title>Package Reference &mdash; adapya-era 1.3.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="_static/SAG2015.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-        <script type="text/javascript" src="_static/jquery.js"></script>
-        <script type="text/javascript" src="_static/underscore.js"></script>
-        <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Indices" href="indices.html" />
@@ -65,7 +68,7 @@
             
             
               <div class="version">
-                1.0.2
+                1.3.0
               </div>
             
           
@@ -82,6 +85,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -103,6 +107,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -137,18 +142,20 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="index.html">Docs</a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
       <li>Package Reference</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -167,9 +174,9 @@
 <div class="section" id="module-adapya.era.reptor">
 <span id="reptor"></span><h2>reptor<a class="headerlink" href="#module-adapya.era.reptor" title="Permalink to this headline">¶</a></h2>
 <p>reptor.py - Event Replication for Adabas main module</p>
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.reptor.ParmsSfile">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">ParmsSfile</code><span class="sig-paren">(</span><em class="sig-param">fb=''</em>, <em class="sig-param">dmap=None</em>, <em class="sig-param">handler=None</em>, <em class="sig-param">sdbid=0</em>, <em class="sig-param">sfnr=0</em>, <em class="sig-param">tdbid=0</em>, <em class="sig-param">tfnr=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#ParmsSfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.ParmsSfile" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">ParmsSfile</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fb</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">dmap</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">handler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sdbid</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">sfnr</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">tdbid</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">tfnr</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#ParmsSfile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.ParmsSfile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Defines parameters for updating the target database
 source and target database/file parameters
 and the record format</p>
@@ -187,22 +194,22 @@ and the record format</p>
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.reptor.ParmsSubscription">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">ParmsSubscription</code><span class="sig-paren">(</span><em class="sig-param">subscription=''</em>, <em class="sig-param">sversion=''</em>, <em class="sig-param">sfiles=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#ParmsSubscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.ParmsSubscription" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">ParmsSubscription</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subscription</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">sversion</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">sfiles</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#ParmsSubscription"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.ParmsSubscription" title="Permalink to this definition">¶</a></dt>
 <dd><p>defines parameters for updating the target database</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.reptor.Replicator">
 <em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">Replicator</code><a class="reference internal" href="_modules/adapya/era/reptor.html#Replicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.Replicator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Replicator class can process replication data</p>
 <p>A provider or consumer of replication stream
 can set handlers via setHandler() which will be called
 to process the different URB* messages</p>
-<dl class="method">
+<dl class="py method">
 <dt id="adapya.era.reptor.Replicator.process">
-<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param">buffer</em>, <em class="sig-param">length</em>, <em class="sig-param">status=0</em>, <em class="sig-param">substat=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#Replicator.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.Replicator.process" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">process</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer</span></em>, <em class="sig-param"><span class="n">length</span></em>, <em class="sig-param"><span class="n">status</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">substat</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#Replicator.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.Replicator.process" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process a message received from Reptor</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -210,6 +217,8 @@ to process the different URB* messages</p>
 <li><p><strong>status</strong> – uow status</p></li>
 <li><p><strong>substat</strong> – may reference the subscription status class instance
 for processing subscription data</p></li>
+<li><p><strong>subconf</strong> – may reference the subscription and
+subscription-file configuration for processing subscription data</p></li>
 </ul>
 </dd>
 </dl>
@@ -217,20 +226,20 @@ for processing subscription data</p></li>
 
 </dd></dl>
 
-<dl class="exception">
+<dl class="py exception">
 <dt id="adapya.era.reptor.ReptorError">
 <em class="property">exception </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">ReptorError</code><a class="reference internal" href="_modules/adapya/era/reptor.html#ReptorError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.ReptorError" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.reptor.SubscriptionStatus">
 <em class="property">class </em><code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">SubscriptionStatus</code><a class="reference internal" href="_modules/adapya/era/reptor.html#SubscriptionStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.SubscriptionStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Holds current processing status of message(s) received</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.makeURBH">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">makeURBH</code><span class="sig-paren">(</span><em class="sig-param">buffer</em>, <em class="sig-param">msgNo=0</em>, <em class="sig-param">senderName='Admin'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#makeURBH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.makeURBH" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">makeURBH</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">buffer</span></em>, <em class="sig-param"><span class="n">msgNo</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">senderName</span><span class="o">=</span><span class="default_value">'Admin'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#makeURBH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.makeURBH" title="Permalink to this definition">¶</a></dt>
 <dd><p>write URB header at beginning of buffer</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -242,9 +251,9 @@ for processing subscription data</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.makeURBS">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">makeURBS</code><span class="sig-paren">(</span><em class="sig-param">token='TEST'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#makeURBS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.makeURBS" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">makeURBS</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'TEST'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#makeURBS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.makeURBS" title="Permalink to this definition">¶</a></dt>
 <dd><p>create an URBS which can be received on an output queue</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -256,18 +265,18 @@ for processing subscription data</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.requestCloseDest">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestCloseDest</code><span class="sig-paren">(</span><em class="sig-param">destination=''</em>, <em class="sig-param">rspDest=''</em>, <em class="sig-param">token='CLSDrqst'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestCloseDest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestCloseDest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestCloseDest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rspDest</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'CLSDrqst'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestCloseDest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestCloseDest" title="Permalink to this definition">¶</a></dt>
 <dd><p>create URBI ‘close destination’ request element for destination
 if rspDest (response destination) it will receive
 a status response URBS as well
 returns current message size</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.requestInst">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestInst</code><span class="sig-paren">(</span><em class="sig-param">dbid=0</em>, <em class="sig-param">fnr=0</em>, <em class="sig-param">instname=''</em>, <em class="sig-param">token='INSTREQU'</em>, <em class="sig-param">rspDest=''</em>, <em class="sig-param">isnl=[]</em>, <em class="sig-param">value=''</em>, <em class="sig-param">arc=0</em>, <em class="sig-param">acode=''</em>, <em class="sig-param">wcode=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestInst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestInst" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestInst</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dbid</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">fnr</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">instname</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'INSTREQU'</span></em>, <em class="sig-param"><span class="n">rspDest</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">isnl</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">value</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">arc</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">acode</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">wcode</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestInst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestInst" title="Permalink to this definition">¶</a></dt>
 <dd><p>create URBI with initial state request element for an initial
 state definition</p>
 <dl class="field-list simple">
@@ -297,18 +306,18 @@ state definition</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.requestOpenDest">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestOpenDest</code><span class="sig-paren">(</span><em class="sig-param">destination=''</em>, <em class="sig-param">rspDest=''</em>, <em class="sig-param">token='OPNDrqst'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestOpenDest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestOpenDest" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestOpenDest</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rspDest</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'OPNDrqst'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestOpenDest"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestOpenDest" title="Permalink to this definition">¶</a></dt>
 <dd><p>create URBI ‘open destination’ request element for destination
 if rspDest (response destination) it will receive
 a status response URBS as well
 returns current message size</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.requestPriorTrans">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestPriorTrans</code><span class="sig-paren">(</span><em class="sig-param">destination=''</em>, <em class="sig-param">rspDest=''</em>, <em class="sig-param">subscription=''</em>, <em class="sig-param">transSeqno=0</em>, <em class="sig-param">token='PRIORRQ'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestPriorTrans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestPriorTrans" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestPriorTrans</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rspDest</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">subscription</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">transSeqno</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'PRIORRQ'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestPriorTrans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestPriorTrans" title="Permalink to this definition">¶</a></dt>
 <dd><p>create URBI Prior Transaction request element for
 subscription, transaction sequence number within subscription
 and destination
@@ -317,9 +326,9 @@ a status response URBS as well
 returns current message size</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.requestStatus">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestStatus</code><span class="sig-paren">(</span><em class="sig-param">destination=''</em>, <em class="sig-param">rspDest=''</em>, <em class="sig-param">subscription=''</em>, <em class="sig-param">token='STATUSRQ'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestStatus" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">requestStatus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">destination</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rspDest</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">subscription</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">token</span><span class="o">=</span><span class="default_value">'STATUSRQ'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#requestStatus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.requestStatus" title="Permalink to this definition">¶</a></dt>
 <dd><p>create URBI status request element for
 destination and/or subscription
 if rspDest (response destination) it will receive
@@ -327,9 +336,9 @@ a status response URBS as well
 returns current message size</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.setURBebcdic">
-<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">setURBebcdic</code><span class="sig-paren">(</span><em class="sig-param">TrueFalse</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#setURBebcdic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.setURBebcdic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">setURBebcdic</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">TrueFalse</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#setURBebcdic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.setURBebcdic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set all URB blocks to EBCDIC or not.
 Implicitely the byte encoding will be set to CP037 or Latin1</p>
 <dl class="field-list simple">
@@ -339,55 +348,55 @@ Implicitely the byte encoding will be set to CP037 or Latin1</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.reptor.setURBnwbo">
 <code class="sig-prename descclassname">adapya.era.reptor.</code><code class="sig-name descname">setURBnwbo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/reptor.html#setURBnwbo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.reptor.setURBnwbo" title="Permalink to this definition">¶</a></dt>
 <dd><p>set all URB blocks to NETWORKBO byte order</p>
 </dd></dl>
 
 <span class="target" id="module-adapya.era.urb"></span><p>urb.py - User Replication Buffer Definitions</p>
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.New_Urb">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">New_Urb</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#New_Urb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.New_Urb" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">New_Urb</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#New_Urb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.New_Urb" title="Permalink to this definition">¶</a></dt>
 <dd><p>new URB - helper to detect which URB type it is</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbc">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbc</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbc" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbc</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbc" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBC – Continuation element</p>
 <p>Contains information related to a transaction
 that is continued in the current message.</p>
 <p>Optional init parms: buffer and offset</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbd">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbd</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbd" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbd</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbd" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBD – Data element</p>
 <p>Contains data related to a before or after
 image associated with one record.</p>
 <p>Optional init parms: buffer and offset</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbe">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbe</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbe" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbe</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbe" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBE – End-of-transaction element</p>
 <p>indicates the end of the transaction related
 to the preceding record and data elements.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbf">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbf</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbf" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbf</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbf" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBF – Reptor Global format field table (GFFT) Header</p>
 <p>Urbf is the header for a global format field table (GFFT)</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbg">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbg</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbg" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbg</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbg" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBG – Reptor Global format field table (GFFT) element</p>
 <p>Urgb contains one field of many defined in a schema of a file
 being replicated. One or more Urbg follow one Urbf related
@@ -395,151 +404,151 @@ to a global format that determines the structure of a
 related record.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbh">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbh</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbh" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbh</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbh" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBH - Message header</p>
 <p>URBH is put at the start of each buffer sent to
 the messaging system.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbi">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbi</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbi" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbi</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbi" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBI – Input element</p>
 <p>contains input data for a request from a
 Target Application to the Reptor.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbi_isns">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbi_isns</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbi_isns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbi_isns" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbi_isns</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbi_isns"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbi_isns" title="Permalink to this definition">¶</a></dt>
 <dd><p>Urbi_isns – Initial-State Request ISN list definitions</p>
 <p>either individual ISNs are possible or
 ranges of ISNs with range indicator and 2 ISNs defining the range</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbr">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbr</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbr" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbr</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbr" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBR - Record Element</p>
 <p>contains information related to one record.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbs">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbs</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbs" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbs</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbs" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBS – Reptor status/response element</p>
 <p>Contains status/response information sent
 from the Reptor to a Target Application.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU – Reptor Status Adabas Utility Service Detail Element
 Contains information about Adabas Online utiltity Service processed
 on the input database.
 This data follows an URBS with urbsst=URBSSTAU</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu41">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu41</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu41" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu41</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu41"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu41" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU41 Change field length</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu44">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu44</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu44" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu44</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu44"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu44" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU44 Delete file</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu4a">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4a</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4a" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4a</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4a"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4a" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU4A Release Descriptor</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu4b">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4b</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4b" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4b</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4b"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4b" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU4B Rename File</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu4e">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4e</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4e" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4e</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4e"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4e" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU4e Reuse ISN ON/OFF</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu4f">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4f</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4f" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu4f</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu4f"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu4f" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU4f Reuse DS ON/OFF</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu55">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu55</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu55" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu55</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu55"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu55" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU55 Modify FCB</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu5c">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu5c</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu5c"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu5c" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu5c</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu5c"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu5c" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU5C Change Field Format</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu68">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu68</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu68"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu68" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu68</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu68"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu68" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU68 USERISN ON/OFF</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu69">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu69</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu69"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu69" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu69</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu69"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu69" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU69 Change MIXDSDEV</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu70">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu70</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu70" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu70</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu70"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu70" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU70 Online Invert</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbsu78">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu78</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu78"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu78" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbsu78</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbsu78"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbsu78" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBSU78 MUPE count</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbt">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbt</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbt" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbt</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbt" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBT – Transaction element</p>
 <p>Contains information related to one transaction.</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.urb.Urbu">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbu</code><span class="sig-paren">(</span><em class="sig-param">**kw</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbu" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">Urbu</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kw</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#Urbu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.Urbu" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBU – ADARPE Extract Header User Element</p>
 <p>Contains information related to ADARPE extration.
 It is the first record on the output file when running ADARPE
 with parameter HEADER=YES (default).</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.urb.plugrsp131">
-<code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">plugrsp131</code><span class="sig-paren">(</span><em class="sig-param">rsp</em>, <em class="sig-param">subcode</em>, <em class="sig-param">errc</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#plugrsp131"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.plugrsp131" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">plugrsp131</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rsp</span></em>, <em class="sig-param"><span class="n">subcode</span></em>, <em class="sig-param"><span class="n">errc</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#plugrsp131"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.plugrsp131" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set Response 131 Reptor subcodes to text plugin</p>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="adapya.era.urb.urbsst_str">
-<code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">urbsst_str</code><span class="sig-paren">(</span><em class="sig-param">s</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#urbsst_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.urbsst_str" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">adapya.era.urb.</code><code class="sig-name descname">urbsst_str</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">s</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/urb.html#urbsst_str"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.urb.urbsst_str" title="Permalink to this definition">¶</a></dt>
 <dd><p>convert URBS status code to readable string</p>
 </dd></dl>
 
@@ -550,31 +559,31 @@ stats() move into reptor URBS handler
 sversion checking</p>
 </dd>
 </dl>
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.tapada.Tapada">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.tapada.</code><code class="sig-name descname">Tapada</code><span class="sig-paren">(</span><em class="sig-param">subsparm</em>, <em class="sig-param">lnkuexso=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.tapada.</code><code class="sig-name descname">Tapada</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">subsparm</span></em>, <em class="sig-param"><span class="n">lnkuexso</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class implements the Adabas Database Update handlers
 and processes input data passed via the process() method</p>
-<dl class="method">
+<dl class="py method">
 <dt id="adapya.era.tapada.Tapada.metUrbd">
-<code class="sig-name descname">metUrbd</code><span class="sig-paren">(</span><em class="sig-param">dd</em>, <em class="sig-param">substat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada.metUrbd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada.metUrbd" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">metUrbd</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dd</span></em>, <em class="sig-param"><span class="n">substat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada.metUrbd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada.metUrbd" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBD data block handler</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="adapya.era.tapada.Tapada.metUrbr">
-<code class="sig-name descname">metUrbr</code><span class="sig-paren">(</span><em class="sig-param">rr</em>, <em class="sig-param">substat</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada.metUrbr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada.metUrbr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">metUrbr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rr</span></em>, <em class="sig-param"><span class="n">substat</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#Tapada.metUrbr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.Tapada.metUrbr" title="Permalink to this definition">¶</a></dt>
 <dd><p>URBR Record block handler</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="adapya.era.tapada.UexAdabas">
-<em class="property">class </em><code class="sig-prename descclassname">adapya.era.tapada.</code><code class="sig-name descname">UexAdabas</code><span class="sig-paren">(</span><em class="sig-param">fbl=0</em>, <em class="sig-param">rbl=0</em>, <em class="sig-param">sbl=0</em>, <em class="sig-param">vbl=0</em>, <em class="sig-param">ibl=0</em>, <em class="sig-param">pmutex=None</em>, <em class="sig-param">thread=0</em>, <em class="sig-param">multifetch=0</em>, <em class="sig-param">archit=None</em>, <em class="sig-param">password=''</em>, <em class="sig-param">cipher=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#UexAdabas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.UexAdabas" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="sig-prename descclassname">adapya.era.tapada.</code><code class="sig-name descname">UexAdabas</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">fbl</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">rbl</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">sbl</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">vbl</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">ibl</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">pmutex</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">noexceptions</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">thread</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">multifetch</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">archit</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">password</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cipher</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#UexAdabas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.UexAdabas" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
 <dt id="adapya.era.tapada.UexAdabas.call">
-<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param">**cbfields</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#UexAdabas.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.UexAdabas.call" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">call</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">cbfields</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/adapya/era/tapada.html#UexAdabas.call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#adapya.era.tapada.UexAdabas.call" title="Permalink to this definition">¶</a></dt>
 <dd><p>issue Call to lnkuex_0 with the Adabas control block class variables</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -594,32 +603,32 @@ set the control block before the call</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="indices.html" class="btn btn-neutral float-right" title="Indices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="scripts.html" class="btn btn-neutral float-left" title="Scripts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="indices.html" class="btn btn-neutral float-right" title="Indices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="scripts.html" class="btn btn-neutral float-left" title="Scripts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2004-2019, software AG
+        &#169; Copyright 2004-2023, software AG.
       <span class="lastupdated">
-        Last updated on Dec 13, 2019.
+        Last updated on Dec 07, 2023.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -627,7 +636,6 @@ set the control block before the call</p>
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

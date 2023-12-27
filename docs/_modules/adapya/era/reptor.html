@@ -1,40 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>adapya.era.reptor &mdash; adapya-era 1.0.2 documentation</title>
+  <title>adapya.era.reptor &mdash; adapya-era 1.3.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../../../_static/SAG2015.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                1.0.2
+                1.3.0
               </div>
             
           
@@ -80,6 +83,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,6 +102,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -132,11 +137,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -160,36 +167,36 @@
 <span class="sd">&quot;&quot;&quot; reptor.py - Event Replication for Adabas main module</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>          <span class="c1"># PY3</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>          <span class="c1"># PY3</span>
 
-<span class="kn">from</span> <span class="nn">adapya.base.defs</span> <span class="k">import</span> <span class="n">adalog</span> <span class="k">as</span> <span class="n">log</span>
-<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="k">import</span> <span class="n">adaerror</span>
+<span class="kn">from</span> <span class="nn">adapya.base.defs</span> <span class="kn">import</span> <span class="n">adalog</span> <span class="k">as</span> <span class="n">log</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="kn">import</span> <span class="n">adaerror</span>
 
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbc</span><span class="p">,</span><span class="n">Urbd</span><span class="p">,</span><span class="n">Urbe</span><span class="p">,</span><span class="n">Urbh</span><span class="p">,</span><span class="n">Urbi</span><span class="p">,</span><span class="n">Urbr</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbs</span><span class="p">,</span><span class="n">Urbsu</span><span class="p">,</span><span class="n">Urbt</span><span class="p">,</span><span class="n">Urbu</span><span class="p">,</span><span class="n">Urbi_isns</span><span class="p">,</span><span class="n">New_Urb</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">Urbf</span><span class="p">,</span><span class="n">Urbg</span><span class="p">,</span><span class="n">URBFL</span><span class="p">,</span><span class="n">URBGL</span><span class="p">,</span><span class="n">URBFVER1</span><span class="p">,</span><span class="n">URBFEYE</span><span class="p">,</span><span class="n">urbfflag_str</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBHEYE</span><span class="p">,</span><span class="n">URBHL</span><span class="p">,</span><span class="n">URBHBORD</span><span class="p">,</span><span class="n">URBHVER1</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBCEYE</span><span class="p">,</span><span class="n">URBCL</span><span class="p">,</span><span class="n">URBDEYE</span><span class="p">,</span><span class="n">URBDL</span><span class="p">,</span><span class="n">urbd_type</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBEEYE</span><span class="p">,</span><span class="n">URBEL</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBIEYE</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="n">URBIRTIS</span><span class="p">,</span><span class="n">URBIIRANGE</span><span class="p">,</span><span class="n">URBIIRANGELEN</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBIISNLEN</span><span class="p">,</span><span class="n">URBIRTTA</span><span class="p">,</span><span class="n">URBIRTST</span><span class="p">,</span><span class="n">URBIRTCD</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBREYE</span><span class="p">,</span><span class="n">URBRL</span><span class="p">,</span><span class="n">urbr_type</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBSEYE</span><span class="p">,</span><span class="n">URBSL</span><span class="p">,</span><span class="n">URBSSTAU</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBTEYE</span><span class="p">,</span><span class="n">URBTL</span><span class="p">,</span><span class="n">URBTRSNY</span><span class="p">,</span><span class="n">URBTINSY</span><span class="p">,</span><span class="n">URBTCONY</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBUEYE</span><span class="p">,</span><span class="n">URBUL</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">urbs_status</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">REPTOR_RSP</span><span class="p">,</span><span class="n">texts_reptor_subcodes</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">Urbc</span><span class="p">,</span><span class="n">Urbd</span><span class="p">,</span><span class="n">Urbe</span><span class="p">,</span><span class="n">Urbh</span><span class="p">,</span><span class="n">Urbi</span><span class="p">,</span><span class="n">Urbr</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">Urbs</span><span class="p">,</span><span class="n">Urbsu</span><span class="p">,</span><span class="n">Urbt</span><span class="p">,</span><span class="n">Urbu</span><span class="p">,</span><span class="n">Urbi_isns</span><span class="p">,</span><span class="n">New_Urb</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">Urbf</span><span class="p">,</span><span class="n">Urbg</span><span class="p">,</span><span class="n">URBFL</span><span class="p">,</span><span class="n">URBGL</span><span class="p">,</span><span class="n">URBFVER1</span><span class="p">,</span><span class="n">URBFEYE</span><span class="p">,</span><span class="n">urbfflag_str</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBHEYE</span><span class="p">,</span><span class="n">URBHL</span><span class="p">,</span><span class="n">URBHBORD</span><span class="p">,</span><span class="n">URBHVER1</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBCEYE</span><span class="p">,</span><span class="n">URBCL</span><span class="p">,</span><span class="n">URBDEYE</span><span class="p">,</span><span class="n">URBDL</span><span class="p">,</span><span class="n">urbd_type</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBEEYE</span><span class="p">,</span><span class="n">URBEL</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBIEYE</span><span class="p">,</span><span class="n">URBIL</span><span class="p">,</span><span class="n">URBIRTIS</span><span class="p">,</span><span class="n">URBIIRANGE</span><span class="p">,</span><span class="n">URBIIRANGELEN</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBIISNLEN</span><span class="p">,</span><span class="n">URBIRTTA</span><span class="p">,</span><span class="n">URBIRTST</span><span class="p">,</span><span class="n">URBIRTCD</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBREYE</span><span class="p">,</span><span class="n">URBRL</span><span class="p">,</span><span class="n">urbr_type</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBSEYE</span><span class="p">,</span><span class="n">URBSL</span><span class="p">,</span><span class="n">URBSSTAU</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBTEYE</span><span class="p">,</span><span class="n">URBTL</span><span class="p">,</span><span class="n">URBTRSNY</span><span class="p">,</span><span class="n">URBTINSY</span><span class="p">,</span><span class="n">URBTCONY</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBUEYE</span><span class="p">,</span><span class="n">URBUL</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">urbs_status</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">REPTOR_RSP</span><span class="p">,</span><span class="n">texts_reptor_subcodes</span>
 
-<span class="kn">from</span> <span class="nn">adapya.base.dump</span> <span class="k">import</span> <span class="n">dump</span>
-<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">conv</span>
-<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">datamap</span>
-<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">ecscodec</span>
-<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">stck</span>
+<span class="kn">from</span> <span class="nn">adapya.base.dump</span> <span class="kn">import</span> <span class="n">dump</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="kn">import</span> <span class="n">conv</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="kn">import</span> <span class="n">datamap</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="kn">import</span> <span class="n">ecscodec</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="kn">import</span> <span class="n">stck</span>
 <span class="kn">import</span> <span class="nn">binascii</span>
 <span class="kn">import</span> <span class="nn">types</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">adapya.era</span> <span class="k">import</span> <span class="n">xtra</span>  <span class="c1"># external optional plugin</span>
+    <span class="kn">from</span> <span class="nn">adapya.era</span> <span class="kn">import</span> <span class="n">xtra</span>  <span class="c1"># external optional plugin</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="n">xtra</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -202,7 +209,7 @@
     <span class="s2">&quot;defines parameters for updating the target database&quot;</span>
     <span class="n">rblmax</span><span class="o">=</span><span class="mi">0</span>
     <span class="n">fblmax</span><span class="o">=</span><span class="mi">0</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">sversion</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sfiles</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">subscription</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">sversion</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">sfiles</span><span class="o">=</span><span class="p">[]):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        subscription = name of subscription to handle</span>
 <span class="sd">        version      = 2 byte version string compared with Reptor SVERSION</span>
@@ -240,7 +247,7 @@
 <span class="sd">        :param dmap:  datamap object describing fields in record</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fb</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">dmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">handler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">fb</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="n">dmap</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">handler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
                  <span class="n">sdbid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">sfnr</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">tdbid</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="n">tfnr</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sdbid</span><span class="o">=</span><span class="n">sdbid</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sfnr</span><span class="o">=</span><span class="n">sfnr</span>
@@ -583,6 +590,7 @@
 <span class="n">LOGURBD</span><span class="o">=</span><span class="mi">8</span>
 <span class="n">LOGURBDD</span><span class="o">=</span><span class="mi">16</span> <span class="c1"># LOG DATA of URBD</span>
 <span class="n">LOGURBE</span><span class="o">=</span><span class="mi">32</span>  <span class="c1"># LOG end of transaction</span>
+<span class="n">LOGURBDM</span><span class="o">=</span><span class="mi">64</span> <span class="c1"># LOG datamap of data of URBD</span>
 <span class="n">LOGURBC</span><span class="o">=</span><span class="mi">128</span>
 <span class="n">LOGURBU</span><span class="o">=</span><span class="mi">256</span>
 <span class="n">LOGURBS</span><span class="o">=</span><span class="mi">512</span>
@@ -622,6 +630,8 @@
 <span class="sd">            :param status: uow status</span>
 <span class="sd">            :param substat: may reference the subscription status class instance</span>
 <span class="sd">                for processing subscription data</span>
+<span class="sd">            :param subconf: may reference the subscription and</span>
+<span class="sd">                subscription-file configuration for processing subscription data</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pcount</span> <span class="o">+=</span> <span class="mi">1</span>      <span class="c1"># count number of process() calls</span>
 
@@ -959,8 +969,8 @@
 
 <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;v.r.l&#39;</span>
 <span class="k">if</span> <span class="n">__version__</span> <span class="o">==</span> <span class="s1">&#39;v.r.l&#39;</span><span class="p">:</span>
-    <span class="n">_svndate</span><span class="o">=</span><span class="s1">&#39;$Date: 2019-09-04 15:18:09 +0200 (Wed, 04 Sep 2019) $&#39;</span>
-    <span class="n">_svnrev</span><span class="o">=</span><span class="s1">&#39;$Rev: 938 $&#39;</span>
+    <span class="n">_svndate</span><span class="o">=</span><span class="s1">&#39;$Date: 2023-12-01 00:54:33 +0100 (Fri, 01 Dec 2023) $&#39;</span>
+    <span class="n">_svnrev</span><span class="o">=</span><span class="s1">&#39;$Rev: 1072 $&#39;</span>
     <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;Dev &#39;</span> <span class="o">+</span>  <span class="n">_svnrev</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span> <span class="o">+</span> \
                   <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_svndate</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 
@@ -983,23 +993,28 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2004-2019, software AG
+        &#169; Copyright 2004-2023, software AG.
       <span class="lastupdated">
-        Last updated on Dec 13, 2019.
+        Last updated on Dec 07, 2023.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -1007,7 +1022,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

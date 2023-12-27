@@ -1,40 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>adapya.era.tapada &mdash; adapya-era 1.0.2 documentation</title>
+  <title>adapya.era.tapada &mdash; adapya-era 1.3.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../../../_static/SAG2015.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                1.0.2
+                1.3.0
               </div>
             
           
@@ -80,6 +83,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,6 +102,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -132,11 +137,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -165,18 +172,18 @@
 <span class="sd">  stats() move into reptor URBS handler</span>
 <span class="sd">  sversion checking</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">print_function</span>          <span class="c1"># PY3</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>          <span class="c1"># PY3</span>
 
 
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">datetime</span> <span class="k">as</span> <span class="nn">mdt</span> <span class="c1"># requires Python 2.3</span>
 
-<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="k">import</span> <span class="n">stck</span>
-<span class="kn">from</span> <span class="nn">adapya.base.defs</span> <span class="k">import</span> <span class="n">log</span><span class="p">,</span><span class="n">LOGBEFORE</span><span class="p">,</span><span class="n">LOGCMD</span><span class="p">,</span><span class="n">LOGCB</span><span class="p">,</span><span class="n">LOGRB</span><span class="p">,</span><span class="n">LOGRSP</span><span class="p">,</span><span class="n">LOGFB</span>
+<span class="kn">from</span> <span class="nn">adapya.base</span> <span class="kn">import</span> <span class="n">stck</span>
+<span class="kn">from</span> <span class="nn">adapya.base.defs</span> <span class="kn">import</span> <span class="n">log</span><span class="p">,</span><span class="n">LOGBEFORE</span><span class="p">,</span><span class="n">LOGCMD</span><span class="p">,</span><span class="n">LOGCB</span><span class="p">,</span><span class="n">LOGRB</span><span class="p">,</span><span class="n">LOGRSP</span><span class="p">,</span><span class="n">LOGFB</span>
 <span class="n">log</span><span class="p">(</span><span class="n">LOGCB</span><span class="o">+</span><span class="n">LOGFB</span><span class="o">+</span><span class="n">LOGRB</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">adapya.adabas.api</span> <span class="k">import</span> <span class="n">Adabas</span>
-<span class="kn">from</span> <span class="nn">adapya.adabas.api</span> <span class="k">import</span> <span class="n">DatabaseError</span><span class="p">,</span> <span class="n">adaSetTimeout</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas.api</span> <span class="kn">import</span> <span class="n">Adabas</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas.api</span> <span class="kn">import</span> <span class="n">DatabaseError</span><span class="p">,</span> <span class="n">adaSetTimeout</span>
 
 
 <span class="c1"># reptor.Replicator.instance.logging</span>
@@ -184,8 +191,8 @@
 <span class="n">LOGTAPA2</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">17</span>
 <span class="n">LOGTAPA4</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">18</span>
 
-<span class="kn">from</span> <span class="nn">adapya.era</span> <span class="k">import</span> <span class="n">reptor</span><span class="p">,</span><span class="n">urb</span>
-<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="k">import</span> <span class="n">URBDEYE</span><span class="p">,</span><span class="n">URBEEYE</span><span class="p">,</span><span class="n">URBHEYE</span><span class="p">,</span><span class="n">URBREYE</span><span class="p">,</span><span class="n">URBTEYE</span>
+<span class="kn">from</span> <span class="nn">adapya.era</span> <span class="kn">import</span> <span class="n">reptor</span><span class="p">,</span><span class="n">urb</span>
+<span class="kn">from</span> <span class="nn">adapya.era.urb</span> <span class="kn">import</span> <span class="n">URBDEYE</span><span class="p">,</span><span class="n">URBEEYE</span><span class="p">,</span><span class="n">URBHEYE</span><span class="p">,</span><span class="n">URBREYE</span><span class="p">,</span><span class="n">URBTEYE</span>
 
 <span class="n">dt</span><span class="o">=</span><span class="n">mdt</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="n">mdt</span><span class="o">.</span><span class="n">MINYEAR</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">DELTA0</span><span class="o">=</span><span class="n">mdt</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
@@ -297,7 +304,7 @@
     <span class="sd">&quot;&quot;&quot;Class implements the Adabas Database Update handlers</span>
 <span class="sd">       and processes input data passed via the process() method</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">subsparm</span><span class="p">,</span><span class="n">lnkuexso</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">subsparm</span><span class="p">,</span><span class="n">lnkuexso</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">global</span> <span class="n">dt</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Tapada</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>  <span class="c1"># initialize Replicator()</span>
 
@@ -614,23 +621,28 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2004-2019, software AG
+        &#169; Copyright 2004-2023, software AG.
       <span class="lastupdated">
-        Last updated on Dec 13, 2019.
+        Last updated on Dec 07, 2023.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -638,7 +650,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

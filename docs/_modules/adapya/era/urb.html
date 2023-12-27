@@ -1,40 +1,43 @@
 
 
 <!DOCTYPE html>
-<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>adapya.era.urb &mdash; adapya-era 1.0.2 documentation</title>
+  <title>adapya.era.urb &mdash; adapya-era 1.3.0 documentation</title>
   
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
 
   
   
     <link rel="shortcut icon" href="../../../_static/SAG2015.ico"/>
   
+
   
   
 
   
-  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
   
     
       <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-        <script type="text/javascript" src="../../../_static/jquery.js"></script>
-        <script type="text/javascript" src="../../../_static/underscore.js"></script>
-        <script type="text/javascript" src="../../../_static/doctools.js"></script>
-        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
     
-
-  
-  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -63,7 +66,7 @@
             
             
               <div class="version">
-                1.0.2
+                1.3.0
               </div>
             
           
@@ -80,6 +83,7 @@
           
         </div>
 
+        
         <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
             
@@ -98,6 +102,7 @@
             
           
         </div>
+        
       </div>
     </nav>
 
@@ -132,11 +137,13 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
@@ -161,10 +168,10 @@
 <span class="sd">&quot;&quot;&quot; urb.py - User Replication Buffer Definitions</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="k">import</span> <span class="n">adaerror</span>
-<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">Datamap</span><span class="p">,</span><span class="n">String</span><span class="p">,</span><span class="n">Uint1</span><span class="p">,</span><span class="n">Uint2</span><span class="p">,</span><span class="n">Uint4</span><span class="p">,</span><span class="n">Uint8</span>
-<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">Bytes</span><span class="p">,</span><span class="n">Int2</span><span class="p">,</span><span class="n">Int4</span><span class="p">,</span><span class="n">T_NONE</span><span class="p">,</span><span class="n">T_HEX</span><span class="p">,</span><span class="n">T_STCK</span>
-<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="k">import</span> <span class="n">list_str</span><span class="p">,</span><span class="n">str_str</span><span class="p">,</span><span class="n">bit_str</span>
+<span class="kn">from</span> <span class="nn">adapya.adabas</span> <span class="kn">import</span> <span class="n">adaerror</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="kn">import</span> <span class="n">Datamap</span><span class="p">,</span><span class="n">String</span><span class="p">,</span><span class="n">Uint1</span><span class="p">,</span><span class="n">Uint2</span><span class="p">,</span><span class="n">Uint4</span><span class="p">,</span><span class="n">Uint8</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="kn">import</span> <span class="n">Bytes</span><span class="p">,</span><span class="n">Int2</span><span class="p">,</span><span class="n">Int4</span><span class="p">,</span><span class="n">T_NONE</span><span class="p">,</span><span class="n">T_HEX</span><span class="p">,</span><span class="n">T_STCK</span>
+<span class="kn">from</span> <span class="nn">adapya.base.datamap</span> <span class="kn">import</span> <span class="n">list_str</span><span class="p">,</span><span class="n">str_str</span><span class="p">,</span><span class="n">bit_str</span>
 
 
 <span class="n">REPTOR_RSP</span> <span class="o">=</span> <span class="mi">131</span> <span class="c1"># Replication response code</span>
@@ -329,7 +336,7 @@
 <span class="sd">    Optional init parms: buffer and offset</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBC&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbceye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBC eye-catcher &#39;URBC&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbclen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBC</span>
@@ -365,7 +372,7 @@
 
 <span class="sd">    Optional init parms: buffer and offset</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBD&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbdeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>             <span class="c1"># URBD eye-catcher &#39;URBD&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbdlen&#39;</span><span class="p">),</span>                <span class="c1"># Length of URBD + related data + filler</span>
@@ -387,7 +394,7 @@
 <span class="sd">    indicates the end of the transaction related</span>
 <span class="sd">    to the preceding record and data elements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBE&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbeeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBE eye-catcher &#39;URBE&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbelen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBE</span>
@@ -412,7 +419,7 @@
 <span class="sd">    URBH is put at the start of each buffer sent to</span>
 <span class="sd">    the messaging system.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBH&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbheye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>  <span class="c1"># URBH eye-catcher &#39;URBH&#39; (in EBCDIC)</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbhlen&#39;</span><span class="p">),</span>     <span class="c1"># Length of URBH</span>
@@ -455,7 +462,7 @@
 <span class="sd">    Target Application to the Reptor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBI&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbieye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBI eye-catcher &#39;URBI&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbilen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBI + selection data + filler</span>
@@ -492,7 +499,7 @@
 <span class="sd">    ranges of ISNs with range indicator and 2 ISNs defining the range</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBII&#39;</span><span class="p">,</span>
             <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbiisn&#39;</span><span class="p">),</span>              <span class="c1"># ISN</span>
                                              <span class="c1">#   or alternatively:</span>
@@ -505,7 +512,7 @@
     <span class="sd">&quot;&quot;&quot; new URB - helper to detect which URB type it is</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;new_URB&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;eye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>       <span class="c1"># eye-catcher &#39;URBx&#39;</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
@@ -550,7 +557,7 @@
 <span class="sd">    contains information related to one record.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBR&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbreye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBR eye-catcher &#39;URBR&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbrlen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBR</span>
@@ -692,7 +699,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="c1">#</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBS&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbseye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBS eye-catcher &#39;URBS&#39; #</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbslen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBS + data (C5DA) + filler</span>
@@ -759,7 +766,7 @@
 <span class="sd">    on the input database.</span>
 <span class="sd">    This data follows an URBS with urbsst=URBSSTAU</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbsueye&#39;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>     <span class="c1"># URBSU eye-catcher &#39;URBSU&#39; #</span>
             <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;urbsutyp&#39;</span><span class="p">,</span><span class="n">ppfunc</span><span class="o">=</span><span class="n">urbsutyp_str</span><span class="p">,</span> <span class="n">opt</span><span class="o">=</span><span class="n">T_HEX</span><span class="p">),</span>   <span class="c1"># Utility function type</span>
@@ -768,7 +775,7 @@
 
 <div class="viewcode-block" id="Urbsu41"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu41">[docs]</a><span class="k">class</span> <span class="nc">Urbsu41</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU41 Change field length &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU41&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>    <span class="c1"># field name</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;newlength&#39;</span><span class="p">),</span>       <span class="c1"># new field length</span>
@@ -776,7 +783,7 @@
 
 <div class="viewcode-block" id="Urbsu44"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu44">[docs]</a><span class="k">class</span> <span class="nc">Urbsu44</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU44 Delete file&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU44&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>           <span class="c1"># Status == &#39;S&#39; keep FDT</span>
             <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;anchor&#39;</span><span class="p">),</span>              <span class="c1"># Anchor/master file number</span>
@@ -784,35 +791,35 @@
 
 <div class="viewcode-block" id="Urbsu4a"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4a">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4a</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU4A Release Descriptor &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4A&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># field name</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu4b"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4b">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4b</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU4B Rename File &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4B&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;filename&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span>        <span class="c1"># file name</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu4e"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4e">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4e</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU4e Reuse ISN ON/OFF&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4E&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;isnreuse&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>         <span class="c1"># &#39;ON&#39;/&#39;OFF&#39; #</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu4f"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu4f">[docs]</a><span class="k">class</span> <span class="nc">Urbsu4f</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU4f Reuse DS ON/OFF&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU4F&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;dsreuse&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>          <span class="c1"># &#39;ON&#39;/&#39;OFF&#39; #</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu55"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu55">[docs]</a><span class="k">class</span> <span class="nc">Urbsu55</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU55 Modify FCB &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU55&#39;</span><span class="p">,</span>
             <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;assopfac&#39;</span><span class="p">),</span>            <span class="c1"># Asso padding factor</span>
             <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;datapfac&#39;</span><span class="p">),</span>            <span class="c1"># Data padding factor</span>
@@ -826,7 +833,7 @@
 
 <div class="viewcode-block" id="Urbsu5c"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu5c">[docs]</a><span class="k">class</span> <span class="nc">Urbsu5c</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU5C Change Field Format &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU5C&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># Field name</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;newformat&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>        <span class="c1"># New format</span>
@@ -835,21 +842,21 @@
 
 <div class="viewcode-block" id="Urbsu68"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu68">[docs]</a><span class="k">class</span> <span class="nc">Urbsu68</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU68 USERISN ON/OFF&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU68&#39;</span><span class="p">,</span>
             <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;userisn&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>            <span class="c1"># 0=ON, 1=OFF</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu69"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu69">[docs]</a><span class="k">class</span> <span class="nc">Urbsu69</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU69 Change MIXDSDEV&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU69&#39;</span><span class="p">,</span>
             <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;mixdsdev&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>           <span class="c1"># 0=ON, 1=OFF</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Urbsu70"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu70">[docs]</a><span class="k">class</span> <span class="nc">Urbsu70</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU70 Online Invert&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU70&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;fieldname&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>        <span class="c1"># Descriptor name</span>
             <span class="n">Uint1</span><span class="p">(</span>  <span class="s1">&#39;reason&#39;</span><span class="p">),</span>              <span class="c1"># Reason code</span>
@@ -858,7 +865,7 @@
 
 <div class="viewcode-block" id="Urbsu78"><a class="viewcode-back" href="../../../modules.html#adapya.era.urb.Urbsu78">[docs]</a><span class="k">class</span> <span class="nc">Urbsu78</span><span class="p">(</span><span class="n">Datamap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; URBSU78 MUPE count &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBSU78&#39;</span><span class="p">,</span>
             <span class="n">Int4</span><span class="p">(</span> <span class="s1">&#39;mupex&#39;</span><span class="p">),</span>                 <span class="c1"># Count=1 or 2</span>
             <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
@@ -902,7 +909,7 @@
 <span class="sd">    Contains information related to one transaction.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBT&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbteye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBT eye-catcher &#39;URBT&#39; #</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbtlen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBT</span>
@@ -948,7 +955,7 @@
 <span class="sd">    It is the first record on the output file when running ADARPE</span>
 <span class="sd">    with parameter HEADER=YES (default).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBU&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbueye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>   <span class="c1"># URBU eye-catcher &#39;URBU&#39;</span>
             <span class="n">Int4</span><span class="p">(</span>   <span class="s1">&#39;urbulen&#39;</span><span class="p">),</span>      <span class="c1"># Length of URBU</span>
@@ -981,7 +988,7 @@
 
 <span class="sd">    Urbf is the header for a global format field table (GFFT)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBF&#39;</span><span class="p">,</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbfeye&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>      <span class="c1"># URBF eye-catcher &#39;URBF&#39;</span>
             <span class="n">Uint4</span><span class="p">(</span>  <span class="s1">&#39;urbflen&#39;</span><span class="p">),</span>         <span class="c1"># Length of URBF + related data (n*URBG)</span>
@@ -1104,7 +1111,7 @@
 <span class="sd">    to a global format that determines the structure of a</span>
 <span class="sd">    related record.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="n">Datamap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;URBG&#39;</span><span class="p">,</span>
             <span class="n">Uint2</span><span class="p">(</span>  <span class="s1">&#39;urbgidx&#39;</span><span class="p">),</span>         <span class="c1"># Element index in GFFT</span>
             <span class="n">String</span><span class="p">(</span> <span class="s1">&#39;urbgfid&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>      <span class="c1"># Field short name</span>
@@ -1158,23 +1165,28 @@
            
           </div>
           <footer>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2004-2019, software AG
+        &#169; Copyright 2004-2023, software AG.
       <span class="lastupdated">
-        Last updated on Dec 13, 2019.
+        Last updated on Dec 07, 2023.
       </span>
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
@@ -1182,7 +1194,6 @@
 
   </div>
   
-
 
   <script type="text/javascript">
       jQuery(function () {

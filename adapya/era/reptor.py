@@ -425,6 +425,7 @@ LOGURBR=4
 LOGURBD=8
 LOGURBDD=16 # LOG DATA of URBD
 LOGURBE=32  # LOG end of transaction
+LOGURBDM=64 # LOG datamap of data of URBD
 LOGURBC=128
 LOGURBU=256
 LOGURBS=512
@@ -464,6 +465,8 @@ class Replicator(object):
             :param status: uow status
             :param substat: may reference the subscription status class instance
                 for processing subscription data
+            :param subconf: may reference the subscription and
+                subscription-file configuration for processing subscription data
         """
         self.pcount += 1      # count number of process() calls
 
@@ -799,14 +802,14 @@ class Replicator(object):
             raise ReptorError( 'unknown structure %s'% (urbType,))
 
 
-__version__ = '1.0.2'
-if __version__ == '1.0.2':
-    _svndate='$Date: 2019-09-04 15:18:09 +0200 (Wed, 04 Sep 2019) $'
-    _svnrev='$Rev: 938 $'
+__version__ = '1.3.0'
+if __version__ == '1.3.0':
+    _svndate='$Date: 2023-12-01 00:54:33 +0100 (Fri, 01 Dec 2023) $'
+    _svnrev='$Rev: 1072 $'
     __version__ = 'Dev ' +  _svnrev.strip('$') + \
                   ' '.join(_svndate.strip('$').split()[0:3])
 
-#  Copyright 2004-2019 Software AG
+#  Copyright 2004-2023 Software AG
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.

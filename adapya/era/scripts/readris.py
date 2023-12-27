@@ -37,9 +37,11 @@
         -w  --write         file prefix
                             FTP parameters:
         -c, --config        set/show configuration
-        -h, --host          <host name> of IBM FTP server         (*)
-        -p, --pwd           <password>  FTP server login password (*)
-        -u, --user          <userid>                              (*)
+        -h, --host          <host name> of IBM FTP server             (*)
+        -p, --pwd           <password>  FTP ser1.3.0ogin password     (*)
+        -u, --user          <userid>                                  (*)
+        -C, --certfile      <file> .pem file with server certificates (*)
+
 
         -t  --test          <name> testing LNKUEX <name> DLL/SO
                             instead of adalnkx call the exit is called directly
@@ -73,54 +75,6 @@
 
 """
 from __future__ import print_function          # PY3
-
-import sys,os
-import getopt
-from adapya.base.ftptoolz import Ftpzos
-from adapya.base.recordio import readrec, writerec
-from adapya.base.jconfig import getparms,setparms,SHOWCONFIG
-from adapya.base import stck
-from adapya.base.dump import dump
-from adapya.era import reptor, urb
-from adapya.base import datamap
-from adapya.base.datamap import Datamap, Periodic
-from adapya.adabas.sysdic import fixnamestyle
-
-
-# default values
-host=None
-user=None
-pwd=None
-numrec=0
-skiprec=0
-
-config=0
-dsn=''      # Dataset name
-fname=''    # local file name
-verbose=0
-writeprefix=''
-tapacfg=''   # Adabs target database configuration (e.g tapa12config for tapa12config.py)
-lnkuex=''
-lnkuexso=None # shared library with lnkuex_0 user exit (test parameter)
-
-
-substat = reptor.SubscriptionStatus()  # keep status of messages received
-
-wfi=wf=None         # global
-wfifname=wfname=''
-
-#   global c1, numIsn, rtyp,
-curIsn=0
-numIsni=numIsn=0
-snam=''
-sdbid=0
-sfnr=0
-transStarted=None
-isns=[]
-firstTransaction = None
-lastTransaction = None
-
-recordmap = None
 
 dic2str = lambda d: ','.join(['%s=%s' % (k,v) for k,v in d.items()])
 """ Transform dictionary to key=value pairs separated by comma
@@ -496,177 +450,232 @@ def dataProcess(dd,substat):
             isn=curIsn, recform='RDW')
     return
 
-try:
-  opts, args = getopt.getopt(sys.argv[1:],
-    '?a:d:f:h:n:p:s:u:cv:t:w:',
-    ['help','ada','file','host=','numrec=','pwd=','skiprec=',
-        'user=','config','verbose:','test:','write:'])
-except getopt.GetoptError:
-  print(sys.argv[1:])
-  usage()
-  sys.exit(2)
-if len(sys.argv)==1:
-    usage()
-    sys.exit(2)
-for opt, arg in opts:
-   # print(opt, arg)
-  if opt in ('-?', '--help'):
-    usage()
-    sys.exit()
-  elif opt in ('-a', '--ada'):
-    tapacfg = arg
-  elif opt in ('-c', '--config'):
-    config=1
-  elif opt in ('-d', '--dsn'):
-    dsn = "'%s'" % arg
-  elif opt in ('-f', '--file'):
-    fname = arg
-  elif opt in ('-h', '--host'):
-      host=arg
-  elif opt in ('-n', '--numrec'):
-      numrec=int(arg)
-  elif opt in ('-p', '--pwd'):
-      pwd=arg
-  elif opt in ('-s', '--skiprec'):
-      skiprec=int(arg)
-  elif opt in ('-u', '--user'):
-      user=arg
-  elif opt in ('-v', '--verbose'):
-      verbose=int(arg)
-  elif opt in ('-t', '--test'):
-      lnkuex=arg
-      print('lnkuex', lnkuex)
-  elif opt in ('-w', '--write'):
-      writeprefix=arg
 
-if config:
-    if host or pwd or user:
-        print('Updating configuration file .ztools')
-        setparms('ftp',SHOWCONFIG,host=host,pwd=pwd,user=user) # only update parms if not default
+if __name__=='__main__':
+
+    import sys,os
+    import getopt
+    from adapya.base.ftptoolz import Ftpzos
+    from adapya.base.recordio import readrec, writerec
+    from adapya.base.jconfig import getparms,setparms,SHOWCONFIG
+    from adapya.base import stck
+    from adapya.base.dump import dump
+    from adapya.era import reptor, urb
+    from adapya.base import datamap
+    from adapya.base.datamap import Datamap, Periodic
+    from adapya.adabas.sysdic import fixnamestyle
+
+    # default values
+    host=None
+    user=None
+    pwd=None
+    certfile=None #''
+
+    numrec=0
+    skiprec=0
+
+    config=0
+    dsn=''      # Dataset name
+    fname=''    # local file name
+    verbose=0
+    writeprefix=''
+    tapacfg=''   # Adabs target database configuration (e.g tapa12config for tapa12config.py)
+    lnkuex=''
+    lnkuexso=None # shared library with lnkuex_0 user exit (test parameter)
+
+
+    substat = reptor.SubscriptionStatus()  # keep status of messages received
+
+    wfi=wf=None         # global
+    wfifname=wfname=''
+
+    #   global c1, numIsn, rtyp,
+    curIsn=0
+    numIsni=numIsn=0
+    snam=''
+    sdbid=0
+    sfnr=0
+    transStarted=None
+    isns=[]
+    firstTransaction = None
+    lastTransaction = None
+
+    recordmap = None
+
+    try:
+      opts, args = getopt.getopt(sys.argv[1:],
+        '?a:d:f:h:n:p:s:u:cC:v:t:w:',
+        ['help','ada','file','host=','numrec=','pwd=','skiprec=',
+            'user=','config','verbose:','test:','write:'])
+    except getopt.GetoptError:
+      print(sys.argv[1:])
+      usage()
+      sys.exit(2)
+    if len(sys.argv)==1:
+        usage()
+        sys.exit(2)
+    for opt, arg in opts:
+       # print(opt, arg)
+      if opt in ('-?', '--help'):
+        usage()
+        sys.exit()
+      elif opt in ('-a', '--ada'):
+        tapacfg = arg
+      elif opt in ('-c', '--config'):
+        config=1
+      elif opt in ('-d', '--dsn'):
+        dsn = "'%s'" % arg
+      elif opt in ('-f', '--file'):
+        fname = arg
+      elif opt in ('-h', '--host'):
+          host=arg
+      elif opt in ('-n', '--numrec'):
+          numrec=int(arg)
+      elif opt in ('-p', '--pwd'):
+          pwd=arg
+      elif opt in ('-s', '--skiprec'):
+          skiprec=int(arg)
+      elif opt in ('-u', '--user'):
+          user=arg
+      elif opt in ('-v', '--verbose'):
+          verbose=int(arg)
+      elif opt in ('-t', '--test'):
+          lnkuex=arg
+          print('lnkuex', lnkuex)
+      elif opt in ('-w', '--write'):
+          writeprefix=arg
+      elif opt in ('-C', '--certfile'):
+          certfile=arg
+
+    if config:
+        if host or pwd or user or certfile:
+            print('Updating configuration file .ztools')
+            setparms('ftp',SHOWCONFIG,host=host,pwd=pwd,user=user,certfile=cerfile) # only update parms if not default
+        else:
+            print('Reading configuration file .ztools')
+            getparms('ftp',SHOWCONFIG,host='',user='',pwd='',certfile='') # emtpy parms
+        sys.exit(0)
+
+    print('\n--- readris starting ---')
+    if tapacfg:
+        tapcfg = __import__(tapacfg)
+        psu = tapcfg.psu  # Subscription
+
+        lnkuexso=None
+
+        if lnkuex:
+            print('Testing adalnk user exit 0 directly w/o adalnkx')
+            import ctypes
+            from ctypes import c_char_p, sizeof
+            # load
+            try:
+                print('Running Python Version %s\n\ton platform %s, %d bit, byteorder=%s' % (
+                    sys.version, sys.platform, sizeof(c_char_p)*8, sys.byteorder ))
+                lnkuexso = ctypes.cdll.LoadLibrary(lnkuex)
+                lnkuexso.lnkuex_0.argtypes = [c_char_p,c_char_p,c_char_p,c_char_p,c_char_p,c_char_p]
+            except OSError:
+                print('"%s" could not be loaded: check that Library directory is in path' %(lnkuex,))
+                raise
+
+        from adapya.era import tapada
+        repli = tapada.Tapada(psu,lnkuexso=lnkuexso) # keep status of messages received
+
+        if verbose >= 16:
+            from adapya.base.defs import log,LOGCMD,LOGCB,LOGFB,LOGRB
+            if verbose & 32:
+                log(LOGCMD+LOGCB+LOGFB+LOGRB)
+            else:
+                log(LOGCMD+LOGCB)
+
     else:
-        print('Reading configuration file .ztools')
-        getparms('ftp',SHOWCONFIG,host='',user='',pwd='') # emtpy parms
-    sys.exit(0)
+        repli = reptor.Replicator()     # keep status of messages received
+        # set Replication Messages Handlers
+        repli.setHandler(urb.URBCEYE,   detailProcess)
+        repli.setHandler(urb.URBDEYE,     dataProcess)
+        repli.setHandler(urb.URBEEYE, endtransProcess)
+        repli.setHandler(urb.URBFEYE,  gformatProcess)
+        repli.setHandler(urb.URBHEYE,   detailProcess)
+        repli.setHandler(urb.URBIEYE,   detailProcess)
+        repli.setHandler(urb.URBREYE,      recProcess)
+        repli.setHandler(urb.URBSEYE,   detailProcess)
+        repli.setHandler(urb.URBTEYE,    transProcess)
+        repli.setHandler(urb.URBUEYE,   detailProcess)
 
-print('\n--- readris starting ---')
-if tapacfg:
-    tapcfg = __import__(tapacfg)
-    psu = tapcfg.psu  # Subscription
+    if verbose >= 4:
+        repli.logging |= (1<<16)
+    if verbose >= 8:
+        repli.logging |= reptor.LOGallURB
 
-    lnkuexso=None
+    if dsn:
+        # get ftp parameters (host,user,pwd) if not set by caller
+        ftpcfg = getparms('ftp',verbose,host=host,user=user,pwd=pwd,certfile=certfile)
+        host=ftpcfg.get('host','') # make sure that parms are not None
+        pwd=ftpcfg.get('pwd','')
+        user=ftpcfg.get('user','')
+        certfile=ftpcfg.get('certfile','')
 
-    if lnkuex:
-        print('Testing adalnk user exit 0 directly w/o adalnkx')
-        import ctypes
-        from ctypes import c_char_p, sizeof
-        # load
-        try:
-            print('Running Python Version %s\n\ton platform %s, %d bit, byteorder=%s' % (
-                sys.version, sys.platform, sizeof(c_char_p)*8, sys.byteorder ))
-            lnkuexso = ctypes.cdll.LoadLibrary(lnkuex)
-            lnkuexso.lnkuex_0.argtypes = [c_char_p,c_char_p,c_char_p,c_char_p,c_char_p,c_char_p]
-        except OSError:
-            print('"%s" could not be loaded: check that Library directory is in path' %(lnkuex,))
-            raise
+        if not fname:
+            fname = dsn.strip("'") # remove quotes
 
-    from adapya.era import tapada
-    repli = tapada.Tapada(psu,lnkuexso=lnkuexso) # keep status of messages received
+        ftpz=Ftpzos(host,user,pwd,verbose=verbose&3,test=0,certfile=certfile)  # zos jes extensions
+        ftp=ftpz.ftp # ftplib.FTP session for orinary ftp commands
 
-    if verbose >= 16:
-        from adapya.base.defs import log,LOGCMD,LOGCB,LOGFB,LOGRB
-        if verbose & 32:
-            log(LOGCMD+LOGCB+LOGFB+LOGRB)
-        else:
-            log(LOGCMD+LOGCB)
+        ftpz.getbinaryfile(dsn,fname,rdw=1) # read file with variable records
+        print('Sequential dataset %s copied to local %s' % (dsn, fname))
 
-else:
-    repli = reptor.Replicator()     # keep status of messages received
-    # set Replication Messages Handlers
-    repli.setHandler(urb.URBCEYE,   detailProcess)
-    repli.setHandler(urb.URBDEYE,     dataProcess)
-    repli.setHandler(urb.URBEEYE, endtransProcess)
-    repli.setHandler(urb.URBFEYE,  gformatProcess)
-    repli.setHandler(urb.URBHEYE,   detailProcess)
-    repli.setHandler(urb.URBIEYE,   detailProcess)
-    repli.setHandler(urb.URBREYE,      recProcess)
-    repli.setHandler(urb.URBSEYE,   detailProcess)
-    repli.setHandler(urb.URBTEYE,    transProcess)
-    repli.setHandler(urb.URBUEYE,   detailProcess)
+        ftp.quit()     # do not reuse ftp.
+        # now the file is locally accessible
 
-if verbose >= 4:
-    repli.logging |= (1<<16)
-if verbose >= 8:
-    repli.logging |= reptor.LOGallURB
+    else:
+        if not fname:
+            print('Dataset name or local file name must be specified (-d or -f)')
+            sys.exit(1)
 
-if dsn:
-    # get ftp parameters (host,user,pwd) if not set by caller
-    ftpcfg = getparms('ftp',verbose,host=host,user=user,pwd=pwd)
-    host=ftpcfg.get('host','') # make sure that parms are not None
-    pwd=ftpcfg.get('pwd','')
-    user=ftpcfg.get('user','')
 
-    if not fname:
-        fname = dsn.strip("'") # remove quotes
+    if verbose & 8 :
+        hdr = 'Input record'
+    else:
+        hdr = ''
 
-    ftpz=Ftpzos(host,user,pwd,verbose=verbose&3,test=0)  # zos jes extensions
-    ftp=ftpz.ftp # ftplib.FTP session for orinary ftp commands
 
-    ftpz.getbinaryfile(dsn,fname,rdw=1) # read file with variable records
-    print('Sequential dataset %s copied to local %s' % (dsn, fname))
+    with open(fname, 'rb') as f:
+        for rec in readrec( f, recform='RDW', numrec=numrec, skiprec=skiprec, dumphdr=hdr):
+            if len(rec) == 6 and rec in (b'NOSPRE', 'NOSPRE'.encode('cp037')):
+                print('Skipping NOSPRE')
+                continue
+            repli.process(rec, len(rec), 0, substat)
 
-    ftp.quit()     # do not reuse ftp.
-    # now the file is locally accessible
+        print('\n\t%10d records from input file %r with\n\t%10d errors ' % (
+            repli.pcount, fname, repli.perrors))
 
-else:
-    if not fname:
-        print('Dataset name or local file name must be specified (-d or -f)')
+    if wfname:
+        if isns:
+            if rcnt == 0:
+                write_isns()
+            else:
+                print('\tThe following ISNs were not written to MUPISN (missing end of transaction URBE)')
+                print(isns)
+
+        print('\t%10d records written to CMPIN file %s' % (numIsn, wfname))
+        print('\t%10d records written to MUPISN file %s' % (numIsni, wfiname))
+        if firstTransaction:
+            sub, seq, tim = firstTransaction
+            print('First transaction: sub=%s, seq=%d, ttime=%s' % (sub,seq, stck.sstckd(tim)))
+        if lastTransaction:
+            sub, seq, tim = lastTransaction
+            print('Last transaction : sub=%s, seq=%d, ttime=%s' % (sub,seq, stck.sstckd(tim)))
+
+    elif tapacfg:
+        repli.terminate(printstats=1)
+
+
+
+    if repli.perrors > 0:
+        print('\n--- readris terminated with replication %d errors ---' % repli.perrors)
         sys.exit(1)
-
-
-if verbose & 8 :
-    hdr = 'Input record'
-else:
-    hdr = ''
-
-
-with open(fname, 'rb') as f:
-    for rec in readrec( f, recform='RDW', numrec=numrec, skiprec=skiprec, dumphdr=hdr):
-        if len(rec) == 6 and rec in (b'NOSPRE', 'NOSPRE'.encode('cp037')):
-            print('Skipping NOSPRE')
-            continue
-        repli.process(rec, len(rec), 0, substat)
-
-    print('\n\t%10d records from input file %r with\n\t%10d errors ' % (
-        repli.pcount, fname, repli.perrors))
-
-if wfname:
-    if isns:
-        if rcnt == 0:
-            write_isns()
-        else:
-            print('\tThe following ISNs were not written to MUPISN (missing end of transaction URBE)')
-            print(isns)
-
-    print('\t%10d records written to CMPIN file %s' % (numIsn, wfname))
-    print('\t%10d records written to MUPISN file %s' % (numIsni, wfiname))
-    if firstTransaction:
-        sub, seq, tim = firstTransaction
-        print('First transaction: sub=%s, seq=%d, ttime=%s' % (sub,seq, stck.sstckd(tim)))
-    if lastTransaction:
-        sub, seq, tim = lastTransaction
-        print('Last transaction : sub=%s, seq=%d, ttime=%s' % (sub,seq, stck.sstckd(tim)))
-
-elif tapacfg:
-    repli.terminate(printstats=1)
-
-
-
-if repli.perrors > 0:
-    print('\n--- readris terminated with replication %d errors ---' % repli.perrors)
-    sys.exit(1)
-else:
-    print('\n--- readris terminated normally ---')
-    sys.exit(0)
+    else:
+        print('\n--- readris terminated normally ---')
+        sys.exit(0)
 
 
 """
@@ -730,9 +739,9 @@ while 1:
 
 """
 
-__date__='$Date: 2018-11-09 15:31:28 +0100 (Fri, 09 Nov 2018) $'
+__date__='$Date: 2023-12-01 00:54:33 +0100 (Fri, 01 Dec 2023) $'
 
-#  Copyright 2004-ThisYear Software AG
+#  Copyright 2004-2023 Software AG
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
