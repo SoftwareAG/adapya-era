@@ -41,7 +41,7 @@ Links
 License
 -------
 
-Copyright 2004-ThisYear Software AG
+Copyright 2004-2023 Software AG
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -57,11 +57,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
--------
-
 These tools are provided as-is and without warranty or support.
 They do not constitute part of the Software AG product suite.
 Users are free to use, fork and modify them, subject to the license agreement.
 While Software AG welcomes contributions, we cannot guarantee to include every
 contribution in the master project.
-
